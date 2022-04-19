@@ -1,0 +1,2 @@
+This is a flag: flag{you_solved_it}. Very nice. This is not a flag {woah}
+Nor is this a flag huh{wowza}.
