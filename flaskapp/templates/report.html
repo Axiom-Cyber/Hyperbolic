@@ -1,0 +1,14 @@
+{% include 'base.html' %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<h1>{{ problem_title }} - {{ problem_points }}</h1>
+
+<p>{{ problem_tags }}</p>
+
+<p>{{ problem_description }}</p>
+
+<p>{{ problem_files }}</p>
+{% endblock %}
