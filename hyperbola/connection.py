@@ -22,10 +22,23 @@ class Worker:
         print('Worker problems loaded')
     
     def __str__(self) -> str:
-        return 'Todo'
+        out = ''
+        for category in self.problems:
+            out += '\n' + '=' * (len(category) + 8) + '\n'
+            out += f'=== {category.upper()} ===\n'
+            out += '=' * (len(category) + 8) + '\n\n'
+
+            for problem in self.problems[category]:
+                out += '---\n'
+                out += f"Name: {problem['name']}\n"
+                out += f"Points: {problem['points']}\n"
+                out += f"Description: {problem['description']}\n"
+                out += '---\n'
+
+        return out
     
     def __repr__(self) -> str:
-        return 'Todo'
+        return str(self.problems)
 
     def login(self):
         options = FirefoxOptions()
@@ -68,7 +81,7 @@ class Worker:
 
                 problems[category_title].append(problem)
                 self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'close'))).click()
-                self.driver.implicitly_wait(2)
+                sleep(1)
         
         self.problems = problems
 
