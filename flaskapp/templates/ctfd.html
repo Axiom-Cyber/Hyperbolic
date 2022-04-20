@@ -1,0 +1,19 @@
+{% include 'base.html' %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <p>This is working properly</p>
+
+    <form method="POST" action="">
+        {{ form.csrf_token }}
+        {{ form.username.label }}
+        {{ form.username }}
+        {{ form.password.label }}
+        {{ form.password }}
+        {{ form.submit }}
+    </form>
+</div>
+{% endblock %}

@@ -4,18 +4,20 @@
 {% endblock %}
 
 {% block content %}
-<p>This is working properly</p>
+<div class="container">
+    <p>This is working properly</p>
 
-<form method="POST" action="">
-    {{ form.csrf_token }}
-    {{ form.title.label }}
-    {{ form.title }}
-    {{ form.description.label }}
-    {{ form.description }}
-    {{ form.category.label }}
-    {{ form.category }}
-    {{ form.points.label }}
-    {{ form.points }}
-    {{ form.submit }}
-</form>
+    <form method="POST" action="">
+        {{ form.csrf_token }}
+        {{ form.title.label }}
+        {{ form.title }}
+        {{ form.description.label }}
+        {{ form.description }}
+        {{ form.category.label }}
+        {{ form.category }}
+        {{ form.points.label }}
+        {{ form.points }}
+        {{ form.submit }}
+    </form>
+</div>
 {% endblock %}

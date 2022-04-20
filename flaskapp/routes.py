@@ -14,9 +14,9 @@ def entry():
         print(form.data)
     return render_template('entry.html', title='Entry', form=form)
 
-@app.route('/analysis', methods=['GET', 'POST'])
-def analysis():
+@app.route('/ctfd-scan', methods=['GET', 'POST'])
+def ctfd():
     form = CTFDLoginForm()
     if form.validate_on_submit():
         print(form.data)
-    return render_template('entry.html', title='Entry', form=form)
+    return render_template('ctfd.html', title='CTFd Scan', form=form)

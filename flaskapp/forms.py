@@ -5,6 +5,7 @@ from wtforms.validators import InputRequired
 class CTFDLoginForm(FlaskForm):
     username = StringField('Username', [InputRequired()])
     password = StringField('Password', [InputRequired()])
+    submit = SubmitField('Submit')
 
 class EntryForm(FlaskForm):
     title = StringField('Title', [InputRequired()])
