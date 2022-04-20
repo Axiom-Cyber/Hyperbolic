@@ -7,7 +7,7 @@
 <div class="container">
     <p>This is working properly</p>
 
-    <form method="POST" action="">
+    <form method="post" action="" enctype="multipart/form-data">
         {{ form.csrf_token }}
         {{ form.title.label }}
         {{ form.title }}
@@ -17,7 +17,9 @@
         {{ form.category }}
         {{ form.points.label }}
         {{ form.points }}
-        {{ form.submit }}
+        {{ form.file.label }}
+        {{ form.file }}
+        <input type="submit">
     </form>
 </div>
 {% endblock %}

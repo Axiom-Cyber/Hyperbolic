@@ -7,13 +7,13 @@
 <div class="container">
     <p>This is working properly</p>
 
-    <form method="POST" action="">
+    <form method="post" action="">
         {{ form.csrf_token }}
         {{ form.username.label }}
         {{ form.username }}
         {{ form.password.label }}
         {{ form.password }}
-        {{ form.submit }}
+        <input type="submit">
     </form>
 </div>
 {% endblock %}
