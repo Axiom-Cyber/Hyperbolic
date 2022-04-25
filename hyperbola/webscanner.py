@@ -1,9 +1,7 @@
 import requests
 import re
 def scan(site, flag=r'flag\{\S*?\}'):
-    site = 'https://jupiter.challenges.picoctf.org/problem/36474'
     base = site.replace(r'((?:https?:\/\/)?.*?)\/.*', '\1')
-    base = "https://jupiter.challenges.picoctf.org/problem/36474"
     scan_file(flag, site)
     scan_robots(flag, base)
         
@@ -18,7 +16,7 @@ def scan_file(flag, url, rec=0):
     for i in re.findall(r'((?:https?:\/\/)?[^\s/]*?\.[^\s/]*?)\/\S*', r.text): print('link:', i)
     for i in re.findall(r'((?:https?:\/\/)?[^\s/]*?\.[^\s/]*?)\/\S*', r.text): print('link:', i)
     base = url.replace(r'((?:https?:\/\/)?.*?)\/.*', '\1')
-    if rec<5:
+    if rec<3:
         for x,z,h in re.findall(r'(href|src)\s*?=\s*?(["\'])(.*?)\2', r.text): 
             if h[0]=='/': nurl = base + h
             else: nurl = base + '/' + h
@@ -34,4 +32,4 @@ def scan_robots(flag, base):
     for i in re.findall(r'(?<=[aA]llow: )(\/.*?)$', r.text, flags = re.MULTILINE): 
         scan_file(flag, base+i)
 
-scan('',r'picoCTF\{\S\}')
+scan('http://mercury.picoctf.net:21485/',r'picoCTF\{\S*\}')
