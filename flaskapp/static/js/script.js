@@ -1,13 +1,16 @@
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('button').forEach(button => {
-        button.onclick = () => {
-            const request = new XMLHttpRequest();
-            request.open('POST', `/${button.id}`);
-            request.onload = () => {
-                const response = request.responseText;
-                document.getElementById('message').innerHTML = response;
-            };
-            request.send();
-        };
+$(".pageish-btn").click(function() {
+    var a = $(this).data('page-link')
+    var links = [];
+    $('.pageish').each(function () {
+        links.push(this.id);
     });
+    console.log(links);
+    for (var i = 0; i < links.length; i++) {
+        console.log(links[i])
+        if (links[i] == a) {
+            $('#'+links[i]).show();
+        } else {
+            $('#'+links[i]).hide();
+        }
+    }
 });

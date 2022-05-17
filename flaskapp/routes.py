@@ -8,8 +8,9 @@ values = {}
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
-def home(path):
-    return render_template('home.html', **values)
+def index(path):
+    print(path)
+    return render_template('index.html', **values)
 
 @app.route("/heartbeat")
 def heartbeat():

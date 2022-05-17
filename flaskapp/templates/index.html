@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Hyperbolic | Capturing flags made slightly less painful</title>
+</head>
+<body>
+    <ul>
+        <li><button class="pageish-btn" id="analyze-btn" data-page-link="analyze-page">Analyze</button></li>
+        <li><button class="pageish-btn" id="logs-btn" data-page-link="logs-page">Logs</button></li>
+        <li><button class="pageish-btn" id="reports-btn" data-page-link="reports-page">Reports</button></li>
+        <li><button class="pageish-btn" id="statistics-btn" data-page-link="statistics-page">Statistics</button></li>
+        <li><button class="pageish-btn" id="settings-btn" data-page-link="settings-page">Settings</button></li>
+    </ul>
+    <div class="container">
+        <div class="pageish" id="analyze-page">
+            <p>This is the analyze page</p>
+        </div>
+        <div class="pageish" id="logs-page">
+            <p>This is the logs page</p>
+        </div>
+        <div class="pageish" id="reports-page">
+            <p>This is the reports page</p>
+        </div>
+        <div class="pageish" id="statistics-page">
+            <p>This is the statistics page</p>
+        </div>
+        <div class="pageish" id="settings-page">
+            <p>This is the settings page</p>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
