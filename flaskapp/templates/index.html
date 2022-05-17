@@ -20,19 +20,19 @@
     </ul>
     <div class="page-content">
         <div class="pageish" id="analyze-page">
-            <p>This is the analyze page</p>
+            {% include 'analyze.html' %}
         </div>
         <div class="pageish" id="logs-page" style="display: none">
-            <p>This is the logs page</p>
+            {% include 'logs.html' %}
         </div>
         <div class="pageish" id="reports-page" style="display: none">
-            <p>This is the reports page</p>
+            {% include 'reports.html' %}
         </div>
         <div class="pageish" id="statistics-page" style="display: none">
-            <p>This is the statistics page</p>
+            {% include 'statistics.html' %}
         </div>
         <div class="pageish" id="settings-page" style="display: none">
-            <p>This is the settings page</p>
+            {% include 'settings.html' %}
         </div>
     </div>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
