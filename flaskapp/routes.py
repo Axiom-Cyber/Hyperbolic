@@ -1,9 +1,11 @@
 from flask import url_for, render_template, request, jsonify, make_response, redirect, abort, flash
-from flaskapp import app, csrf, bcrypt, db, login_manager
+from flaskapp import app, csrf, bcrypt, db, login_manager, s, mail
 from flaskapp.forms import CTFDLoginForm, EntryForm, LoginForm, RegistrationForm
 from flaskapp.models import User
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
+from itsdangerous import SignatureExpired
+from flask_mail import Message
 
 @login_manager.unauthorized_handler
 def unauthorized():
@@ -36,11 +38,24 @@ def register():
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user = User(username=form.username.data, display_name=form.display_name.data, email=form.email.data, password=hashed_password)
-        print(form.username.data, form.email.data)
         db.session.add(user)
         db.session.commit()
+
+        token = s.dumps(form.email.data, salt='email-confirm')
+        link = url_for('confirm_email', token=token, external=True)
+        msg = Message(f'Confirm Email', sender='mailman.hyperbolic@gmail.com', recipients=[form.email.data])
+        msg.body = f'<a href={link}>Click to confirm</a>'
+        mail.send(msg)
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
+
+@app.route('/confirm-email/<token>')
+def confirm_email(token):
+    try:
+        email = s.loads(token, salt='email-confirm', max_age=10)
+    except SignatureExpired:
+        return 'Token is expired'
+    return 'Token works'
 
 @app.route('/forgot-password', methods=['GET', 'POST'])
 def forgot_password():
