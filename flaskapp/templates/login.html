@@ -1,9 +1,24 @@
 <form action="" method="post">
     {{ form.csrf_token }}
+
     {{ form.user.label }}
-    {{ form.user }}
+    {% if form.user.errors %}
+        {% for error in form.user.errors %}
+            <span>{{ error }}</span>
+        {% endfor %}
+    {% else %}
+        {{ form.user }}
+    {% endif %}
+
     {{ form.password.label }}
-    {{ form.password }}
+    {% if form.password.errors %}
+        {% for error in form.password.errors %}
+            <span>{{ error }}</span>
+        {% endfor %}
+    {% else %}
+        {{ form.password }}
+    {% endif %}
+
     {{ form.submit }}
 </form>
 

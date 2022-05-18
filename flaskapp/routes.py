@@ -23,7 +23,7 @@ def login():
         user = User.query.filter_by(username=form.user.data).first()
         if not user:
             user = User.query.filter_by(email=form.user.data).first()
-        if user and bcrypt.check_password_hash(user.password, form.password):
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=True)
             return redirect(url_for('index'))
     return render_template('login.html', form=form)
