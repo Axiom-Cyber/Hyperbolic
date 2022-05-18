@@ -1,0 +1,11 @@
+<form action="" method="post">
+    {{ form.csrf_token }}
+    {{ form.user.label }}
+    {{ form.user }}
+    {{ form.password.label }}
+    {{ form.password }}
+    {{ form.submit }}
+</form>
+
+<a href="{{ url_for('register') }}">Register</a>
+<a href="{{ url_for('forgot_password') }}">Forgot Password</a>
