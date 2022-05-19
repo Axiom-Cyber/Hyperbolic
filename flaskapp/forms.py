@@ -27,6 +27,15 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired(), Length(12, 120)])
     submit = SubmitField('Login')
 
+class ForgotPassword(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email(), Length(5, 120)])
+    submit = SubmitField('Send Password Reset')
+
+class ChangePassword(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired(), Length(12, 120)])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), Length(12, 120), EqualTo('password')])
+    submit = SubmitField('Change Password')
+
 class CTFDLoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
