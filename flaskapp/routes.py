@@ -4,8 +4,9 @@ from flaskapp.forms import CTFDLoginForm, EntryForm, LoginForm, RegistrationForm
 from flaskapp.models import User
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
-from itsdangerous import SignatureExpired
+from itsdangerous.exc import SignatureExpired
 from flask_mail import Message
+from datetime import datetime
 
 @login_manager.unauthorized_handler
 def unauthorized():
@@ -27,6 +28,8 @@ def login():
             user = User.query.filter_by(email=form.user.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=True)
+            user.last_login = datetime.utcnow
+            db.session.commit()
             return redirect(url_for('index'))
     return render_template('login.html', form=form)
 
@@ -42,7 +45,7 @@ def register():
         db.session.commit()
 
         token = s.dumps(form.email.data, salt='email-confirm')
-        link = url_for('confirm_email', token=token, external=True)
+        link = url_for('confirm_email', token=token)
         msg = Message(f'Confirm Email', sender='mailman.hyperbolic@gmail.com', recipients=[form.email.data])
         msg.body = f'<a href={link}>Click to confirm</a>'
         mail.send(msg)
@@ -53,6 +56,9 @@ def register():
 def confirm_email(token):
     try:
         email = s.loads(token, salt='email-confirm', max_age=10)
+        user = User.query.filter_by(email=email).first()
+        user.is_activated = True
+        db.session.commit()
     except SignatureExpired:
         return 'Token is expired'
     return 'Token works'

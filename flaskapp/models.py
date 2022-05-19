@@ -1,5 +1,7 @@
 from flaskapp import db, login_manager
 from flask_login import UserMixin
+from datetime import datetime
+
 
 '''
 from flaskapp import db
@@ -17,7 +19,10 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
     image_file = db.Column(db.String(30), nullable=False, default='default.png')
-    active = db.Column(db.Boolean, default=False, nullable=False)
+    is_activated = db.Column(db.Boolean, default=False, nullable=False)
+    created_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    last_login = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
 
     def __repr__(self):
         return '<User %r>' % self.username
