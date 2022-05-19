@@ -20,8 +20,8 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(120), nullable=False)
     image_file = db.Column(db.String(30), nullable=False, default='default.png')
     is_activated = db.Column(db.Boolean, default=False, nullable=False)
-    created_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    last_login = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    created_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
+    last_login = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
 
     def __repr__(self):

@@ -28,7 +28,7 @@ def login():
             user = User.query.filter_by(email=form.user.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=True)
-            user.last_login = datetime.utcnow
+            user.last_login = datetime.utcnow()
             db.session.commit()
             return redirect(url_for('index'))
     return render_template('login.html', form=form)
@@ -44,18 +44,22 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        token = s.dumps(form.email.data, salt='email-confirm')
-        link = url_for('confirm_email', token=token)
-        msg = Message(f'Confirm Email', sender='mailman.hyperbolic@gmail.com', recipients=[form.email.data])
-        msg.body = f'<a href={link}>Click to confirm</a>'
-        mail.send(msg)
+        send_verify_email(form.email.data)
+
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
+
+def send_verify_email(email):
+    token = s.dumps(email, salt='email-confirm')
+    link = url_for('confirm_email', token=token)
+    msg = Message(f'Confirm Email', sender='mailman.hyperbolic@gmail.com', recipients=[email])
+    msg.body = f'<a href={link}>Click to confirm</a>'
+    mail.send(msg)
 
 @app.route('/confirm-email/<token>')
 def confirm_email(token):
     try:
-        email = s.loads(token, salt='email-confirm', max_age=10)
+        email = s.loads(token, salt='email-confirm', max_age=600)
         user = User.query.filter_by(email=email).first()
         user.is_activated = True
         db.session.commit()
