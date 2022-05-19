@@ -74,17 +74,18 @@ def forgot_password():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
             token = s.dumps(form.email.data, salt='reset-password')
-            link = url_for('confirm_email', token=token)
+            link = url_for('reset_password', token=token)
             msg = Message(f'Confirm Email', sender='Hyperbola', recipients=[form.email.data])
             msg.body = f'<a href={link}>Click to reset password</a>'
             mail.send(msg)
+            return redirect(url_for('login'))
     return render_template('forgot-password.html', form=form)
 
-@app.route('/reset-password/<token>')
+@app.route('/reset-password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
     form = ChangePassword()
     try:
-        email = s.loads(token, salt='reset-confirm', max_age=600)
+        email = s.loads(token, salt='reset-password', max_age=600)
         user = User.query.filter_by(email=email).first()
         if form.validate_on_submit():
             hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
