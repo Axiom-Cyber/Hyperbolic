@@ -1,13 +1,23 @@
+:root {
+    --gunmetal-dark: #202C39;
+    --gunmetal: #283845;
+    --pink: #EC368D;
+    --green: #02C39A;
+    --green-light: #9ef1df;
+    --white: #FAF9F9;
+
+}
+
 html, body {
     height: 100%;
-    background-color: #000;
+    background-color: var(--gunmetal-dark);
     line-height: 2;
 }
 
 html {
     display: table;
     margin: auto;
-    color: #fff;
+    color: var(--white);
 }
 
 body {
@@ -17,28 +27,35 @@ body {
 }
 
 h1, p {
-    color: #fff;
+    color: var(--white);
+}
+
+a {
+    color: var(--green)
+}
+
+a:hover {
+    color: var(--green-light)
 }
 
 .content {
     height: auto;
-    background-color: rgb(20, 20, 20);
+    background-color: var(--gunmetal);
     padding: 20px;
 }
 
 input {
     border: none;
     border-radius: 0;
+    background-color: var(--gunmetal-dark);
+    color: var(--white);
 }
 
-input[type="text"] {
-    width: 100%;
-}
-
-input[type="password"] {
+input[type="password"], input[type="text"] {
     width: 100%;
 }
 
 input[type="submit"] {
     padding: 3px 12px;
+    background: var(--pink);
 }
