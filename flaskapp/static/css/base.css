@@ -1,0 +1,44 @@
+html, body {
+    height: 100%;
+    background-color: #000;
+    line-height: 2;
+}
+
+html {
+    display: table;
+    margin: auto;
+    color: #fff;
+}
+
+body {
+    display: table-cell;
+    vertical-align: middle;
+    width: 400px;
+}
+
+h1, p {
+    color: #fff;
+}
+
+.content {
+    height: auto;
+    background-color: rgb(20, 20, 20);
+    padding: 20px;
+}
+
+input {
+    border: none;
+    border-radius: 0;
+}
+
+input[type="text"] {
+    width: 100%;
+}
+
+input[type="password"] {
+    width: 100%;
+}
+
+input[type="submit"] {
+    padding: 3px 12px;
+}

@@ -1,26 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="my-3">Login</h1>
 <form action="" method="post">
     {{ form.csrf_token }}
 
-    {{ form.user.label }}
-    {% if form.user.errors %}
-        {% for error in form.user.errors %}
-            <span>{{ error }}</span>
-        {% endfor %}
-    {% else %}
-        {{ form.user }}
-    {% endif %}
+    <div class="form-group mb-1">
+        {{ form.user(placeholder=form.user.label.text) }}
+        {% if form.user.errors %}
+            {% for error in form.user.errors %}
+                <small>{{ error }}</small>
+            {% endfor %}
+        {% endif %}
+    </div>
 
-    {{ form.password.label }}
-    {% if form.password.errors %}
-        {% for error in form.password.errors %}
-            <span>{{ error }}</span>
-        {% endfor %}
-    {% else %}
-        {{ form.password }}
-    {% endif %}
+    <div class="form-group mb-1">
+        {{ form.password(placeholder=form.password.label.text) }}
+        {% if form.password.errors %}
+            {% for error in form.password.errors %}
+                <small>{{ error }}</small>
+            {% endfor %}
+        {% endif %}
+    </div>
 
     {{ form.submit }}
 </form>
 
 <a href="{{ url_for('register') }}">Register</a>
 <a href="{{ url_for('forgot_password') }}">Forgot Password</a>
+{% endblock %}

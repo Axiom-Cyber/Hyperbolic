@@ -31,7 +31,7 @@ def login():
             user.last_login = datetime.utcnow()
             db.session.commit()
             return redirect(url_for('index'))
-    return render_template('login.html', form=form)
+    return render_template('login.html', form=form, title='Login')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -45,7 +45,7 @@ def register():
         db.session.commit()
         send_verify_email(form.email.data)
         return redirect(url_for('login'))
-    return render_template('register.html', form=form)
+    return render_template('register.html', form=form, title='Register')
 
 def send_verify_email(email):
     token = s.dumps(email, salt='email-confirm')
@@ -56,14 +56,18 @@ def send_verify_email(email):
 
 @app.route('/confirm-email/<token>')
 def confirm_email(token):
+    msg = 'There were some problems verifying your email. Try again.'
     try:
         email = s.loads(token, salt='email-confirm', max_age=600)
         user = User.query.filter_by(email=email).first()
         user.is_activated = True
         db.session.commit()
+        msg = 'Your email is confirmed! You may exit out of this page.'
     except SignatureExpired:
-        return 'Token is expired'
-    return 'Token works'
+        msg = 'Email verification link is expired. Try again.'
+    except Exception:
+        pass
+    return render_template('confirm-email.html', title='Confirm Email', msg=msg)
 
 @app.route('/forgot-password', methods=['GET', 'POST'])
 def forgot_password():
@@ -79,10 +83,11 @@ def forgot_password():
             msg.body = f'<a href={link}>Click to reset password</a>'
             mail.send(msg)
             return redirect(url_for('login'))
-    return render_template('forgot-password.html', form=form)
+    return render_template('forgot-password.html', form=form, title='Forgot Password')
 
 @app.route('/reset-password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
+    msg = None
     form = ChangePassword()
     try:
         email = s.loads(token, salt='reset-password', max_age=600)
@@ -93,8 +98,10 @@ def reset_password(token):
             db.session.commit()
             return redirect(url_for('login'))
     except SignatureExpired:
-        return 'Token is expired'
-    return render_template('reset-password.html', form=form)
+        msg = 'Password reset link is expired. Try again.'
+    except Exception:
+        msg = 'There were some issues with resetting your password. Try again.'
+    return render_template('reset-password.html', form=form, title='Reset Password', msg=msg)
 
 @app.route("/logout")
 @login_required
