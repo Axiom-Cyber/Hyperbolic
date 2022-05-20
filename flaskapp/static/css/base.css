@@ -59,3 +59,7 @@ input[type="password"], input[type="text"] {
 input[type="submit"] {
     background: var(--pink);
 }
+
+input[type="text"]:focus, input[type="password"]:focus {
+    outline: 2px solid var(--pink);     /* oranges! yey */
+  }
