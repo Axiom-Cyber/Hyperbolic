@@ -49,6 +49,7 @@ input {
     border-radius: 0;
     background-color: var(--gunmetal-dark);
     color: var(--white);
+    padding: 3px 12px;
 }
 
 input[type="password"], input[type="text"] {
@@ -56,6 +57,5 @@ input[type="password"], input[type="text"] {
 }
 
 input[type="submit"] {
-    padding: 3px 12px;
     background: var(--pink);
 }
