@@ -1,5 +1,5 @@
 # Hyperbolic
-Flask implementation of hyperbola
+Beginner CTF automation with a pretty interface.
 
 ## How it Works
 
