@@ -1,3 +1,65 @@
-body {
-    background-color: #e0e0e0;
+:root {
+    --gunmetal-dark: #202C39;
+    --gunmetal: #283845;
+    --pink: #EC368D;
+    --green: #02C39A;
+    --green-light: #9ef1df;
+    --white: #FAF9F9;
+
 }
+
+html, body {
+    height: 100%;
+    background-color: var(--gunmetal-dark);
+    line-height: 2;
+}
+
+html {
+    display: table;
+    margin: auto;
+    color: var(--white);
+}
+
+body {
+    display: table-cell;
+    vertical-align: middle;
+    width: 400px;
+}
+
+h1, p {
+    color: var(--white);
+}
+
+a {
+    color: var(--green)
+}
+
+a:hover {
+    color: var(--green-light)
+}
+
+.content {
+    height: auto;
+    background-color: var(--gunmetal);
+    padding: 20px;
+}
+
+input {
+    border: none;
+    border-radius: 0;
+    background-color: var(--gunmetal-dark);
+    color: var(--white);
+    padding: 3px 12px;
+}
+
+input[type="password"], input[type="text"] {
+    width: 100%;
+}
+
+input[type="submit"] {
+    background: var(--pink);
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+    outline: 2px solid var(--pink);     /* oranges! yey */
+  }

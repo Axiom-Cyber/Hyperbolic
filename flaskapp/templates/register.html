@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="my-3">Register</h1>
+<form action="" method="POST">
+    {{ form.csrf_token }}
+    
+    <div class="form-group mb-1">
+        {{ form.username(placeholder=form.username.label.text) }}
+        {% if form.username.errors %}
+            {% for error in form.username.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="form-group mb-1">
+        {{ form.display_name(placeholder=form.display_name.label.text) }}
+        {% if form.display_name.errors %}
+            {% for error in form.display_name.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="form-group mb-1">
+        {{ form.email(placeholder=form.email.label.text) }}
+        {% if form.email.errors %}
+            {% for error in form.email.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="form-group mb-1">
+        {{ form.password(placeholder=form.password.label.text) }}
+        {% if form.password.errors %}
+            {% for error in form.password.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="form-group mb-3">
+        {{ form.confirm_password(placeholder=form.confirm_password.label.text) }}
+        {% if form.confirm_password.errors %}
+            {% for error in form.confirm_password.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+        {% endif %}
+    </div>
+    
+    {{ form.submit }}
+</form>
+
+<a href="{{ url_for('login') }}">Return to login</a>
+{% endblock %}
