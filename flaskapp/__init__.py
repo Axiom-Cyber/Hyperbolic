@@ -11,7 +11,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 
-# $Env:Foo = 'An example'
+# $Env:VARIABLE_NAME = 'Value'
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY') # secrets.token_urlsafe(24)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQL_URI') # 'sqlite:///site.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
