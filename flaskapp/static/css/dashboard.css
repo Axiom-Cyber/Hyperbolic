@@ -1,0 +1,22 @@
+nav {
+    height: 100%;
+    width: 300px;
+    position: fixed;
+    background-color: var(--gunmetal);
+}
+
+nav ul {
+    padding: 0;
+}
+
+nav a {
+    width: 100%;
+    padding: 10px 25px;
+    display: block;
+    text-align: center;
+    font-size: 14pt;
+}
+
+.content {
+    margin-left: 300px;
+}

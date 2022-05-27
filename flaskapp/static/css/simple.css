@@ -1,0 +1,23 @@
+html, body {
+    height: 100%;
+    background-color: var(--gunmetal-dark);
+    line-height: 2;
+}
+
+html {
+    display: table;
+    margin: auto;
+    color: var(--white);
+}
+
+body {
+    display: table-cell;
+    vertical-align: middle;
+    width: 400px;
+}
+
+.content {
+    height: auto;
+    background-color: var(--gunmetal);
+    padding: 20px;
+}

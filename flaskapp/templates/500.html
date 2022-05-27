@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/simple.css') }}">
+{% endblock %}
+
 {% block content %}
-<h1>Error 500</h1>
-<p>Ya done messed up A-A-ron!</p>
+<div class="content">
+    <h1>Error 500</h1>
+    <p>Ya done messed up A-A-ron!</p>
+</div>
 {% endblock %}

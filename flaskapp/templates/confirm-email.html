@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/simple.css') }}">
+{% endblock %}
+
 {% block content %}
-<h1>Confirm Email</h1>
-<p>{{ msg }}</p>
+<div class="content">
+    <h1>Confirm Email</h1>
+    <p>{{ msg }}</p>
+</div>
 {% endblock %}

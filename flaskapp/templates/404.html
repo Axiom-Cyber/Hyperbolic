@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/simple.css') }}">
+{% endblock %}
+
 {% block content %}
-<h1>Error 404</h1>
-<p>A-A-ron. Where are you? Where is A-A-ron right now? No A-A-ron huh. Well you better be sick, dead, or mute A-A-ron.</p>
+<div class="content">
+    <h1>Error 404</h1>
+    <p>A-A-ron. Where are you? Where is A-A-ron right now? No A-A-ron huh. Well you better be sick, dead, or mute A-A-ron.</p>
+</div>
 {% endblock %}

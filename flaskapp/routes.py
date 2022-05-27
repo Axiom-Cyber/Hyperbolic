@@ -17,9 +17,8 @@ def unauthorized():
     return redirect(url_for('login'))
 
 @app.route('/')
-@login_required
-def index():
-    return render_template('index.html')
+def about():
+    return render_template('about.html', title='A cool hacking thing I guess')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -107,22 +106,43 @@ def reset_password(token):
         msg = 'There were some issues with resetting your password. Try again.'
     return render_template('reset-password.html', form=form, title='Reset Password', msg=msg)
 
-@app.route("/logout")
+@app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('login'))
 
+@app.route('/dashboard/')
+@app.route('/dashboard/analyze')
+def analyze():
+    return render_template('analyze.html', title='Analyze')
+
+@app.route('/dashboard/logs')
+def logs():
+    return render_template('logs.html', title='Logs')
+
+@app.route('/dashboard/reports')
+def reports():
+    return render_template('reports.html', title='Reports')
+
+@app.route('/dashboard/statistics')
+def statistics():
+    return render_template('statistics.html', title='Statistics')
+
+@app.route('/dashboard/settings')
+def settings():
+    return render_template('settings.html', title='Settings')
+
 @app.errorhandler(404)
 def not_found(error):
-    return make_response(render_template('404.html'), 404)
+    return make_response(render_template('404.html', title='404'), 404)
 
 
 @app.errorhandler(400)
 def bad_request():
-    return make_response(render_template('400.html'), 400)
+    return make_response(render_template('400.html', title='400'), 400)
 
 
 @app.errorhandler(500)
 def server_error():
-    return make_response(render_template('500.html'), 500)
+    return make_response(render_template('500.html', title='500'), 500)
