@@ -3,7 +3,7 @@ Beginner CTF automation with a pretty interface.
 
 ## How it Works
 
-Hyperbola contains the code that actually does the "hacking". It contains all the code to analyze files, connect to platforms like CTFD.io, and run Linux commands on files. Flask acts as an API for Hyperbola. All the commands that can be done in Hyperbola can be requested from Flask which then returns the output as a JSON. Client is a Vue server that acts as the interface between the Flask API and end users. It takes the JSON output and uses it to display pages all as a single-page application (SPA).
+Hyperbola contains the code that actually does the "hacking". It contains all the code to analyze files, connect to platforms like CTFD.io, and run Linux commands on files. Flask is the web interface to run Hyperbola functions.
 
 ## Setup
 
@@ -33,16 +33,3 @@ Installation:
       3. `secrets.token_urlsafe(24)` - generate token
       4. Use output as secret key
 6. Run the Flask server from the project root with the command command `python run.py`
-
-### Client
-
-Prerequisites:
-
-- Install node.js
-- Install NPM
-
-Installation:
-
-1. `cd` to the `client` directory
-2. Run `npm install` to install the needed NPM packages
-3. Run the Vue server from the client directory with the command `npm run serve`
