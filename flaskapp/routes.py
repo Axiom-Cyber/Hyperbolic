@@ -113,25 +113,8 @@ def logout():
     return redirect(url_for('login'))
 
 @app.route('/dashboard/')
-@app.route('/dashboard/analyze')
-def analyze():
-    return render_template('analyze.html', title='Analyze')
-
-@app.route('/dashboard/logs')
-def logs():
-    return render_template('logs.html', title='Logs')
-
-@app.route('/dashboard/reports')
-def reports():
-    return render_template('reports.html', title='Reports')
-
-@app.route('/dashboard/statistics')
-def statistics():
-    return render_template('statistics.html', title='Statistics')
-
-@app.route('/dashboard/settings')
-def settings():
-    return render_template('settings.html', title='Settings')
+def dashboard():
+    return render_template('dashboard.html', title='Dashboard')
 
 @app.errorhandler(404)
 def not_found(error):
