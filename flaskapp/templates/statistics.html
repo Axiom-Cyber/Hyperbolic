@@ -1,1 +1,10 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+{% include 'navbar.html' %}
 <p>This is the statistics page</p>
+{% endblock %}
