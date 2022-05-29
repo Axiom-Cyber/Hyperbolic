@@ -1,4 +1,5 @@
 import asyncio
+import re
 
 class Commander:
     detectors = {}
@@ -21,7 +22,7 @@ class Commander:
         for i in self.detectors[type]:
             spotlight = i.spotlight(data)
             if spotlight:
-                asyncio.create_task(self.run_node(i, spotlight))
+                asyncio.create_task(self.run_node(i, data))
             
 
     async def run_node(self, problem, data):
@@ -29,26 +30,39 @@ class Commander:
             return
         exec = problem()
         ret = exec.return_solution(data)
-        if self.logger:
+        if self.logger and 'logs' in ret:
             for i in ret['logs']:
                 self.logger(i)
-        for i in ret['newdata']:
-            for j in self.detectors[i['type']]:
-                spotlight = j.spotlight(i['data'])
-                if spotlight:
-                    asyncio.create_task(self.run_node(j, spotlight))
+        if 'flag' in ret:
+            self.found_flag = True
+            return
+        if ret and 'newdata' in ret:
+            for i in ret['newdata']:
+                for j in self.detectors[i['type']]:
+                    spotlight = j.spotlight(i['data'])
+                    if spotlight:
+                        asyncio.create_task(self.run_node(i, i['data']))
    
 class Logger:
     def __call__(txt):
         pass
 
-@Commander.add_worker('default')
 class Problem:
-    def __init__(self):
-        self.outputs = []
-
     def spotlight(self, data):
-        return None
+        return True
 
     def return_solution(self, data):
         return {'logs':[], 'newdata':[{'type':None,'data':None}]}
+
+@Commander.add_worker('text')
+class Flag(Problem):
+    @classmethod
+    def set_flag(self, flag):
+        self.flag = flag
+
+    def spotlight(self, data):
+        return True
+    def return_solution(self, data):
+        flag = re.find(r'((?:https?:\/\/)?[^\s/]*?\.[^\s/]*?)\/\S*', data)
+        if flag:
+            return {'logs' : ['flag found: ' + flag], 'flag':1}
