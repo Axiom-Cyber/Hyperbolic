@@ -4,18 +4,18 @@ import requests
 
 @defaults.Commander.add_worker('text')
 class Website(defaults.Problem):
-    def spotlight(self, data):
+    async def spotlight(self, data):
         return True
     
-    def return_solution(self, data):
+    async def return_solution(self, data):
         return {'logs':[],'newdata':['url':i for i in re.findall(r'((?:https?:\/\/)?[^\s/]*?\.[^\s/]*?)\/\S*', data)]}
 
 @defaults.Commander.add_worker('url')
 class Request:
-    def spotlight(self, data):
+    async def spotlight(self, data):
         return True
     
-    def return_solution(self, data):
+    async def return_solution(self, data):
         post = requests.post(data).text
         get = requests.get(data).text
         rets = []

@@ -60,9 +60,9 @@ class Flag(Problem):
     def set_flag(self, flag):
         self.flag = flag
 
-    def spotlight(self, data):
+    async def spotlight(self, data):
         return True
-    def return_solution(self, data):
-        flag = re.find(r'((?:https?:\/\/)?[^\s/]*?\.[^\s/]*?)\/\S*', data)
+    async def return_solution(self, data):
+        flag = re.find(r'flag\{\S*?\}', data)
         if flag:
             return {'logs' : ['flag found: ' + flag], 'flag':1}
