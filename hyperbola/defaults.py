@@ -17,10 +17,13 @@ class Commander:
     def __init__(self, logger = None):
         self.found_flag = False
         self.logger = logger
+    
+    def run(self, type, data):
+        asyncio.run(c.run_tree(type, data))
 
-    def run_tree(self, type, data):
+    async def run_tree(self, type, data):
         for i in self.detectors[type]:
-            spotlight = i.spotlight(data)
+            spotlight = await i.spotlight(data)
             if spotlight:
                 asyncio.create_task(self.run_node(i, data))
             
@@ -29,29 +32,29 @@ class Commander:
         if self.found_flag:
             return
         exec = problem()
-        ret = exec.return_solution(data)
-        if self.logger and 'logs' in ret:
+        ret = await exec.return_solution(data)
+        if self.logger!=None and 'logs' in ret:
             for i in ret['logs']:
-                self.logger(i)
+                await self.logger(i)
         if 'flag' in ret:
             self.found_flag = True
             return
         if ret and 'newdata' in ret:
             for i in ret['newdata']:
                 for j in self.detectors[i['type']]:
-                    spotlight = j.spotlight(i['data'])
+                    spotlight = await j.spotlight(i['data'])
                     if spotlight:
-                        asyncio.create_task(self.run_node(i, i['data']))
+                        asyncio.create_task(self.run_node(i['type'], i['data']))
    
 class Logger:
-    def __call__(txt):
-        pass
+    async def __call__(self, txt):
+        print(txt)
 
 class Problem:
-    def spotlight(self, data):
+    async def spotlight(self, data):
         return True
 
-    def return_solution(self, data):
+    async def return_solution(self, data):
         return {'logs':[], 'newdata':[{'type':None,'data':None}]}
 
 @Commander.add_worker('text')
@@ -59,10 +62,14 @@ class Flag(Problem):
     @classmethod
     def set_flag(self, flag):
         self.flag = flag
-
+    @classmethod
     async def spotlight(self, data):
         return True
     async def return_solution(self, data):
-        flag = re.find(r'flag\{\S*?\}', data)
+        flag = re.match(r'flag\{\S*?\}', data)
         if flag:
-            return {'logs' : ['flag found: ' + flag], 'flag':1}
+            return {'logs' : ['flag found: ' + flag.group()], 'flag':1}
+
+l = Logger()
+c = Commander(l)
+c.run('text', 'flag{1223ss}')
