@@ -18,9 +18,10 @@ class Commander:
         c = self(logger)
         asyncio.run(c.run_tree(type, data))
 
-    def __init__(self, logger = None):
+    def __init__(self, maxDepth = 100, logger = None):
         self.found_flag = False
         self.logger = logger
+        self.maxDepth = maxDepth
 
     async def run_tree(self, type, data):
         for i in self.detectors[type]:
@@ -29,8 +30,8 @@ class Commander:
                 asyncio.create_task(self.run_node(i, data))
             
 
-    async def run_node(self, problem, data):
-        if self.found_flag:
+    async def run_node(self, problem, data, layers = 0):
+        if self.found_flag or layers > self.maxDepth:
             return
         exec = problem()
         ret = await exec.return_solution(data)
@@ -43,7 +44,7 @@ class Commander:
         if ret and 'newdata' in ret:
             for i in ret['newdata']:
                 for j in self.detectors[i['type']]:
-                    asyncio.create_task(self.run_node(i['type'], i['data']))
+                    asyncio.create_task(self.run_node(i['type'], i['data'], layers + 1))
    
 class Logger:
     async def __call__(self, txt):
