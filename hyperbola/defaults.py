@@ -3,7 +3,6 @@ import re
 
 class Commander:
     detectors = {}
-    
     @classmethod
     def add_worker(self, *categories):
         def decorate(clss):
@@ -44,33 +43,26 @@ class Commander:
         if ret and 'newdata' in ret:
             for i in ret['newdata']:
                 for j in self.detectors[i['type']]:
-                    spotlight = await j.spotlight(i['data'])
-                    if spotlight:
-                        asyncio.create_task(self.run_node(i['type'], i['data']))
+                    asyncio.create_task(self.run_node(i['type'], i['data']))
    
 class Logger:
     async def __call__(self, txt):
         print(txt)
 
 class Problem:
-    async def spotlight(self, data):
-        return True
-
     async def return_solution(self, data):
         return {'logs':[], 'newdata':[{'type':None,'data':None}]}
 
 @Commander.add_worker('text')
 class Flag(Problem):
+    flag = r'flag\{\S*?\}'
     @classmethod
     def set_flag(self, flag):
         self.flag = flag
-    @classmethod
-    async def spotlight(self, data):
-        return True
     async def return_solution(self, data):
-        flag = re.match(r'flag\{\S*?\}', data)
+        flag = re.match(self.flag, data)
         if flag:
             return {'logs' : ['flag found: ' + flag.group()], 'flag':1}
 
 l = Logger()
-Commander.run('text', 'flag{1223ss}', logger = l)
+Commander.run('text', 'flag{1223ss}', logger = print)
