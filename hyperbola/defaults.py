@@ -14,12 +14,14 @@ class Commander:
             return clss
         return decorate
 
+    @classmethod
+    def run(self, type, data, logger = None):
+        c = self(logger)
+        asyncio.run(c.run_tree(type, data))
+
     def __init__(self, logger = None):
         self.found_flag = False
         self.logger = logger
-    
-    def run(self, type, data):
-        asyncio.run(c.run_tree(type, data))
 
     async def run_tree(self, type, data):
         for i in self.detectors[type]:
@@ -71,5 +73,4 @@ class Flag(Problem):
             return {'logs' : ['flag found: ' + flag.group()], 'flag':1}
 
 l = Logger()
-c = Commander(l)
-c.run('text', 'flag{1223ss}')
+Commander.run('text', 'flag{1223ss}', logger = l)
