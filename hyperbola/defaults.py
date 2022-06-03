@@ -25,9 +25,7 @@ class Commander:
 
     async def run_tree(self, type, data):
         for i in self.detectors[type]:
-            spotlight = await i.spotlight(data)
-            if spotlight:
-                asyncio.create_task(self.run_node(i, data))
+            asyncio.create_task(self.run_node(i, data))
             
 
     async def run_node(self, problem, data, layers = 0):
