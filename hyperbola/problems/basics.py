@@ -22,4 +22,4 @@ class Request:
             logs.append('responce found for get on ' + data)
             rets.append(get.text)
         except: pass
-        return {'logs':logs,'newdata':['text':i for i in rets]}
+        return {'logs':logs,'newdata':[{'type':'text', 'data':i} for i in rets]}
