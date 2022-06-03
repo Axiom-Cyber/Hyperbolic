@@ -16,16 +16,14 @@ class Commander:
     @classmethod
     def run(self, type, data, logger = None):
         c = self(logger)
-        asyncio.run(c.run_tree(type, data))
+        
+        for i in c.detectors[type]:
+            asyncio.create_task(self.run_node(i, data))
 
     def __init__(self, maxDepth = 100, logger = None):
         self.found_flag = False
         self.logger = logger
         self.maxDepth = maxDepth
-
-    async def run_tree(self, type, data):
-        for i in self.detectors[type]:
-            asyncio.create_task(self.run_node(i, data))
             
 
     async def run_node(self, problem, data, layers = 0):
