@@ -1,0 +1,7 @@
+.code-stuff {
+    font-family: 'Courier New', monospace;
+    overflow-wrap: break-word;
+    margin: 10px;
+    background-color: #000;
+    max-width: 1000px;
+}
