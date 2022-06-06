@@ -23,7 +23,7 @@ def about():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('dashboard'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.user.data).first()
@@ -47,7 +47,7 @@ def register():
         db.session.add(user)
         db.session.commit()
         send_verify_email(form.email.data)
-        return redirect(url_for('login'))
+        return redirect(url_for('dashboard'))
     return render_template('register.html', form=form, title='Register')
 
 def send_verify_email(email):
@@ -85,7 +85,7 @@ def forgot_password():
             msg = Message(f'Confirm Email', sender='Hyperbola', recipients=[form.email.data])
             msg.body = f'<a href={link}>Click to reset password</a>'
             mail.send(msg)
-            return redirect(url_for('login'))
+            return redirect(url_for('dashboard'))
     return render_template('forgot-password.html', form=form, title='Forgot Password')
 
 @app.route('/reset-password/<token>', methods=['GET', 'POST'])
@@ -113,25 +113,8 @@ def logout():
     return redirect(url_for('login'))
 
 @app.route('/dashboard/')
-@app.route('/dashboard/analyze')
-def analyze():
-    return render_template('analyze.html', title='Analyze')
-
-@app.route('/dashboard/logs')
-def logs():
-    return render_template('logs.html', title='Logs')
-
-@app.route('/dashboard/reports')
-def reports():
-    return render_template('reports.html', title='Reports')
-
-@app.route('/dashboard/statistics')
-def statistics():
-    return render_template('statistics.html', title='Statistics')
-
-@app.route('/dashboard/settings')
-def settings():
-    return render_template('settings.html', title='Settings')
+def dashboard():
+    return render_template('dashboard.html', title='Dashboard')
 
 @app.errorhandler(404)
 def not_found(error):
