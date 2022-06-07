@@ -2,8 +2,11 @@ import matplotlib.pyplot as plt
 from os import path
 from PIL import Image
 import numpy as np
+import defaults
 
-def renderImage(pathName, outName, width):
+def renderImage(pathName, outName=None, width="guess"):
+    if outName == None:
+        outName = pathName + "out"
     outName = outName.replace(".png", "")
     file=open(pathName, "rb")
     size = (path.getsize(pathName) / 4) - 4
