@@ -1,5 +1,6 @@
 #tabs {
     background-color: var(--gunmetal);
+    margin: 15px;
 }
 
 #tabs ul {
@@ -23,5 +24,11 @@
 }
 
 .tab-content {
-    padding: 8px;
+    padding: 10px;
+}
+
+#console {
+    background-color: #000;
+    height: 500px;
+    max-height: 500px;
 }
