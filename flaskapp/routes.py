@@ -8,10 +8,6 @@ from itsdangerous.exc import SignatureExpired
 from flask_mail import Message
 from datetime import datetime
 
-@app.route('/ping', methods=['GET'])
-def ping_pong():
-    return jsonify('Pong!')
-
 @login_manager.unauthorized_handler
 def unauthorized():
     return redirect(url_for('login'))
