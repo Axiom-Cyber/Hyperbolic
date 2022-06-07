@@ -14,13 +14,13 @@ class Commander:
         return decorate
 
     @classmethod
-    def run(self, type, data, logger = None):
-        c = self(logger)
+    def run(self, type, data, maxDepth=100, logger = None):
+        c = self(maxDepth, logger)
         
         for i in c.detectors[type]:
-            asyncio.create_task(self.run_node(i, data))
+            asyncio.create_task(c.run_node(i, data))
 
-    def __init__(self, maxDepth = 100, logger = None):
+    def __init__(self, maxDepth, logger):
         self.found_flag = False
         self.logger = logger
         self.maxDepth = maxDepth
@@ -62,4 +62,4 @@ class Flag(Problem):
             return {'logs' : ['flag found: ' + flag.group()], 'flag':1}
 
 l = Logger()
-Commander.run('text', 'flag{1223ss}', logger = print)
+Commander.run('text', 'flag{1223ss}', 100, logger = print)
