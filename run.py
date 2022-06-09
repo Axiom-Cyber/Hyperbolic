@@ -1,4 +1,4 @@
-from flaskapp import app
-from hyperbola import defaults
+from flaskapp import socketio, app
+# from hyperbola import defaults
 if __name__ == '__main__':
-    app.run(debug=True)
+    socketio.run(app)

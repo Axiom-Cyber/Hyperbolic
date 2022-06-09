@@ -8,6 +8,7 @@ import os
 import secrets
 from itsdangerous import URLSafeTimedSerializer
 from flask_cors import CORS
+from flask_socketio import SocketIO
 
 app = Flask(__name__)
 
@@ -31,5 +32,6 @@ login_manager.login_view = 'login'
 mail = Mail(app)
 s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 CORS(app, resources={r'/*': {'origins': '*'}})
+socketio = SocketIO(app)
 
 from flaskapp import routes

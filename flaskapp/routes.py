@@ -8,10 +8,6 @@ from itsdangerous.exc import SignatureExpired
 from flask_mail import Message
 from datetime import datetime
 
-@app.route('/ping', methods=['GET'])
-def ping_pong():
-    return jsonify('Pong!')
-
 @login_manager.unauthorized_handler
 def unauthorized():
     return redirect(url_for('login'))
@@ -26,9 +22,13 @@ def login():
         return redirect(url_for('dashboard'))
     form = LoginForm()
     if form.validate_on_submit():
+
+        # Determine if username or email from database
         user = User.query.filter_by(username=form.user.data).first()
         if not user:
             user = User.query.filter_by(email=form.user.data).first()
+        
+        # Authenticate and execute login
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=True)
             user.last_login = datetime.utcnow()
@@ -41,6 +41,8 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = RegistrationForm()
+
+    # Generate hash and save user info
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user = User(username=form.username.data, display_name=form.display_name.data, email=form.email.data, password=hashed_password)
@@ -114,7 +116,8 @@ def logout():
 
 @app.route('/dashboard/')
 def dashboard():
-    return render_template('dashboard.html', title='Dashboard')
+    form = CTFDLoginForm()
+    return render_template('dashboard.html', title='Dashboard', form=form)
 
 @app.errorhandler(404)
 def not_found(error):

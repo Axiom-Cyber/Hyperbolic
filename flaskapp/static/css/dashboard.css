@@ -1,9 +1,13 @@
 #tabs {
-    list-style-type: none;
+    background-color: var(--gunmetal);
+    margin: 15px;
 }
 
 #tabs ul {
     padding: 0;
+    margin: 0;
+    list-style-type: none;
+    overflow: hidden;
 }
 
 #tabs li {
@@ -12,9 +16,19 @@
 
 #tabs a {
     width: 100%;
-    padding: 10px 25px;
+    padding: 8px 15px;
     display: block;
     text-align: center;
     font-size: 14pt;
     text-decoration: none;
+}
+
+.tab-content {
+    padding: 10px;
+}
+
+#console {
+    background-color: #000;
+    height: 500px;
+    max-height: 500px;
 }
