@@ -17,4 +17,4 @@ class Cookie:
                 newdata.append(c.name)
                 newdata.append(c.name)
         except: pass
-        return {'logs':[], 'newdata':[{'type':'text', 'data':i} for i in newdata]}
+        return {'logs':[], 'newdata':[{'type':'text', 'data':i} for i in newdata], 'end':False}

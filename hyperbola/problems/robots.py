@@ -17,4 +17,4 @@ class Robots:
             req = requests.post(nurl)
             newdata.append(req.text)
         except: pass
-        return {'logs':[], 'newdata':[{'type':'text','data':i} for i in newdata] + [{'type':'url','data':i} for i in links]}
+        return {'logs':[], 'newdata':[{'type':'text','data':i} for i in newdata] + [{'type':'url','data':i} for i in links], 'end':False}
