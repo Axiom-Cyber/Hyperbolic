@@ -1,7 +1,7 @@
 from filetype import guess
 import defaults
 
-defaults.Commander.add_worker('filepath')
+@defaults.Commander.add_worker('filepath')
 class Extension:
     def guessExtension(filePath):
         try:
