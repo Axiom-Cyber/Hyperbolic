@@ -1,7 +1,7 @@
 from filetype import guess
-import defaults
+import hyperbola
 
-defaults.Commander.add_worker('filepath')
+@hyperbola.Commander.add_worker('filepath')
 class Extension:
     def guessExtension(filePath):
         try:

@@ -4,6 +4,13 @@ import glob
 import asyncio
 import re
 
+import os
+for module in os.listdir(os.path.join(os.path.dirname(__file__),'problems')):
+    if module == '__init__.py' or module[-3:] != '.py':
+        continue
+    __import__(module[:-3], locals(), globals())
+del module
+
 class Commander:
     detectors = {}
     @classmethod
@@ -17,10 +24,11 @@ class Commander:
         return decorate
 
     @classmethod
-    def run(self, type, data, maxDepth=100, logger = None):
+    def run(self, type, data, logger = None, maxDepth=100):
         c = self(maxDepth, logger)
         
-        for i in c.detectors[type]:
+        print(self.detectors)
+        for i in self.detectors[type]:
             asyncio.create_task(c.run_node(i, data))
 
     def __init__(self, maxDepth, logger):
@@ -59,6 +67,3 @@ class Flag(Problem):
         flag = re.match(self.flag, data)
         if flag:
             return {'logs' : ['flag found: ' + flag.group()], 'end':True}
-
-prob = glob.glob(join(dirname(__file__), 'problems', "*.py"))
-__all__ =  [basename(f)[:-3] for f in prob if isfile(f)]

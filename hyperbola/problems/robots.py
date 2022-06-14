@@ -1,7 +1,7 @@
-import defaults
+import hyperbola
 import requests
 import re
-defaults.Commander.add_worker('url')
+@hyperbola.Commander.add_worker('url')
 class Robots:
     async def return_solution(self, data):
         nurl = data.replace(r'((?:https?:\/\/)?.*?)\/.*', '\1')

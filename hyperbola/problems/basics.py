@@ -1,13 +1,13 @@
-import defaults
+import hyperbola
 import re
 import requests
 
-@defaults.Commander.add_worker('text')
+@hyperbola.Commander.add_worker('text')
 class Website(defaults.Problem):
     async def return_solution(self, data):
         return {'logs':[],'newdata':[{'type':'url','data':i} for i in re.findall(r'((?:https?:\/\/)?[^\s/]*?\.[^\s/]*?)\/\S*', data)]}
 
-@defaults.Commander.add_worker('url')
+@hyperbola.Commander.add_worker('url')
 class Request:
     async def return_solution(self, data):
         rets = []

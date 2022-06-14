@@ -2,9 +2,9 @@ import matplotlib.pyplot as plt
 from os import path
 from PIL import Image
 import numpy as np
-import defaults
+import hyperbola
 
-defaults.Commander.add_worker('filepath')
+@hyperbola.Commander.add_worker('filepath')
 class RenderBinary:
     def return_solution(pathName, outName=None, width="guess"):
         if outName == None:
