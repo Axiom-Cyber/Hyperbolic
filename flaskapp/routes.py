@@ -142,6 +142,7 @@ class Logger:
     def __init__(self, id):
         self.id = id
     def __call__(self, msg):
+        print(2)
         self.socket.emit(msg, to=self.id)
 @socketio.event
 def start_search(type, data):

@@ -4,7 +4,7 @@ import re
 @hyperbola.Commander.add_worker('url')
 class Robots:
     async def return_solution(self, data):
-        nurl = data.replace(r'((?:https?:\/\/)?.*?)\/.*', '\1')
+        nurl = data.replace(r'((?:https?:\/\/)[^/].*?)\/.*', '\1')
         newdata = []
         links = []
         try:

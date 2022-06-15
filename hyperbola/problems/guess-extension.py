@@ -3,8 +3,9 @@ import hyperbola
 
 @hyperbola.Commander.add_worker('filepath')
 class Extension:
-    def guessExtension(filePath):
+    def return_solution(filePath):
         try:
             print("Filetype: " + str(guess(filePath).extension))
         except:
             print("Couldn't find filetype")
+        return {'logs':[],'newdata':[],'end':False}

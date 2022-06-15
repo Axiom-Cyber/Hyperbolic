@@ -5,17 +5,6 @@ import asyncio
 import re
 import os
 
-prefix = ''
-if __name__ != '__main__':
-    prefix = __name__ + '.' + prefix
-print(os.path.dirname(__file__))
-for module in os.listdir(os.path.join('problems', os.path.dirname(__file__))):
-    if module == '__init__.py' or module[-3:] != '.py':
-        continue
-    print(prefix + module[:-3].replace(r'(\\*?|\/*?)', '.'))
-    __import__(prefix + module[:-3].replace(r'(\\*?|\/*?)', '.'), locals(), globals())
-del module
-
 class Commander:
     detectors = {}
     @classmethod
@@ -31,11 +20,10 @@ class Commander:
     @classmethod
     def run(self, type, data, logger = None, maxDepth=100):
         c = self(maxDepth, logger)
-        
-        print(self.detectors)
-        for i in self.detectors[type]:
-            asyncio.create_task(c.run_node(i, data))
-
+        async def start():
+            for i in self.detectors[type]:
+                asyncio.create_task(c.run_node(i, data))
+        asyncio.run(start())
     def __init__(self, maxDepth, logger):
         self.running = True
         self.logger = logger
@@ -47,6 +35,7 @@ class Commander:
             return
         exec = problem()
         ret = await exec.return_solution(data)
+        print(ret, problem)
         if self.logger!=None and 'logs' in ret:
             for i in ret['logs']:
                 await self.logger(i)
@@ -72,3 +61,12 @@ class Flag(Problem):
         flag = re.match(self.flag, data)
         if flag:
             return {'logs' : ['flag found: ' + flag.group()], 'end':True}
+
+prefix = 'problems.'
+if __name__ != '__main__':
+    prefix = __name__ + '.' + prefix
+for module in os.listdir(os.path.join(os.path.dirname(__file__), 'problems')):
+    if module == '__init__.py' or module[-3:] != '.py':
+        continue
+    __import__(prefix + module[:-3].replace(r'(\\*?|\/*?)', '.'), locals(), globals())
+del module
