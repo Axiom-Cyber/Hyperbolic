@@ -3,12 +3,17 @@ import glob
 
 import asyncio
 import re
-
 import os
-for module in os.listdir(os.path.join(os.path.dirname(__file__),'problems')):
+
+prefix = ''
+if __name__ != '__main__':
+    prefix = __name__ + '.' + prefix
+print(os.path.dirname(__file__))
+for module in os.listdir(os.path.join('problems', os.path.dirname(__file__))):
     if module == '__init__.py' or module[-3:] != '.py':
         continue
-    __import__(module[:-3], locals(), globals())
+    print(prefix + module[:-3].replace(r'(\\*?|\/*?)', '.'))
+    __import__(prefix + module[:-3].replace(r'(\\*?|\/*?)', '.'), locals(), globals())
 del module
 
 class Commander:
