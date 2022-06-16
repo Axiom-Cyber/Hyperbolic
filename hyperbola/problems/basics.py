@@ -5,7 +5,8 @@ import requests
 @hyperbola.Commander.add_worker('text')
 class Website:
     async def return_solution(self, data):
-        return {'logs':[],'newdata':[{'type':'url','data':'http://'+i} for i in re.findall(r'(?:[^\s\/\.]+\.[^\s\/\.]+)(?:\/\S*)*', data)], 'end':False}
+        urls = re.findall(r'(?:[^\s\/\.]+\.[^\s\/\.]+)(?:\/\S*)*', data)
+        return {'logs':['url: ' + i for i in urls],'newdata':[{'type':'url','data':i} for i in urls], 'end':False}
 
 @hyperbola.Commander.add_worker('url')
 class Request:

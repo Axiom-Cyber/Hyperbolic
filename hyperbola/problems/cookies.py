@@ -3,7 +3,7 @@ import requests
 @hyperbola.Commander.add_worker('url')
 class Cookie:
     async def return_solution(self, data):
-        post = requests.post(data)
+        data = 'http://' + data
         newdata = []
         try:
             get = requests.get(data)

@@ -18,7 +18,7 @@ class Commander:
         return decorate
 
     @classmethod
-    def run(self, type, data, logger = None, maxDepth=100):
+    def run(self, type, data, logger, maxDepth=100):
         c = self(maxDepth, logger)
         async def start():
             for i in self.detectors[type]:
@@ -35,17 +35,15 @@ class Commander:
             return
         exec = problem()
         ret = await exec.return_solution(data)
-        print(ret, problem)
-        if self.logger!=None and 'logs' in ret:
-            for i in ret['logs']:
-                await self.logger(i)
+        print(ret['logs'])
+        for i in ret['logs']:
+            self.logger(i)
         if ret['end']:
             self.running = False
             return
-        if ret and 'newdata' in ret:
-            for i in ret['newdata']:
-                for j in self.detectors[i['type']]:
-                    asyncio.create_task(self.run_node(i['type'], i['data'], layers + 1))
+        for i in ret['newdata']:
+            for j in self.detectors[i['type']]:
+                asyncio.create_task(self.run_node(i['type'], i['data'], layers + 1))
 
 class Problem:
     async def return_solution(self, data):
@@ -61,6 +59,7 @@ class Flag(Problem):
         flag = re.match(self.flag, data)
         if flag:
             return {'logs' : ['flag found: ' + flag.group()], 'end':True}
+        return {'logs' : [], 'newdata' : [], 'end':False}
 
 prefix = 'problems.'
 if __name__ != '__main__':
