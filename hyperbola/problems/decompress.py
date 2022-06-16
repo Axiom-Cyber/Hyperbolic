@@ -1,8 +1,9 @@
 from filetype import guess
 import zipfile
 from os import walk
+import hyperbola
 
-@defaults.Commander.add_worker('filepath')
+@hyperbola.Commander.add_worker('filepath')
 class Decompress:
     def decompress(self, filepath):
         if guess(filepath) != None and guess(filepath).extension == "zip":
