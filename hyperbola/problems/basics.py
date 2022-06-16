@@ -1,13 +1,14 @@
-import defaults
+import hyperbola
 import re
 import requests
 
-@defaults.Commander.add_worker('text')
-class Website(defaults.Problem):
+@hyperbola.Commander.add_worker('text')
+class Website:
     async def return_solution(self, data):
-        return {'logs':[],'newdata':[{'type':'url','data':i} for i in re.findall(r'((?:https?:\/\/)?[^\s/]*?\.[^\s/]*?)\/\S*', data)]}
+        urls = re.findall(r'(?:[^\s\/\.]+\.[^\s\/\.]+)(?:\/\S*)*', data)
+        return {'logs':['url: ' + i for i in urls],'newdata':[{'type':'url','data':i} for i in urls], 'end':False}
 
-@defaults.Commander.add_worker('url')
+@hyperbola.Commander.add_worker('url')
 class Request:
     async def return_solution(self, data):
         rets = []
@@ -22,4 +23,4 @@ class Request:
             logs.append('responce found for get on ' + data)
             rets.append(get.text)
         except: pass
-        return {'logs':logs,'newdata':[{'type':'text', 'data':i} for i in rets]}
+        return {'logs':logs,'newdata':[{'type':'text', 'data':i} for i in rets], 'end':False}

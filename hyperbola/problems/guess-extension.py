@@ -1,10 +1,11 @@
 from filetype import guess
-import defaults
+import hyperbola
 
-@defaults.Commander.add_worker('filepath')
+@hyperbola.Commander.add_worker('filepath')
 class Extension:
-    def guessExtension(filePath):
+    def return_solution(filePath):
         try:
             print("Filetype: " + str(guess(filePath).extension))
         except:
             print("Couldn't find filetype")
+        return {'logs':[],'newdata':[],'end':False}

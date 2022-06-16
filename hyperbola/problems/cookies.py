@@ -1,9 +1,10 @@
-import defaults
+import hyperbola
 import requests
-@defaults.Commander.add_worker('url')
+
+@hyperbola.Commander.add_worker('url')
 class Cookie:
     async def return_solution(self, data):
-        post = requests.post(data)
+        data = 'http://' + data
         newdata = []
         try:
             get = requests.get(data)
@@ -17,4 +18,4 @@ class Cookie:
                 newdata.append(c.name)
                 newdata.append(c.name)
         except: pass
-        return {'logs':[], 'newdata':[{'type':'text', 'data':i} for i in newdata]}
+        return {'logs':[], 'newdata':[{'type':'text', 'data':i} for i in newdata], 'end':False}

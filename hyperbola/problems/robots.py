@@ -1,10 +1,10 @@
-import defaults
+import hyperbola
 import requests
 import re
-defaults.Commander.add_worker('url')
+@hyperbola.Commander.add_worker('url')
 class Robots:
     async def return_solution(self, data):
-        nurl = data.replace(r'((?:https?:\/\/)?.*?)\/.*', '\1')
+        nurl = 'http://' + data.replace(r'([^/].*?)\/.*', '\1')
         newdata = []
         links = []
         try:
@@ -17,4 +17,4 @@ class Robots:
             req = requests.post(nurl)
             newdata.append(req.text)
         except: pass
-        return {'logs':[], 'newdata':[{'type':'text','data':i} for i in newdata] + [{'type':'url','data':i} for i in links]}
+        return {'logs':[], 'newdata':[{'type':'text','data':i} for i in newdata] + [{'type':'url','data':i} for i in links], 'end':False}

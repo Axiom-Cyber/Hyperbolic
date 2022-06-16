@@ -1,11 +1,13 @@
-from flask import url_for, render_template, request, jsonify, make_response, redirect, abort, flash
-from flaskapp import app, csrf, bcrypt, db, login_manager, s, mail
+import re
+from flask import url_for, render_template, request, jsonify, make_response, redirect, abort, flash, request
+from flaskapp import app, socketio, csrf, bcrypt, db, login_manager, s, mail
 from flaskapp.forms import CTFDLoginForm, EntryForm, LoginForm, RegistrationForm, ForgotPassword, ChangePassword
 from flaskapp.models import User
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
 from itsdangerous.exc import SignatureExpired
 from flask_mail import Message
+import hyperbola
 from datetime import datetime
 
 @login_manager.unauthorized_handler
@@ -132,3 +134,15 @@ def bad_request():
 @app.errorhandler(500)
 def server_error():
     return make_response(render_template('500.html', title='500'), 500)
+
+
+## Sockets
+class Logger:
+    def __init__(self, id, socket):
+        self.id = id
+        self.socket = socket
+    def __call__(self, msg):
+        self.socket.emit('send_output', msg, to=self.id)
+@socketio.event
+def start_search(type, data):
+    hyperbola.Commander.run(type, data, Logger(request.sid, socketio))
