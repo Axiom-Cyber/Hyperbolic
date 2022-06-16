@@ -13,16 +13,20 @@ class Request:
     async def return_solution(self, data):
         rets = []
         logs = []
-        try:
-            post = requests.post(data)
-            logs.append('responce found for post on ' + data)
-            rets.append(post.text)
-        except: pass
-        try:
-            get = requests.get(data)
-            logs.append('responce found for get on ' + data)
-            rets.append(get.text)
-        except: pass
-        return {'logs':logs,'newdata':[{'type':'text', 'data':i} for i in rets] + 
-          [{'type':'text', 'data':i.replace(r'<.*?>', '')} for i in rets],
+        for i in [requests.get, requests.post]:
+            try:
+                req = i(data)
+                logs.append('responce found for ' + data)
+                rets.append(req)
+            except: pass
+        return {'logs':logs,'newdata':[{'type':'response', 'data':i} for i in rets],
           'end':False}
+@hyperbola.Commander.add_worker('response')
+class Cookie:
+    async def return_solution(self, data):
+        return {'logs':[], 'newdata':[{'type':'text', 'data':i} for i in data], 'end':False}
+@hyperbola.Commander.add_worker('response')
+class Page:
+    async def return_solution(self, data):
+        return {'logs':[], 'newdata':[{'type': 'text', 'data': data.text}]+
+          [{'type':'text', 'data':data.text.replace(r'<.*?>', '')}], 'end':False}
