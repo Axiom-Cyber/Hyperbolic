@@ -1,5 +1,6 @@
 import hyperbola
 import requests
+
 @hyperbola.Commander.add_worker('url')
 class Cookie:
     async def return_solution(self, data):
