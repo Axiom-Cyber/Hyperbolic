@@ -7,14 +7,12 @@ class Robots:
         nurl = 'http://' + data.replace(r'([^/].*?)\/.*', '\1')
         newdata = []
         links = []
-        try:
-            req = requests.get(nurl)
-            for i in re.findAll(r'[Aa]llow[ \t]*?:[ \t]*?(\S+)', req.text):
-                links.append(nurl + i.groups(1))
-            newdata.append(req.text)
-        except: pass
-        try:
-            req = requests.post(nurl)
-            newdata.append(req.text)
-        except: pass
-        return {'logs':[], 'newdata':[{'type':'text','data':i} for i in newdata] + [{'type':'url','data':i} for i in links], 'end':False}
+        for i in [nurl, data]:
+            for j in [requests.get, requests.post]:
+                try:
+                    req = j(i + '/robots.txt')
+                    for k in re.findAll(r'[Aa]llow[ \t]*?:[ \t]*?(\S+)', req.text):
+                        links.append(nurl + k.groups(1))
+                    newdata.append(req)
+                except: pass
+        return {'logs':[], 'newdata':[{'type':'request','data':i} for i in newdata] + [{'type':'url','data':i} for i in links], 'end':False}

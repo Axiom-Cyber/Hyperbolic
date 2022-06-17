@@ -3,10 +3,10 @@ import re
 import requests
 
 @hyperbola.Commander.add_worker('text')
-class Website:
+class Url:
     async def return_solution(self, data):
         urls = re.findall(r'(?:[^\s\/\.]+\.[^\s\/\.]+)(?:\/\S*)*', data)
-        return {'logs':['url: ' + i for i in urls],'newdata':[{'type':'url','data':i} for i in urls], 'end':False}
+        return {'logs':['url: ' + i for i in urls],'newdata':[{'type':'url','data':i.strip('/')} for i in urls], 'end':False}
 
 @hyperbola.Commander.add_worker('url')
 class Request:
@@ -19,13 +19,13 @@ class Request:
                 logs.append('responce found for ' + data)
                 rets.append(req)
             except: pass
-        return {'logs':logs,'newdata':[{'type':'response', 'data':i} for i in rets],
+        return {'logs':logs,'newdata':[{'type':'request', 'data':i} for i in rets],
           'end':False}
-@hyperbola.Commander.add_worker('response')
+@hyperbola.Commander.add_worker('request')
 class Cookie:
     async def return_solution(self, data):
         return {'logs':[], 'newdata':[{'type':'text', 'data':i} for i in data], 'end':False}
-@hyperbola.Commander.add_worker('response')
+@hyperbola.Commander.add_worker('request')
 class Page:
     async def return_solution(self, data):
         return {'logs':[], 'newdata':[{'type': 'text', 'data': data.text}]+
