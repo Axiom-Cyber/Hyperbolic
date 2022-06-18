@@ -9,6 +9,9 @@ import secrets
 from itsdangerous import URLSafeTimedSerializer
 from flask_cors import CORS
 from flask_socketio import SocketIO
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
