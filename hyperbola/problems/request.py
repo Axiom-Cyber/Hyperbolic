@@ -13,7 +13,7 @@ class Request:
     async def return_solution(self, data):
         rets = []
         logs = []
-        for i in [requests.get, requests.post]:
+        for i in [requests.get, requests.post, requests.delete, requests.head, requests.patch, requests.put]:
             try:
                 req = i(data)
                 logs.append('responce found for ' + data)
@@ -22,7 +22,7 @@ class Request:
         return {'logs':logs,'newdata':[{'type':'request', 'data':i} for i in rets],
           'end':False}
 @hyperbola.Commander.add_worker('request')
-class Cookie:
+class Cookies:
     async def return_solution(self, data):
         return {'logs':[], 'newdata':[{'type':'text', 'data':i} for i in data], 'end':False}
 @hyperbola.Commander.add_worker('request')
@@ -30,3 +30,7 @@ class Page:
     async def return_solution(self, data):
         return {'logs':[], 'newdata':[{'type': 'text', 'data': data.text}]+
           [{'type':'text', 'data':data.text.replace(r'<.*?>', '')}], 'end':False}
+@hyperbola.Commander.add_worker('request')
+class Headers:
+    async def return_solution(self, data):
+        return {'logs':[], 'newdata':[{'type':'text', 'data':', '.join([i+': '+j for i,j in data.raw.headers.items() if type(i)==type(j)==str])}]}

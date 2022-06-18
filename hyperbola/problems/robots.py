@@ -8,7 +8,7 @@ class Robots:
         newdata = []
         links = []
         for i in [nurl, data]:
-            for j in [requests.get, requests.post]:
+            for j in [requests.get, requests.post, requests.delete, requests.head, requests.patch, requests.put]:
                 try:
                     req = j(i + '/robots.txt')
                     for k in re.findAll(r'[Aa]llow[ \t]*?:[ \t]*?(\S+)', req.text):
