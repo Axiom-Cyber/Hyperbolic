@@ -14,6 +14,7 @@ class Selenium:
             i.submit()
             if driver.current_url != data:
                 newdata.append(driver.current_url)
+                driver.get(data)
 
         driver.close()
 
