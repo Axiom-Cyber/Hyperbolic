@@ -21,20 +21,30 @@ class Webpage:
             except: pass
         return {'logs':logs,'newdata':[{'type':'request', 'data':i} for i in rets],
           'end':False}
+
 @hyperbola.Commander.add_worker('request')
 class Cookies:
     async def return_solution(self, data):
         return {'logs':[], 'newdata':[{'type':'text', 'data':i} for i in data], 'end':False}
+
+@hyperbola.Commander.add_worker('url')
+class Robots:
+    async def return_solution(self, data):
+        base = re.match(r'(https?:\/\/)?(.+?)(?=\/|\s|$)', data).groups(2)
+        return {'logs':[], 'newdata':[{'type':'request','data':i+'/robots.txt'} for i in [base, data]], 'end':False}
+
 @hyperbola.Commander.add_worker('request')
 class Relatives:
     async def return_solution(self, data):
-        base = re.match(r'(https?:\/\/)?(.+?)(?=\/|\s|$)', data.url)
+        base = re.match(r'(https?:\/\/)?(.+?)(?=\/|\s|$)', data.url).groups(2)
         return {'logs':[], 'newdata':[{'type':'url', 'data':base+i} for i in re.findall(r'/\S+', data.text)], 'end':False}
+
 @hyperbola.Commander.add_worker('request')
 class Page:
     async def return_solution(self, data):
         return {'logs':[], 'newdata':[{'type': 'text', 'data': data.text}]+
           [{'type':'text', 'data':data.text.replace(r'<.*?>', '')}], 'end':False}
+
 @hyperbola.Commander.add_worker('request')
 class Headers:
     async def return_solution(self, data):
