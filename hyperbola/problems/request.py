@@ -28,8 +28,8 @@ class Cookies:
 @hyperbola.Commander.add_worker('request')
 class Relatives:
     async def return_solution(self, data):
-        base = re.match(r'(?=https?://)?[^/]+')
-        return {'logs':[], 'newdata':[{'type':'url', 'data':base+i[1:]} for i in re.findall(r'/\S+', data.text)], 'end':False}
+        base = re.match(r'(https?:\/\/)?(.+?)(?=\/|\s|$)', data.url)
+        return {'logs':[], 'newdata':[{'type':'url', 'data':base+i} for i in re.findall(r'/\S+', data.text)], 'end':False}
 @hyperbola.Commander.add_worker('request')
 class Page:
     async def return_solution(self, data):
