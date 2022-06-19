@@ -9,13 +9,13 @@ class Url:
         return {'logs':['url: ' + i for i in urls],'newdata':[{'type':'url','data':i.strip('/')} for i in urls], 'end':False}
 
 @hyperbola.Commander.add_worker('url')
-class Request:
+class Webpage:
     async def return_solution(self, data):
         rets = []
         logs = []
         for i in [requests.get, requests.post, requests.delete, requests.head, requests.patch, requests.put]:
             try:
-                req = i(data)
+                req = i('http://' + data)
                 logs.append('responce found for ' + data)
                 rets.append(req)
             except: pass
@@ -25,6 +25,11 @@ class Request:
 class Cookies:
     async def return_solution(self, data):
         return {'logs':[], 'newdata':[{'type':'text', 'data':i} for i in data], 'end':False}
+@hyperbola.Commander.add_worker('request')
+class Relatives:
+    async def return_solution(self, data):
+        base = re.match(r'(?=https?://)?[^/]+')
+        return {'logs':[], 'newdata':[{'type':'url', 'data':base+i[1:]} for i in re.findall(r'/\S+', data.text)], 'end':False}
 @hyperbola.Commander.add_worker('request')
 class Page:
     async def return_solution(self, data):

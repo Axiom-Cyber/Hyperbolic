@@ -6,15 +6,17 @@ class Hexadecimal:
     def return_solution(self, data):
         matches = re.findall(r'[0-9A-Za-z]+', data)
         return {'logs':[], 'newdata':
-          [{'type':'text', 'data':''.join([chr(int(i[j:j+2],16)) for j in range(0, len(i), 2) if i<len(i)-1])} for i in matches
-        ]}
+          [{'type':'text', 'data':''.join([chr(int(i[j:j+2],16)) for j in range(0, len(i), 2) if i<len(i)-1])} for i in matches],
+          'end':False
+        }
 @hyperbola.Commander.add_worker('text')
 class Hexadecimal:
     def return_solution(self, data):
         matches = re.findall(r'[01]+', data)
         return {'logs':[], 'newdata':
-          [{'type':'text', 'data':''.join([chr(int(i[j:j+8],16)) for j in range(0, len(i), 8) if i<len(i)-7])} for i in matches
-        ]}
+          [{'type':'text', 'data':''.join([chr(int(i[j:j+8],16)) for j in range(0, len(i), 8) if i<len(i)-7])} for i in matches], 
+          'end':False
+        }
 @hyperbola.Commander.add_worker('text')
 class B64:
     def return_solution(self, data):
@@ -25,4 +27,4 @@ class B64:
                 num = bin(int(i[j:j+8],64))[2:]
                 stri.append(chr(int(num[:8], 2))+chr(int(num[8:], 2)))
             newdata.append(''.join(stri))
-        return {'logs':[], 'newdata':[{'type':'text', 'data':i} for i in newdata]}
+        return {'logs':[], 'newdata':[{'type':'text', 'data':i} for i in newdata], 'end':False}
