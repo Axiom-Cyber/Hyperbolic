@@ -7,7 +7,6 @@ import hyperbola
 @hyperbola.Commander.add_worker('filepath')
 class RenderBinary:
     def return_solution(self, pathName, outName=None, width="guess"):
-        output = []
         if outName == None:
             outName = pathName + "out"
         outName = outName.replace(".png", "")
@@ -34,7 +33,7 @@ class RenderBinary:
                 pixels.append(row)
             
             outArray = np.array(pixels, dtype=np.uint8)
-            Image.fromarray(outArray).save(outName+str(width)+".png")
+            Image.fromarray(outArray).save(outName+"/"+str(width)+".png")
 
         file.close()
-        return {'logs':[],'newdata':[],'end':False}
+        return {'logs':[],'newdata':[{"type":"pathname", "data":outName}],'end':False}

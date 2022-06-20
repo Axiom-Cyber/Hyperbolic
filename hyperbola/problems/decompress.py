@@ -1,6 +1,8 @@
 from filetype import guess
 import zipfile
 import os
+
+from sqlalchemy import false
 import hyperbola
 import gzip
 import re
@@ -8,12 +10,11 @@ import py7zr
 
 @hyperbola.Commander.add_worker('filepath')
 class Decompress:
-    def decompress(self, filepath, first=True, outpath=None):
+    def return_solution(self, filepath, first=True):
         if guess(filepath) != None:
             compressed = False
             extension = guess(filepath).extension
-            if not outpath:
-                outpath = re.sub(r"\.[^.]*$", "", filepath)
+            outpath = re.sub(r"\.[^.]*$", "", filepath)
             if extension == "zip":
                 with zipfile.ZipFile(filepath, 'r') as zip_ref:
                     compressed = True
@@ -39,4 +40,4 @@ class Decompress:
                 self.decompress(outpath, False)
             if compressed and not first:
                 os.remove(filepath)
-        return(outpath)
+        return {"logs": [], "newdata": [{"type": "filepath", "data": outpath}], "end": False}
