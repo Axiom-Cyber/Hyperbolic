@@ -1,7 +1,7 @@
 from filetype import guess
 import zipfile
 import os
-#import hyperbola
+import hyperbola
 import gzip
 import re
 import py7zr
