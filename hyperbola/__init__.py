@@ -25,19 +25,15 @@ class Commander:
                 asyncio.create_task(c.run_node(i, data, type))
         asyncio.run(start())
     def __init__(self, maxDepth, logger):
-        self.cache = {i:[] for i in self.detectors}
         self.running = True
         self.logger = logger
         self.maxDepth = maxDepth
-            
 
     async def run_node(self, problem, data, type, layers = 0):
-        if not self.running or layers > self.maxDepth or data in self.cache[type]:
+        if not self.running or layers > self.maxDepth:
             return
-        self.cache[type].append(data)
         exec = problem()
         ret = await exec.return_solution(data)
-        print(ret['logs'])
         for i in ret['logs']:
             self.logger(i)
         if ret['end']:
