@@ -8,10 +8,10 @@
     <h1>Problem Demos</h1>
     <ul>
         <li><a href="{{ url_for('demos_plaintext_search') }}">Plaintext Search</a></li>
-        <li><a>File Recursive Decompress</a></li>
-        <li><a>Rendering Bitmap Images</a></li>
-        <li><a>Read Cookies</a></li>
-        <li><a>Webpage Directory Traversal</a></li>
+        <li><a href="{{ url_for('demos_decompress') }}">File Recursive Decompress</a></li>
+        <li><a href="{{ url_for('demos_bitmap') }}">Rendering Bitmap Images</a></li>
+        <li><a href="{{ url_for('demos_cookies') }}">Read Cookies</a></li>
+        <li><a href="{{ url_for('demos_directories') }}">Webpage Directory Traversal</a></li>
     </ul>
 </div>
 {% endblock %}

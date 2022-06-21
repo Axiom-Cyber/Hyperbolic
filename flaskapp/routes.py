@@ -127,16 +127,23 @@ def demos():
 
 @app.route('/demos/plaintext-search')
 def demos_plaintext_search():
-    return render_template('demos/plaintext-search.html', title='Demos')
-'''
-@app.route('/demos/')
-def demos():
-    return render_template('demo.html', title='Demos')
+    return render_template('demos/plaintext-search.html', title='Plaintext Search Demo')
 
-@app.route('/demos/')
-def demos():
-    return render_template('demo.html', title='Demos')
-'''
+@app.route('/demos/decompress')
+def demos_decompress():
+    return render_template('demos/decompress.html', title='Decompress Demo')
+
+@app.route('/demos/bitmap')
+def demos_bitmap():
+    return render_template('demos/bitmap.html', title='Bitmap Image Rendering Demo')
+
+@app.route('/demos/cookies')
+def demos_cookies():
+    return render_template('demos/cookies.html', title='Cookies Demo')
+
+@app.route('/demos/directories')
+def demos_directories():
+    return render_template('demos/directories.html', title='Webpage Directory Traversal Demo')
 @app.errorhandler(404)
 def not_found(error):
     return make_response(render_template('404.html', title='404'), 404)
