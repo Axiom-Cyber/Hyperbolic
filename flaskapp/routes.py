@@ -141,9 +141,9 @@ class Logger:
     socket = socketio
     def __init__(self, id):
         self.id = id
-    def __call__(self, msg):
+    async def __call__(self, msg):
         print(2)
-        self.socket.emit(msg, to=self.id)
+        self.socket.emit('send_output', msg, to=self.id)
 @socketio.event
 def start_search(type, data):
     hyperbola.Commander.run(type, data, Logger(request.sid))
