@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h1>Problem Demos</h1>
+    <ul>
+        <li><a href="{{ url_for('demos_plaintext_search') }}">Plaintext Search</a></li>
+        <li><a>File Recursive Decompress</a></li>
+        <li><a>Rendering Bitmap Images</a></li>
+        <li><a>Read Cookies</a></li>
+        <li><a>Webpage Directory Traversal</a></li>
+    </ul>
+</div>
+{% endblock %}

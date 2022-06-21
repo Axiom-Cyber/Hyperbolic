@@ -116,11 +116,27 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-@app.route('/dashboard/')
+@app.route('/dashboard')
 def dashboard():
     form = CTFDLoginForm()
     return render_template('dashboard.html', title='Dashboard', form=form)
 
+@app.route('/demos')
+def demos():
+    return render_template('demo.html', title='Demos')
+
+@app.route('/demos/plaintext-search')
+def demos_plaintext_search():
+    return render_template('demos/plaintext-search.html', title='Demos')
+'''
+@app.route('/demos/')
+def demos():
+    return render_template('demo.html', title='Demos')
+
+@app.route('/demos/')
+def demos():
+    return render_template('demo.html', title='Demos')
+'''
 @app.errorhandler(404)
 def not_found(error):
     return make_response(render_template('404.html', title='404'), 404)
