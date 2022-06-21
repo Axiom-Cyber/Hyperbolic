@@ -7,6 +7,7 @@ import hyperbola
 import gzip
 import re
 import py7zr
+import tarfile
 
 @hyperbola.Commander.add_worker('filepath')
 class Decompress:
@@ -31,6 +32,10 @@ class Decompress:
                 with py7zr.SevenZipFile(filepath, 'r') as archive:
                     compressed = True
                     archive.extractall(path=outpath)
+            elif extension == "tar":
+                with tarfile.open(filepath, "r") as tar:
+                    compressed = True
+                    tar.extractall(outpath)
             if os.path.isdir(outpath):
                 for (dirpath, dirnames, filenames) in os.walk(outpath):
                     for file in filenames:
