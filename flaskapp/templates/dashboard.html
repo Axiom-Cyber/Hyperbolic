@@ -58,19 +58,28 @@
     </div>
 </div>
 <script type="text/javascript">
+    var csrf_token = "{{ csrf_token() }}";
+    $.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrf_token);
+        }
+    }
+    });
     $(document).on('submit','#upload',function(e)
     {
-        console.log('hello');
         e.preventDefault();
+        var form_data = new FormData($('#upload')[0]);
         $.ajax({
             type:'POST',
             url:'/dashboard/',
-            data:{
-                file:$("#file").val()
-            },
+            data: form_data,
+            contentType: false,
+            cache: false,
+            processData: false,
             success:function()
             {
-                alert('saved');
+                alert('Saved');
             }
         })
     });

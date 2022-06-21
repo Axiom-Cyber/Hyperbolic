@@ -1,5 +1,5 @@
 import re
-from flask import url_for, render_template, request, jsonify, make_response, redirect, abort, flash, request
+from flask import url_for, render_template, request, jsonify, make_response, redirect, abort, flash
 from flaskapp import app, socketio, csrf, bcrypt, db, login_manager, s, mail
 from flaskapp.forms import CTFDLoginForm, EntryForm, LoginForm, RegistrationForm, ForgotPassword, ChangePassword, FileUploadForm
 from flaskapp.models import User
@@ -121,7 +121,8 @@ def dashboard():
     form = CTFDLoginForm()
     upload = FileUploadForm()
     if request.method == "POST":
-        f = request.files("file")
+        f = request.files.get("file")
+        print(f.filename)
         f.save("flaskapp/UploadedFiles/" + secure_filename(f.filename))
     return render_template('dashboard.html', title='Dashboard', form=form, upload=upload)
 
