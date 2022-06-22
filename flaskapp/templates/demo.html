@@ -1,10 +1,13 @@
 {% extends 'base.html' %}
 
 {% block head %}
+<style>
+    ul {list-style-type: none;}
+</style>
 {% endblock %}
 
 {% block content %}
-<div class="content">
+<div class="container">
     <h1>Problem Demos</h1>
     <ul>
         <li><a href="{{ url_for('demos_plaintext_search') }}">Plaintext Search</a></li>
