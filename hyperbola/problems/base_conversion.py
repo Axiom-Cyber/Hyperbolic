@@ -20,4 +20,4 @@ class BaseEncoder:
             }
         }
         # set the type and add this for data: switch_vals[text[0:2]][text[2]](text[4:]).decode()
-        return {'logs':[],'newdata':[{'type':'text', 'data':''}], 'end':False}
+        return {'logs':[],'newdata':[{'type':'text', 'data':str(switch_vals[text[0:2]][text[2]](text[4:]).decode())}], 'end':False}
