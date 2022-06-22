@@ -30,13 +30,13 @@ class Cookies:
 @hyperbola.Commander.add_worker('url')
 class Robots:
     async def return_solution(self, data):
-        base = re.match(r'(https?:\/\/)?(.+?)(?=\/|\s|$)', data).groups(2)
+        base = re.search(r'(https?:\/\/)?(.+?)(?=\/|\s|$)', data).groups(2)
         return {'logs':[], 'newdata':[{'type':'request','data':i+'/robots.txt'} for i in [base, data]], 'end':False}
 
 @hyperbola.Commander.add_worker('request')
 class Relatives:
     async def return_solution(self, data):
-        base = re.match(r'(https?:\/\/)?(.+?)(?=\/|\s|$)', data.url).groups(2)
+        base = re.search(r'(https?:\/\/)?(.+?)(?=\/|\s|$)', data.url).groups(2)
         return {'logs':[], 'newdata':[{'type':'url', 'data':base+i} for i in re.findall(r'/\S+', data.text)], 'end':False}
 
 @hyperbola.Commander.add_worker('request')

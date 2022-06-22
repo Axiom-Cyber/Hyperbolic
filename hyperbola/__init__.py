@@ -18,13 +18,13 @@ class Commander:
         return decorate
 
     @classmethod
-    def run(self, type, data, logger, maxDepth=100):
+    def run(self, type, data, logger, maxDepth=5):
         c = self(maxDepth, logger)
         async def start():
             for i in self.detectors[type]:
                 if c.running and maxDepth:
                     c.running_nodes+=1
-                    asyncio.create_task(c.run_node(i, data, type))
+                    asyncio.create_task(c.run_node(i, data))
         asyncio.run(start())
     def __init__(self, maxDepth, logger):
         self.running = True
@@ -32,7 +32,7 @@ class Commander:
         self.maxDepth = maxDepth
         self.running_nodes = 0
 
-    async def run_node(self, problem, data, type, layers = 0):
+    async def run_node(self, problem, data, layers = 0):
         exec = problem()
         ret = await exec.return_solution(data)
 
@@ -41,9 +41,9 @@ class Commander:
         if not ret['end']:
             for i in ret['newdata']:
                 for j in self.detectors[i['type']]:
-                    if  self.running and layers < self.maxDepth-1:
+                    if self.running and layers < self.maxDepth-1:
                         self.running_nodes+=1
-                        asyncio.create_task(self.run_node(j, i['data'], i['type'], layers + 1))
+                        await self.run_node(j, i['data'], layers+1)
         else:
             self.running = False
                 
@@ -62,9 +62,9 @@ class Flag(Problem):
     def set_flag(self, flag):
         self.flag = flag
     async def return_solution(self, data):
-        flag = re.match(self.flag, data)
-        if flag:
-            return {'logs' : [{'type':'text', 'msg':'flag found: ' + flag.group()}], 'end':True}
+        flag = re.search(self.flag, data)
+        if flag!=None:
+            return {'logs' : [{'type':'text', 'msg':'flag found: ' + flag.group()}], 'newdata':[], 'end':True}
         return {'logs' : [], 'newdata' : [], 'end':False}
 
 prefix = 'problems.'

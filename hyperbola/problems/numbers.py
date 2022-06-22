@@ -13,6 +13,7 @@ class Hexadecimal:
 class Binary:
     async def return_solution(self, data):
         matches = re.findall(r'[01]+', data)
+        
         return {'logs':[], 'newdata':
           [{'type':'text', 'data':''.join([chr(int(i[j:j+8],16)) for j in range(0, len(i), 8) if j<len(i)-7])} for i in matches], 
           'end':False
