@@ -36,4 +36,4 @@ class RenderBinary:
             Image.fromarray(outArray).save(outName+"/"+str(width)+".png")
 
         file.close()
-        return {'logs':[],'newdata':[{"type":"pathname", "data":outName}],'end':False}
+        return {'logs':[],'newdata':[{"type":"image", "data":outName}],'end':False}

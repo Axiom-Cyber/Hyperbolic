@@ -47,3 +47,7 @@ class EntryForm(FlaskForm):
     category = StringField('Category')
     points = IntegerField('Points')
     file = FileField('Challenge files')
+
+class FileUploadForm(FlaskForm):
+    file = FileField("File")
+    submit = SubmitField("Upload")
