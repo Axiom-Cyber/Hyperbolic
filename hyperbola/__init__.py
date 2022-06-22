@@ -35,7 +35,7 @@ class Commander:
         exec = problem()
         ret = await exec.return_solution(data)
         for i in ret['logs']:
-            self.logger(i)
+            self.logger(i['type'], i['msg'], ret['end'])
         if ret['end']:
             self.running = False
             return
