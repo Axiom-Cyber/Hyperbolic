@@ -138,12 +138,11 @@ def server_error():
 
 ## Sockets
 class Logger:
-    socket = socketio
-    def __init__(self, id):
+    def __init__(self, id, socket):
         self.id = id
+        self.socket = socket
     async def __call__(self, msg):
-        print(2)
         self.socket.emit('send_output', msg, to=self.id)
 @socketio.event
 def start_search(type, data):
-    hyperbola.Commander.run(type, data, Logger(request.sid))
+    hyperbola.Commander.run(type, data, Logger(request.sid, socketio))

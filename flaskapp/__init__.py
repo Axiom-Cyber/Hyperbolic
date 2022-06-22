@@ -9,10 +9,13 @@ import secrets
 from itsdangerous import URLSafeTimedSerializer
 from flask_cors import CORS
 from flask_socketio import SocketIO
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 
 # $Env:VARIABLE_NAME = 'Value'
+
+load_dotenv()
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY') # secrets.token_urlsafe(32)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQL_URI') # 'sqlite:///site.db'
