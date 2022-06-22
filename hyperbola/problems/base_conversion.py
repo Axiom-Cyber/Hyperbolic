@@ -1,7 +1,7 @@
 import re
 import base64
 
-#@hyperbola.Commander.add_worker("text")
+@hyperbola.Commander.add_worker("text")
 class BaseEncoder:
     def return_solution(text: str): # string formatted "[base][e/d] [text]" e=encode d=decode
         switch_vals = {
