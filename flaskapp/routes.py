@@ -141,7 +141,7 @@ class Logger:
     def __init__(self, id, socket):
         self.id = id
         self.socket = socket
-    def __call__(self, msg):
+    async def __call__(self, msg):
         self.socket.emit('send_output', msg, to=self.id)
 @socketio.event
 def start_search(type, data):
