@@ -16,7 +16,7 @@ def unauthorized():
 
 @app.route('/')
 def about():
-    return render_template('about.html', title='A cool hacking thing I guess')
+    return redirect(url_for('dashboard'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -141,8 +141,8 @@ class Logger:
     def __init__(self, id, socket):
         self.id = id
         self.socket = socket
-    def __call__(self, msg):
-        self.socket.emit('send_output', msg, to=self.id)
+    async def __call__(self, type, msg=''):
+        self.socket.emit('send_output', (type, msg), to=self.id)
 @socketio.event
 def start_search(type, data):
     hyperbola.Commander.run(type, data, Logger(request.sid, socketio))
