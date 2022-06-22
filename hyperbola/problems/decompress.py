@@ -11,7 +11,7 @@ import tarfile
 
 @hyperbola.Commander.add_worker('filepath')
 class Decompress:
-    def return_solution(self, filepath, first=True):
+    async def return_solution(self, filepath, first=True):
         if guess(filepath) != None:
             compressed = False
             extension = guess(filepath).extension

@@ -34,5 +34,5 @@
 }
 p#output{
     height:75vh;
-    overflow: scroll;
+    overflow-y: scroll;
 }

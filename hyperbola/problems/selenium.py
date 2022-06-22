@@ -5,7 +5,7 @@ import hyperbola
 
 @hyperbola.Commander.add_worker('url')
 class Selenium:
-    def return_solution(self, data):
+    async def return_solution(self, data):
         driver = webdriver.Firefox()
         driver.get(data)
         forms = driver.find_elements(By.TAG_NAME, 'form')
