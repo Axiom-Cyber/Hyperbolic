@@ -16,7 +16,7 @@ def unauthorized():
 
 @app.route('/')
 def about():
-    return render_template('about.html', title='A cool hacking thing I guess')
+    return redirect(url_for('dashboard'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
