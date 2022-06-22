@@ -6,7 +6,7 @@ import hyperbola
 
 @hyperbola.Commander.add_worker('filepath')
 class RenderBinary:
-    def return_solution(self, pathName, outName=None, width="guess"):
+    async def return_solution(self, pathName, outName=None, width="guess"):
         if outName == None:
             outName = pathName + "out"
         outName = outName.replace(".png", "")
