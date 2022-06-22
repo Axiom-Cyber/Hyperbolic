@@ -58,30 +58,23 @@
     </div>
 </div>
 <script type="text/javascript">
-    var csrf_token = "{{ csrf_token() }}";
-    $.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-        if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-            xhr.setRequestHeader("X-CSRFToken", csrf_token);
-        }
-    }
-    });
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+
     $(document).on('submit','#upload',function(e)
     {
         e.preventDefault();
-        var form_data = new FormData($('#upload')[0]);
-        $.ajax({
-            type:'POST',
-            url:'/dashboard/',
-            data: form_data,
-            contentType: false,
-            cache: false,
-            processData: false,
-            success:function()
-            {
-                alert('Saved');
-            }
-        })
+        var file = document.getElementById("file").files[0];
+        var fileReader = new FileReader();
+        fileReader.readAsArrayBuffer(file)
+        fileReader.onload = () => {
+            var arrayBuffer = fileReader.result; 
+            socket.emit("upload", { 
+                name: file.name, 
+                type: file.type, 
+                size: file.size, 
+                binary: arrayBuffer 
+            });
+        }
     });
   </script>
 {% endblock %}

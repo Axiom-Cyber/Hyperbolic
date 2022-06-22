@@ -116,14 +116,10 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-@app.route('/dashboard/', methods=['GET', 'POST'])
+@app.route('/dashboard/')
 def dashboard():
     form = CTFDLoginForm()
     upload = FileUploadForm()
-    if request.method == "POST":
-        f = request.files.get("file")
-        print(f.filename)
-        f.save("flaskapp/UploadedFiles/" + secure_filename(f.filename))
     return render_template('dashboard.html', title='Dashboard', form=form, upload=upload)
 
 @app.errorhandler(404)
@@ -151,3 +147,9 @@ class Logger:
 @socketio.event
 def start_search(type, data):
     hyperbola.Commander.run(type, data, Logger(request.sid, socketio))
+
+@socketio.event
+def upload(data):
+    file = open("flaskapp/UploadedFiles/" + secure_filename(data["name"]), "wb")
+    file.write(data["binary"])
+    file.close()
