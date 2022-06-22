@@ -19,13 +19,13 @@ class Binary:
           'end':False
         }
 #@hyperbola.Commander.add_worker('text')
-class B64:
-    def return_solution(self, data):
-        newdata = []
-        for i in re.findall(r'[A-Za-z0-9+/]+', data):
-            stri = []
-            for j in range(len(i)):
-                num = bin(int(i[j:j+8],64))[2:]
-                stri.append(chr(int(num[:8], 2))+chr(int(num[8:], 2)))
-            newdata.append(''.join(stri))
-        return {'logs':[], 'newdata':[{'type':'text', 'data':i} for i in newdata], 'end':False}
+# class B64:
+#     def return_solution(self, data):
+#         newdata = []
+#         for i in re.findall(r'[A-Za-z0-9+/]+', data):
+#             stri = []
+#             for j in range(len(i)):
+#                 num = bin(int(i[j:j+8],64))[2:]
+#                 stri.append(chr(int(num[:8], 2))+chr(int(num[8:], 2)))
+#             newdata.append(''.join(stri))
+#         return {'logs':[], 'newdata':[{'type':'text', 'data':i} for i in newdata], 'end':False}
