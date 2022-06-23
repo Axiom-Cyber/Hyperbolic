@@ -2,20 +2,12 @@ import re
 import base64
 
 @hyperbola.Commander.add_worker("text")
-class BaseEncoder:
+class BaseDecoder:
     def return_solution(text: str): # string formatted "[base][e/d] [text]" e=encode d=decode
-        switch_vals = {
-            "16": {
-                "e": base64.b16encode,
-                "d": base64.b16decode
-            },
-            "32": {
-                "e": base64.b32encode,
-                "d": base64.b32decode
-            },
-            "64": {
-                "e": base64.b64encode,
-                "d": base64.b64decode
-            }
-        }
-        return switch_vals[text[0:2]][text[2]](text[4:]).decode()
+        b16 = base64.b16decode(text.encode()).decode()
+        b32 = base64.b32decode(text.encode()).decode()
+        b64 = base64.b64decode(text.encode()).decode()
+
+        out = f"base16: {b16}; base32: {b32}; base64: {b64}"
+
+        return {"logs": [], "newdata": [{"type": "text", "data": out}], "end": False}
