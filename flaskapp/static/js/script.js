@@ -14,6 +14,7 @@ $(document).on('submit','#upload',function(e)
     fileReader.readAsArrayBuffer(file)
     fileReader.onload = () => {
         var arrayBuffer = fileReader.result; 
+        $('#output').html($('#output').html() + 'file: ' + file.name + '<br>')
         socket.emit("search_file", { 
             name: file.name, 
             type: file.type, 
@@ -24,7 +25,7 @@ $(document).on('submit','#upload',function(e)
 });
 $(document).on('submit','#command',function(e) {
     if (open){
-        $('#output').html($('#output').html() + this.command.value + '<br>')
+        $('#output').html($('#output').html() + 'text: ' + this.command.value + '<br>')
         socket.emit('search_text', this.command.value)
         open=false
     }
