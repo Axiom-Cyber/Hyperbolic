@@ -1,7 +1,7 @@
 import re
-from flask import url_for, render_template, request, jsonify, make_response, redirect, abort, flash, request
+from flask import url_for, render_template, request, jsonify, make_response, redirect, abort, flash
 from flaskapp import app, socketio, csrf, bcrypt, db, login_manager, s, mail
-from flaskapp.forms import CTFDLoginForm, EntryForm, LoginForm, RegistrationForm, ForgotPassword, ChangePassword
+from flaskapp.forms import CTFDLoginForm, EntryForm, LoginForm, RegistrationForm, ForgotPassword, ChangePassword, FileUploadForm
 from flaskapp.models import User
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
@@ -16,7 +16,7 @@ def unauthorized():
 
 @app.route('/')
 def about():
-    return render_template('about.html', title='A cool hacking thing I guess')
+    return redirect(url_for('dashboard'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -119,7 +119,8 @@ def logout():
 @app.route('/dashboard')
 def dashboard():
     form = CTFDLoginForm()
-    return render_template('dashboard.html', title='Dashboard', form=form)
+    upload = FileUploadForm()
+    return render_template('dashboard.html', title='Dashboard', form=form, upload=upload)
 
 @app.route('/demos')
 def demos():
@@ -177,8 +178,15 @@ class Logger:
     def __init__(self, id, socket):
         self.id = id
         self.socket = socket
-    def __call__(self, msg):
-        self.socket.emit('send_output', msg, to=self.id)
+    async def __call__(self, type, msg=''):
+        self.socket.emit('send_output', (type, msg), to=self.id)
 @socketio.event
-def start_search(type, data):
-    hyperbola.Commander.run(type, data, Logger(request.sid, socketio))
+def search_text(data):
+    hyperbola.Commander.run('text', data, Logger(request.sid, socketio))
+
+@socketio.event
+def search_file(data):
+    path = "flaskapp/UploadedFiles/" + secure_filename(data["name"])
+    with open(path, "wb") as file: 
+        file.write(data["binary"])
+    hyperbola.Commander.run('filepath', path)
