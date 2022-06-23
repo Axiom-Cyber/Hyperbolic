@@ -4,7 +4,13 @@
 {% endblock %}
 
 {% block content %}
-<div class="content">
-    <p>This is the cookies demo</p>
-</div>
+<p>This is the cookies demo</p>
+
+<form action="{{ url_for('demos_cookies_set') }}" method="get">
+    <input type="submit" value="Set cookie">
+</form>
+
+<form action="{{ url_for('demos_cookies_delete') }}" method="get">
+    <input type="submit" value="Delete cookie">
+</form>
 {% endblock %}

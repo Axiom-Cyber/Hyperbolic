@@ -141,9 +141,22 @@ def demos_bitmap():
 def demos_cookies():
     return render_template('demos/cookies.html', title='Cookies Demo')
 
+@app.route('/demos/cookies/set')
+def demos_cookies_set():
+    resp = make_response(render_template('demos/cookies.html', title='Cookies Demo'))
+    resp.set_cookie('demo-cookie', 'flag{oh_cool_this_checks_cookies}')
+    return resp
+
+@app.route('/demos/cookies/delete')
+def demos_cookies_delete():
+    resp = make_response(render_template('demos/cookies.html', title='Cookies Demo'))
+    resp.set_cookie('demo-cookie', 'I am cookie', 0)
+    return resp
+
 @app.route('/demos/directories')
 def demos_directories():
     return render_template('demos/directories.html', title='Webpage Directory Traversal Demo')
+
 @app.errorhandler(404)
 def not_found(error):
     return make_response(render_template('404.html', title='404'), 404)
