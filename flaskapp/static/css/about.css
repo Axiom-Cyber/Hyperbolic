@@ -1,6 +1,10 @@
 .content-box {
-    margin: 30px;
     text-align: center;
+    position: absolute;
+    top: 40%;
+    right: 50%;
+    -ms-transform: translateX(50%) translateY(-40%);
+    transform: translateX(50%) translateY(-40%);
 }
 
 .title {
@@ -8,7 +12,7 @@
 }
 
 .subtitle {
-    font-size: 5vw;
+    font-size: 4vw;
 }
 
 .select-btn {
