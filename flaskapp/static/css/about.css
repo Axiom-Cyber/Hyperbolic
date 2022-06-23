@@ -18,6 +18,7 @@
 .select-btn {
     color: var(--green);
     border-color: var(--green);
+    background-color: #00000000;
     border-radius: 0;
     font-size: 20px;
     padding: 10px 25px;
@@ -25,8 +26,9 @@
 }
 
 .select-btn:hover {
-    color: var(--green-light);
-    border-color: var(--green-light);
+    color: #000;
+    border-color: var(--green);
+    background-color: var(--green);
 }
 
 .background-image {
