@@ -1,8 +1,36 @@
-.code-stuff {
-    font-family: 'Courier New', monospace;
-    overflow-wrap: break-word;
-    margin: 10px;
-    background-color: #000;
-    max-width: 1000px;
-    border: solid white 2px;
+.content-box {
+    margin: 30px;
+    text-align: center;
+}
+
+.title {
+    font-size: 17vw;
+}
+
+.subtitle {
+    font-size: 5vw;
+}
+
+.select-btn {
+    color: var(--green);
+    border-color: var(--green);
+    border-radius: 0;
+    font-size: 20px;
+    padding: 10px 25px;
+    margin: 0 10px;
+}
+
+.select-btn:hover {
+    color: var(--green-light);
+    border-color: var(--green-light);
+}
+
+.background-image {
+    top: 0;
+    position: fixed;
+    object-fit: cover;
+    height: 100%;
+    min-width: 100%;
+    z-index: -1;
+    filter: brightness(35%);
 }

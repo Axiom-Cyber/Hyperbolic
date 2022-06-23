@@ -1,21 +1,17 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
 {% endblock %}
 
 {% block content %}
-<h1>Hyperbolic - Pentesting made easy</h1>
-<a href="{{ url_for('login') }}">Login</a>
-<p>This is the about page</p>
-<div class="code-stuff">
-    <div class="tab-header">
-        CTF Solving Made Easy
-        <span class="material-symbols-outlined">minimize</span>
-        <span class="material-symbols-outlined">rectangle</span>
-        <span class="material-symbols-outlined">close</span>
+<img src="{{ url_for('static', filename='img/dark-curve-background.jpg') }}" alt="a really cool dark background" class="background-image">
+<div class="content-box">
+    <h1 class="title">Hyperbolic</h1>
+    <h3><small class="subtitle">Automation for everyone</small></h3>
+    <div class="select-btns mt-5">
+        <a href="{{ url_for('dashboard') }}" class="btn select-btn">Dashboard</a>
+        <a href="" class="btn select-btn">Docs</a>
     </div>
-    <p> ~$ dsfasdfdsfasfdsfasdfdsfasfd sfasdfd sfasfdsfasdfdsfasfdsfasdfdsfasfdsfasd fdsfasfdsfasdfdsfasfdsfasdfdsfa sfdsfas dfdsfasfdsfasdfdsfasfdsfasdfd sfasfdsfasdfdsfasfdsfasdf dsfasfd sfasdfd sfasfds fasdfdsfasfds fasdfdsfasf dsfasdfdsfas fdsfasdfdsfasfdsfasdf dsfasf dsfasdf dsfasfd sfasdfdsfasf dsfasdfdsfasfds fasdfds fasfd sfasdfdsfasfdsfasdf dsfasfd sfa sdfdsfasfdsfasdfdsfa sfdsf asdfdsfasfdsfasdfdsf asf dsfasdfdsfasfd sfasdf dsf asfdsfa sdfdsfa sfdsfasdfdsfasfdsfasdfdsfasfdsfa sdfds fasfdsfas dfdsfasfdsf asdfdsf asfdsfasdfdsfasfdsfasd fdsfasfdsfas dfdsfasfdsfasdfd sfa sfds fasdfdsfasfdsfasdfdsfasfdsfa sdfdsfasfdsfasdfds fasfdsfasdfdsfasfds fas dfds fasfdsfasdfdsfa sfdsfasdfd sfasfdsfasdfdsfasfdsfasdfds fasfdsfasdfdsfasfd sfas dfdsfa sfdsfas dfdsfasf dsfasdfdsfas fdsfasdf dsfas fdsfas dfdsfasf dsfasdf dsfas fdsfasd fdsfasf dsfasdfdsf asfdsfas dfdsfasfds fasdfdsfasfdsfasdfd sfas fdsfa sdfd sfasf dsfasdf dsfasfd sfasdfdsfasf</p>
 </div>
 {% endblock %}
