@@ -59,24 +59,4 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    var socket = io.connect('http://' + document.domain + ':' + location.port);
-
-    $(document).on('submit','#upload',function(e)
-    {
-        e.preventDefault();
-        var file = document.getElementById("file").files[0];
-        var fileReader = new FileReader();
-        fileReader.readAsArrayBuffer(file)
-        fileReader.onload = () => {
-            var arrayBuffer = fileReader.result; 
-            socket.emit("upload", { 
-                name: file.name, 
-                type: file.type, 
-                size: file.size, 
-                binary: arrayBuffer 
-            });
-        }
-    });
-  </script>
 {% endblock %}

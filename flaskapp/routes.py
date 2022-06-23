@@ -145,11 +145,12 @@ class Logger:
     async def __call__(self, type, msg=''):
         self.socket.emit('send_output', (type, msg), to=self.id)
 @socketio.event
-def start_search(type, data):
-    hyperbola.Commander.run(type, data, Logger(request.sid, socketio))
+def search_text(data):
+    hyperbola.Commander.run('text', data, Logger(request.sid, socketio))
 
 @socketio.event
-def upload(data):
-    file = open("flaskapp/UploadedFiles/" + secure_filename(data["name"]), "wb")
-    file.write(data["binary"])
-    file.close()
+def search_file(data):
+    path = "flaskapp/UploadedFiles/" + secure_filename(data["name"])
+    with open(path, "wb") as file: 
+        file.write(data["binary"])
+    hyperbola.Commander.run('filepath', path)
