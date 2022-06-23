@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<p>This is the cookies demo</p>
+
+<a href="{{ url_for('demos_cookies_set') }}">Set cookie</a>
+<a href="{{ url_for('demos_cookies_delete') }}">Delete cookie</a>
+{% endblock %}

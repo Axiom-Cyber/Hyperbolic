@@ -116,11 +116,47 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-@app.route('/dashboard/')
+@app.route('/dashboard')
 def dashboard():
     form = CTFDLoginForm()
     upload = FileUploadForm()
     return render_template('dashboard.html', title='Dashboard', form=form, upload=upload)
+
+@app.route('/demos')
+def demos():
+    return render_template('demo.html', title='Demos')
+
+@app.route('/demos/plaintext-search')
+def demos_plaintext_search():
+    return render_template('demos/plaintext-search.html', title='Plaintext Search Demo')
+
+@app.route('/demos/decompress')
+def demos_decompress():
+    return render_template('demos/decompress.html', title='Decompress Demo')
+
+@app.route('/demos/bitmap')
+def demos_bitmap():
+    return render_template('demos/bitmap.html', title='Bitmap Image Rendering Demo')
+
+@app.route('/demos/cookies')
+def demos_cookies():
+    return render_template('demos/cookies.html', title='Cookies Demo')
+
+@app.route('/demos/cookies/set')
+def demos_cookies_set():
+    resp = make_response(render_template('demos/cookies.html', title='Cookies Demo'))
+    resp.set_cookie('demo-cookie', 'flag{oh_cool_this_checks_cookies}')
+    return resp
+
+@app.route('/demos/cookies/delete')
+def demos_cookies_delete():
+    resp = make_response(render_template('demos/cookies.html', title='Cookies Demo'))
+    resp.set_cookie('demo-cookie', 'I am cookie', 0)
+    return resp
+
+@app.route('/demos/directories')
+def demos_directories():
+    return render_template('demos/directories.html', title='Webpage Directory Traversal Demo')
 
 @app.errorhandler(404)
 def not_found(error):
