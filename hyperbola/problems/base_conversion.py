@@ -1,5 +1,6 @@
 import re
 import base64
+import hyperbola
 
 @hyperbola.Commander.add_worker("text")
 class BaseDecoder:
