@@ -32,6 +32,7 @@ $(document).on('submit','#command',function(e) {
     return false
 })
 
+
 socket.on('send_output', (type, msg)=>{
     if(type=='text'){$('#output').html($('#output').html()+'- '+msg +'<br>')}
     else if(type == 'end'){
