@@ -1,10 +1,14 @@
 from os.path import dirname, basename, isfile, join
-import glob
 
 import re
 import os
 
 class Commander:
+    safe_functions = {
+        'open':lambda a,b='rt': open(a,b) if re.search(r'^\.?\/?uploaded_files') else None,
+        're':re,
+        'range':range,
+    }
     detectors = {}
     @classmethod
     def add_worker(self, *categories):
@@ -40,7 +44,7 @@ class Commander:
                 if i['type'] in user_data:
                     for j in user_data[i['type']]:
                         try:
-                            exec('def return_solution(data): \n  '+j.replace('\n', '\n  '), None, globals())
+                            exec('def return_solution(data): \n  '+j.replace('\n', '\n  '), self.safe_functions, None)
                             ret = return_solution(i['data'])
                             for i in ret['logs']:
                                 self.logger(i['type'], i['msg'])
