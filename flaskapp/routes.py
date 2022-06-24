@@ -181,12 +181,12 @@ class Logger:
     def __call__(self, type, msg=''):
         self.socket.emit('send_output', (type, msg), to=self.id)
 @socketio.event
-def search_text(data):
-    hyperbola.Commander.run('text', data, Logger(request.sid, socketio))
+def search_text(data, user_problems):
+    hyperbola.Commander.run('text', data, Logger(request.sid, socketio), user_problems)
 
 @socketio.event
-def search_file(data):
+def search_file(data, user_problems):
     path = "flaskapp/UploadedFiles/" + secure_filename(data["name"])
     with open(path, "wb") as file: 
         file.write(data["binary"])
-    hyperbola.Commander.run('filepath', path)
+    hyperbola.Commander.run('filepath', path, Logger(request.sid, socketio), user_problems)

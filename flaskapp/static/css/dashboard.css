@@ -38,3 +38,9 @@ p#output{
     height:75vh;
     overflow-y: scroll;
 }
+#python div{
+   margin: 10px; 
+}
+#python textarea{
+   width:100%; 
+}

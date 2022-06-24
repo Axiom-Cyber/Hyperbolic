@@ -21,33 +21,37 @@ class Commander:
         self.max_depth = max_depth
 
     @classmethod
-    def run(cls, type, data, logger, max_depth=5):
+    def run(cls, type, data, logger, user_data={}, max_depth=5):
         self = cls(logger, max_depth)
-        children = [[data, i] for i in self.detectors[type]]
+        children = [{'type':type, 'data':data}]
         for _ in range(max_depth):
             nchildren = []
             for i in children:
-                data = self.run_node(i, data)
-                if data[0]:
-                    _ = False 
-                    break
-                nchildren += data[1]
+                for j in self.detectors[i['type']]:
+                    e = j()
+                    ret = e.return_solution(i['data'])
+                    for i in ret['logs']:
+                        self.logger(i['type'], i['msg'])
+                    if ret['end']:
+                        _ = False 
+                        break
+                    nchildren += ret['newdata']
+                print(user_data, i['type'])
+                if i['type'] in user_data:
+                    for j in user_data[i['type']]:
+                        try:
+                            exec('def return_solution(data): \n  '+j.replace('\n', '\n  '), None, globals())
+                            ret = return_solution(i['data'])
+                            for i in ret['logs']:
+                                self.logger(i['type'], i['msg'])
+                            if ret['end']:
+                                _ = False 
+                                break
+                            nchildren += ret['newdata']
+                        except: pass
             if _ == False: break
             children = nchildren
         self.logger('end', 'task exited')
-
-    def run_node(self, problem, data, layers = 0):
-        exec = problem()
-        ret = exec.return_solution(data)
-
-        for i in ret['logs']:
-            self.logger(i['type'], i['msg'])
-        children = []
-        for i in ret['newdata']:
-            for j in self.detectors[i['type']]:
-                children.append([j, i['data']])
-        
-        return ret['end'], children
 
 class Problem:
     def return_solution(self, data):
