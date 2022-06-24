@@ -1,6 +1,21 @@
+#tab-select {
+    position: fixed;
+    height: 100%;
+    width: 80px;
+    left: 0;
+}
+
+#tab-select i {
+    font-size: 40px;
+}
+
 #tabs {
     background-color: var(--gunmetal);
-    margin: 15px;
+    margin: 0;
+    width: 300px;
+    height: 100%;
+    position: fixed;
+    left: 80px;
 }
 
 #tabs ul {
@@ -8,10 +23,6 @@
     margin: 0;
     list-style-type: none;
     overflow: hidden;
-}
-
-#tabs li {
-    float: left;
 }
 
 #tabs a {
@@ -23,24 +34,37 @@
     text-decoration: none;
 }
 
-.tab-content {
-    padding: 10px;
+#console {
+    position: fixed;
+    margin-left: 380px;
+    height: 100%;
+    width: auto;
+    right: 0;
+    left: 0;
 }
 
-#console {
-    background-color: #000;
-    height: 500px;
-    max-height: 500px;
+#entry {
+    bottom: 0;
 }
+
 p#output{
     background-color: #131313;
     color:#E3E3E3;
-    height:75vh;
+    height: calc(100% - 80px);
+    bottom: 0;
+    top: 0;
     overflow-y: scroll;
+    margin: 0;
 }
+
+form#command input {
+    width: calc(100% - 10px);
+}
+
 #python div{
    margin: 10px; 
 }
+
 #python textarea{
    width:100%; 
 }

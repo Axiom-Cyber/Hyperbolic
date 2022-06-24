@@ -2,6 +2,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css" integrity="sha384-eoTu3+HydHRBIjnCVwsFyCpUDZHZSFKEJD0mc3ZqSBSb6YhZzRHeiomAUWCstIWo" crossorigin="anonymous">
 <script>
     $(function () {
         $("#tabs").tabs();
@@ -11,35 +12,36 @@
 
 {% block content %}
     <div id="tabs">
-        <ul>
-            <li><a href="#tab-1">Store</a></li>
-            <li><a href="#tab-2">Custom script</a></li>
-            <li><a href="#tab-3">Settings</a></li>
+        <ul id="tab-select">
+            <li><a href="#tab-1"><i class="bi bi-bag"></i></a></li>
+            <li><a href="#tab-2"><i class="bi bi-upload"></i></a></li>
+            <li><a href="#tab-3"><i class="bi bi-sliders"></i></a></li>
         </ul>
-        <div class="tab-content" id="tab-1">
+        <div id="tab-1">
             <p>Store</p>
         </div>
-        <div class="tab-content" id="tab-2">
+        <div id="tab-2">
             <p>Custom script</p>
             <div id="python">
                 <button onclick="addExecutor()">Add Your Own Executor</button>
             </div>
         </div>
-        <div class="tab-content" id="tab-3">
+        <div id="tab-3">
             <p>Settings</p>
         </div>
     </div>
-    <div class="console">
-        <form id="command">
-            <input type='text' name="command">
-        </form>
+    <div id="console">
         <p id="output" scrolling="auto"></p>
-        <form id="upload" action = "http://localhost:5000/uploader" method = "POST" 
-            enctype = "multipart/form-data">
-            {{ upload.csrf_token }}
-            {{ upload.file }}
-            {{ upload.submit }}
-        </form>
+        <div id="entry">
+            <form id="command">
+                <input type='text' name="command">
+            </form>
+            <form id="upload" action="http://localhost:5000/uploader" method="POST" enctype="multipart/form-data">
+                {{ upload.csrf_token }}
+                {{ upload.file }}
+                {{ upload.submit }}
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}
