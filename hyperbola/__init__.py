@@ -1,14 +1,15 @@
 from os.path import dirname, basename, isfile, join
 
 import re
+import math
 import os
 
 class Commander:
-    safe_functions = {
-        'open':lambda a,b='rt': open(a,b) if re.search(r'^\.?\/?uploaded_files') else None,
-        're':re,
-        'range':range,
-    }
+    safe_functions = __builtins__ + {'re':re, 'math':math}
+    safe_functions['open'] = lambda a,b='rt': open(a,b) if re.search(r'^(\.\/)?flaskapp/UploadedFiles', os.path.normpath(a)) else None
+    safe_functions['join'] = os.path.join
+    del safe_functions['quit']
+
     detectors = {}
     @classmethod
     def add_worker(self, *categories):

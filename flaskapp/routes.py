@@ -182,6 +182,9 @@ class Logger:
         self.socket.emit('send_output', (type, msg), to=self.id)
 @socketio.event
 def search_text(data, user_problems):
+    for i in user_problems:
+        for j in user_problems[i]:
+            j.replace(r'[^|\n].*?import.*?[$|\n]','')
     hyperbola.Commander.run('text', data, Logger(request.sid, socketio), user_problems)
 
 @socketio.event
