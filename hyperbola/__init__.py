@@ -1,7 +1,6 @@
 from os.path import dirname, basename, isfile, join
 import glob
 
-import asyncio
 import re
 import os
 
@@ -17,42 +16,45 @@ class Commander:
             return clss
         return decorate
 
-    @classmethod
-    def run(self, type, data, logger, maxDepth=5):
-        c = self(maxDepth, logger)
-        async def start():
-            for i in self.detectors[type]:
-                if c.running and maxDepth:
-                    c.running_nodes+=1
-                    asyncio.create_task(c.run_node(i, data))
-        asyncio.run(start())
-    def __init__(self, maxDepth, logger):
-        self.running = True
+    def __init__(self, logger, max_depth):
         self.logger = logger
-        self.maxDepth = maxDepth
-        self.running_nodes = 0
+        self.max_depth = max_depth
 
-    async def run_node(self, problem, data, layers = 0):
-        exec = problem()
-        ret = await exec.return_solution(data)
-
-        for i in ret['logs']:
-            await self.logger(i['type'], i['msg'])
-        if not ret['end']:
-            for i in ret['newdata']:
+    @classmethod
+    def run(cls, type, data, logger, user_data={}, max_depth=5):
+        self = cls(logger, max_depth)
+        children = [{'type':type, 'data':data}]
+        for _ in range(max_depth):
+            nchildren = []
+            for i in children:
                 for j in self.detectors[i['type']]:
-                    if self.running and layers < self.maxDepth-1:
-                        self.running_nodes+=1
-                        await self.run_node(j, i['data'], layers+1)
-        else:
-            self.running = False
-                
-        self.running_nodes-=1
-        if self.running_nodes<=0:
-            await self.logger('end', 'task exited')
+                    e = j()
+                    ret = e.return_solution(i['data'])
+                    for i in ret['logs']:
+                        self.logger(i['type'], i['msg'])
+                    if ret['end']:
+                        _ = False 
+                        break
+                    nchildren += ret['newdata']
+                print(user_data, i['type'])
+                if i['type'] in user_data:
+                    for j in user_data[i['type']]:
+                        try:
+                            exec('def return_solution(data): \n  '+j.replace('\n', '\n  '), None, globals())
+                            ret = return_solution(i['data'])
+                            for i in ret['logs']:
+                                self.logger(i['type'], i['msg'])
+                            if ret['end']:
+                                _ = False 
+                                break
+                            nchildren += ret['newdata']
+                        except: pass
+            if _ == False: break
+            children = nchildren
+        self.logger('end', 'task exited')
 
 class Problem:
-    async def return_solution(self, data):
+    def return_solution(self, data):
         return {'logs':[], 'newdata':[{'type':None,'data':None}]}
 
 @Commander.add_worker('text')
@@ -61,7 +63,7 @@ class Flag(Problem):
     @classmethod
     def set_flag(self, flag):
         self.flag = flag
-    async def return_solution(self, data):
+    def return_solution(self, data):
         flag = re.search(self.flag, data)
         if flag!=None:
             return {'logs' : [{'type':'text', 'msg':'flag found: ' + flag.group()}], 'newdata':[], 'end':True}

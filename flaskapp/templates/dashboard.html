@@ -51,10 +51,10 @@
                 {{ upload.csrf_token }}
                 {{ upload.file }}
                 {{ upload.submit }}
-            </form>   
-        </div>
-        <div class="tab-content" id="tab-3">
-            <p id="console">Loading...</p>
+            </form>
+            <div id="python">
+                <button onclick="addExecutor()">Add Your Own Executor</button>
+            </div>
         </div>
 </div>
 {% endblock %}
