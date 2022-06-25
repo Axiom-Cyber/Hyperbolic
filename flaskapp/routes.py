@@ -157,15 +157,17 @@ def demos_cookies_delete():
 def demos_directories():
     return render_template('demos/directories.html', title='Webpage Directory Traversal Demo')
 
+@app.route('/docs')
+def docs():
+    return render_template('docs.html', title='Documentation')
+
 @app.errorhandler(404)
 def not_found(error):
     return make_response(render_template('404.html', title='404'), 404)
 
-
 @app.errorhandler(400)
 def bad_request():
     return make_response(render_template('400.html', title='400'), 400)
-
 
 @app.errorhandler(500)
 def server_error():
