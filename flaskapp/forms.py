@@ -36,18 +36,6 @@ class ChangePassword(FlaskForm):
     confirm_password = PasswordField('Confirm password', validators=[DataRequired(), Length(12, 120), EqualTo('password')])
     submit = SubmitField('Change password')
 
-class CTFDLoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Login')
-
-class EntryForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    description = StringField('Description')
-    category = StringField('Category')
-    points = IntegerField('Points')
-    file = FileField('Challenge files')
-
 class FileUploadForm(FlaskForm):
-    file = FileField("File")
+    file = FileField("Choose file")
     submit = SubmitField("Upload")

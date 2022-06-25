@@ -1,7 +1,7 @@
 import re
 from flask import url_for, render_template, request, jsonify, make_response, redirect, abort, flash
 from flaskapp import app, socketio, csrf, bcrypt, db, login_manager, s, mail
-from flaskapp.forms import CTFDLoginForm, EntryForm, LoginForm, RegistrationForm, ForgotPassword, ChangePassword, FileUploadForm
+from flaskapp.forms import LoginForm, RegistrationForm, ForgotPassword, ChangePassword, FileUploadForm
 from flaskapp.models import User
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
@@ -118,9 +118,8 @@ def logout():
 
 @app.route('/dashboard')
 def dashboard():
-    form = CTFDLoginForm()
     upload = FileUploadForm()
-    return render_template('dashboard.html', title='Dashboard', form=form, upload=upload)
+    return render_template('dashboard.html', title='Dashboard', upload=upload)
 
 @app.route('/demos')
 def demos():
