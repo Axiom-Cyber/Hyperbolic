@@ -43,7 +43,6 @@ class Commander:
                         _ = False 
                         break
                     nchildren += ret['newdata']
-                print(user_data, i['type'])
                 if i['type'] in user_data:
                     for j in user_data[i['type']]:
                         try:
@@ -88,12 +87,12 @@ del module
 
 def add_solver(bin, name, desc):
     try:
-        print(name)
-        path = os.path.join('problems/', name, '.py')
+        path = os.path.join('hyperbola','problems', name)
+        desc = re.sub(re.compile(r'^', re.M),'# ', desc)
         with open(path, 'xb') as f:
             f.write(bin)
-        with open(path, 'wt') as f:
-            f.write(desc.replace(r'[^|\n]','\0#'))
-        __import__(prefix + path[:-3].replace(r'(\\*?|\/*?)', '.'), locals(), globals())
+        with open(path, 'at') as f:
+            f.write(desc)
+        __import__(prefix + path.replace(r'^(.*?)(\.py?)$','\1').replace(r'(\\*?|\/*?)', '.'), locals(), globals())
     except: return False
     return True

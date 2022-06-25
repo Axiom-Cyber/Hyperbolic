@@ -196,7 +196,6 @@ def search_file(data, user_problems):
 
 @socketio.event
 def upload_file(data, desc):
-    print(data)
     ret = hyperbola.add_solver(data["binary"], secure_filename(data["name"]), desc)
     if not ret:
         socketio.emit('upload_failed')

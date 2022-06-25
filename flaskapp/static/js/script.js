@@ -30,7 +30,7 @@ $(document).on('submit','#adminupload',function(e) {
             type: file.type, 
             size: file.size, 
             binary: arrayBuffer
-        }, $('#desc').value);
+        }, $('#desc').val());
     }
     return false
 });
