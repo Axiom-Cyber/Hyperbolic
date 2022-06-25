@@ -1,3 +1,4 @@
+from logging import PlaceHolder
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, StringField, SubmitField, PasswordField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
@@ -39,3 +40,8 @@ class ChangePassword(FlaskForm):
 class FileUploadForm(FlaskForm):
     file = FileField("Choose file")
     submit = SubmitField("Upload")
+
+class AdminUploadForm(FlaskForm):
+    file = FileField("Choose file")
+    submit = SubmitField("Upload")
+    desc = StringField("Description")

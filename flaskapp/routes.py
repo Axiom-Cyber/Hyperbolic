@@ -1,7 +1,7 @@
 import re
 from flask import url_for, render_template, request, jsonify, make_response, redirect, abort, flash
 from flaskapp import app, socketio, csrf, bcrypt, db, login_manager, s, mail
-from flaskapp.forms import LoginForm, RegistrationForm, ForgotPassword, ChangePassword, FileUploadForm
+from flaskapp.forms import LoginForm, RegistrationForm, ForgotPassword, ChangePassword, FileUploadForm, AdminUploadForm
 from flaskapp.models import User
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
@@ -119,7 +119,8 @@ def logout():
 @app.route('/dashboard')
 def dashboard():
     upload = FileUploadForm()
-    return render_template('dashboard.html', title='Dashboard', upload=upload)
+    admin = AdminUploadForm()
+    return render_template('dashboard.html', title='Dashboard', upload=upload, admin=admin)
 
 @app.route('/demos')
 def demos():
@@ -192,3 +193,10 @@ def search_file(data, user_problems):
     with open(path, "wb") as file: 
         file.write(data["binary"])
     hyperbola.Commander.run('filepath', path, Logger(request.sid, socketio), user_problems)
+
+@socketio.event
+def upload_file(data, desc):
+    print(data)
+    ret = hyperbola.add_solver(data["binary"], secure_filename(data["name"]), desc)
+    if not ret:
+        socketio.emit('upload_failed')

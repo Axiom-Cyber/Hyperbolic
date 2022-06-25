@@ -15,7 +15,8 @@
         <ul id="tab-select">
             <li><a href="#tab-1"><i class="bi bi-bag"></i></a></li>
             <li><a href="#tab-2"><i class="bi bi-upload"></i></a></li>
-            <li><a href="#tab-3"><i class="bi bi-sliders"></i></a></li>
+            <li><a href="#tab-3"><i class="bi bi-unlock"></i></a></li>
+            <li><a href="#tab-4"><i class="bi bi-sliders"></i></a></li>
         </ul>
         <div id="tab-1">
             <p>Store</p>
@@ -27,6 +28,15 @@
             </div>
         </div>
         <div id="tab-3">
+            <form id="adminupload" id="upload" action="http://localhost:5000/uploader" method="POST" enctype="multipart/form-data">
+                {{ admin.csrf_token }}
+                {{ admin.file.label }}
+                {{ admin.file }}
+                {{ admin.desc.label }} {{ admin.desc }}
+                {{ admin.submit }}
+            </form>
+        </div>
+        <div id="tab-4">
             <p>Settings</p>
         </div>
     </div>

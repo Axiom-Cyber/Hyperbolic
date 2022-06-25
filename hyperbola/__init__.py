@@ -5,8 +5,10 @@ import math
 import os
 
 class Commander:
-    safe_functions = __builtins__ + {'re':re, 'math':math}
-    safe_functions['open'] = lambda a,b='rt': open(a,b) if re.search(r'^(\.\/)?flaskapp/UploadedFiles', os.path.normpath(a)) else None
+    safe_functions = {i:__builtins__[i] for i in __builtins__}
+    safe_functions['re'] = re
+    safe_functions['math'] = math
+    safe_functions['open'] = lambda a,b='rt',encoding=ascii: open(a,b,encoding=encoding) if re.search(r'^(\.\/)?flaskapp/UploadedFiles', os.path.normpath(a)) else None
     safe_functions['join'] = os.path.join
     del safe_functions['quit']
 
@@ -77,8 +79,21 @@ class Flag(Problem):
 prefix = 'problems.'
 if __name__ != '__main__':
     prefix = __name__ + '.' + prefix
+
 for module in os.listdir(os.path.join(os.path.dirname(__file__), 'problems')):
     if module == '__init__.py' or module[-3:] != '.py':
         continue
     __import__(prefix + module[:-3].replace(r'(\\*?|\/*?)', '.'), locals(), globals())
 del module
+
+def add_solver(bin, name, desc):
+    try:
+        print(name)
+        path = os.path.join('problems/', name, '.py')
+        with open(path, 'xb') as f:
+            f.write(bin)
+        with open(path, 'wt') as f:
+            f.write(desc.replace(r'[^|\n]','\0#'))
+        __import__(prefix + path[:-3].replace(r'(\\*?|\/*?)', '.'), locals(), globals())
+    except: return False
+    return True

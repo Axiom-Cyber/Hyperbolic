@@ -1,10 +1,5 @@
 socket = io()
 var open = true
-window.onload=()=>{
-    $('#command').submit(function(){
-        
-    })
-}
 
 $(document).on('submit','#upload',function(e)
 {
@@ -22,6 +17,22 @@ $(document).on('submit','#upload',function(e)
             binary: arrayBuffer 
         }, getText());
     }
+});
+$(document).on('submit','#adminupload',function(e) {
+    open=false
+    var file = document.getElementById("file").files[0];
+    var fileReader = new FileReader();
+    fileReader.readAsArrayBuffer(file)
+    fileReader.onload = () => {
+        var arrayBuffer = fileReader.result; 
+        socket.emit("upload_file", { 
+            name: file.name, 
+            type: file.type, 
+            size: file.size, 
+            binary: arrayBuffer
+        }, $('#desc').value);
+    }
+    return false
 });
 function getText(){
     var text = {}
