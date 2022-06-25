@@ -37,5 +37,5 @@ class ChangePassword(FlaskForm):
     submit = SubmitField('Change password')
 
 class FileUploadForm(FlaskForm):
-    file = FileField("File")
+    file = FileField("Choose file")
     submit = SubmitField("Upload")

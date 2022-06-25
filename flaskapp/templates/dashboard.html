@@ -34,10 +34,11 @@
         <p id="output" scrolling="auto"></p>
         <div id="entry">
             <form id="command">
-                <input type='text' name="command">
+                <input type="text" name="command">
             </form>
             <form id="upload" action="http://localhost:5000/uploader" method="POST" enctype="multipart/form-data">
                 {{ upload.csrf_token }}
+                {{ upload.file.label }}
                 {{ upload.file }}
                 {{ upload.submit }}
             </form>
