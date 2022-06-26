@@ -8,10 +8,8 @@ import filetype
 
 @hyperbola.Commander.add_worker('filepath')
 class RenderBinary:
-    def return_solution(self, pathName, outName=None, width="guess"):
+    def return_solution(self, pathName):
         if (filetype.guess(pathName) and filetype.guess(pathName).extension in ['jpeg', 'gif', 'png', 'apng', 'svg', 'bmp']):
-            if outName == None:
-                outName = pathName + "out"
             outName = re.sub(r"\.[^.]*$", "", pathName)
             file=open(pathName, "rb")
             size = (path.getsize(pathName) / 4) - 4
@@ -34,4 +32,6 @@ class RenderBinary:
                 Image.fromarray(outArray).save(outName + "/" + str(width) + ".png")
 
             file.close()
-            return {'logs':[],'newdata':[{"type":"image", "data":outName}],'end':False}
+            return {'logs':[],'newdata':[{"type":"filepath", "data":outName}],'end':False}
+        
+        return {'logs':[],'newdata':[{"type":"filepath", "data":pathName}],'end':False}
