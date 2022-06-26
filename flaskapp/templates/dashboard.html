@@ -20,15 +20,16 @@
     </div>
     <div id="tabs">
         <ul id="tab-select">
-            {% if logged %}
-            <li><a href="#tab-1"><i class="bi bi-unlock"></i></a></li>
-            {% endif %}
-            <li><a href="#tab-2"><i class="bi bi-bag"></i></a></li>
-            <li><a href="#tab-3"><i class="bi bi-code-slash"></i></a></li>
-            <li><a href="#tab-4"><i class="bi bi-sliders"></i></a></li>
+            <li><a href="#tab-1"><i class="bi bi-bag"></i></a></li>
+            <li><a href="#tab-2"><i class="bi bi-code-slash"></i></a></li>
+            <li><a href="#tab-3"><i class="bi bi-sliders"></i></a></li>
         </ul>
-        {% if logged %}
         <div id="tab-1">
+            <h1>Store</h1>
+        </div>
+        <div id="tab-2">
+            <h1>Custom script</h1>
+            {% if logged %}
             <form id="adminupload" id="upload" action="http://localhost:5000/uploader" method="POST" enctype="multipart/form-data">
                 {{ admin.csrf_token }}
                 {{ admin.file.label }}
@@ -37,18 +38,15 @@
                 {{ admin.desc }}
                 {{ admin.submit }}
             </form>
-        </div>
-        {% endif %}
-        <div id="tab-2">
-            <h1>Store</h1>
-        </div>
-        <div id="tab-3">
-            <h1>Custom script</h1>
+            {% endif %}
+            <br>
+            <br>
+            <br>
             <div id="python">
                 <button onclick="addExecutor()" class="btn custom-btn-1">Add Your Own Executor</button>
             </div>
         </div>
-        <div id="tab-4">
+        <div id="tab-3">
             <h1>Settings</h1>
         </div>
     </div>
