@@ -83,7 +83,7 @@ socket.on('send_output', (type, msg)=>{
         $('#output').html($('#output').html()+'- '+msg +'<br>')
     }
     else if(type == 'image') {
-        $("#output").html($("#output").html()+'<img class="uploadedImage" src="' + path + '"><br>')
+        $("#output").html($("#output").html()+'<img class="uploadedImage" src="' +  msg + '"><br>')
     }
     else if(type == 'end') {
         open=true
