@@ -12,6 +12,7 @@ import tarfile
 @hyperbola.Commander.add_worker('filepath')
 class Decompress:
     def return_solution(self, filepath, first=True):
+        logs = []
         if guess(filepath) != None:
             compressed = False
             extension = guess(filepath).extension
@@ -20,6 +21,7 @@ class Decompress:
                 with zipfile.ZipFile(filepath, 'r') as zip_ref:
                     compressed = True
                     zip_ref.extractall(outpath)
+                    logs.append("zip")
             elif extension == "gz":
                 with gzip.open(filepath, 'rb') as f:
                     compressed = True
@@ -28,25 +30,28 @@ class Decompress:
                     out = open(outpath, "wb")
                     out.write(f.read())
                     out.close()
+                    logs.append("gzip")
             elif extension == "7z":
                 with py7zr.SevenZipFile(filepath, 'r') as archive:
                     compressed = True
                     archive.extractall(path=outpath)
+                    logs.append("7zip")
             elif extension == "tar":
                 with tarfile.open(filepath, "r") as tar:
                     compressed = True
                     tar.extractall(outpath)
+                    logs.append("tar")
             else:
                 return {"logs": [], "newdata": [{"type": "filepath", "data": filepath}], "end": False}
             if os.path.isdir(outpath):
                 for (dirpath, dirnames, filenames) in os.walk(outpath):
                     for file in filenames:
-                        self.return_solution(outpath + "/" + file, False)
+                        logs.append(self.return_solution(outpath + "/" + file, False)["logs"])
                     break
             else:
-                self.return_solution(outpath, False)
+                logs.append(self.return_solution(outpath, False)["logs"])
             if compressed and not first:
                 os.remove(filepath)
-            return {"logs": [], "newdata": [{"type": "filepath", "data": outpath}], "end": False}
+            return {"logs": logs, "newdata": [{"type": "filepath", "data": outpath}], "end": False}
         else:
-            return {"logs": [], "newdata": [{"type": "filepath", "data": filepath}], "end": False}
+            return {"logs": logs, "newdata": [{"type": "filepath", "data": filepath}], "end": False}
