@@ -84,3 +84,8 @@ label[for="file"] {
 #python textarea{
    width:100%; 
 }
+
+#adminupload label{
+    display: block;
+    color: #E3E3E3;
+}
