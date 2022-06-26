@@ -17,6 +17,7 @@
     position: fixed;
     left: 80px;
     padding: 10px;
+    overflow-y: scroll;
 }
 
 #tabs ul {
