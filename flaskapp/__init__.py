@@ -35,6 +35,6 @@ login_manager.login_view = 'login'
 mail = Mail(app)
 s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 CORS(app, resources={r'/*': {'origins': '*'}})
-socketio = SocketIO(app)
+socketio = SocketIO(app, max_http_buffer_size = 10**9)
 
 from flaskapp import routes

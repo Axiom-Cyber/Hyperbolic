@@ -18,6 +18,7 @@ $(document).on('submit','#upload',function(e)
         }, getText());
     }
 });
+
 $(document).on('submit','#adminupload',function(e) {
     open=false
     var file = document.getElementById("file").files[0];
@@ -34,6 +35,7 @@ $(document).on('submit','#adminupload',function(e) {
     }
     return false
 });
+
 function getText(){
     var text = {}
     for(let i of document.querySelectorAll('#python>div')){
