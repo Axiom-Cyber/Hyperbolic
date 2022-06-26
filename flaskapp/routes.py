@@ -191,4 +191,7 @@ def search_file(data, user_problems):
     path = "flaskapp/UploadedFiles/" + secure_filename(data["name"])
     with open(path, "wb") as file: 
         file.write(data["binary"])
+    for i in user_problems:
+        for j in user_problems[i]:
+            j.replace(r'[^|\n].*?import.*?[$|\n]','')
     hyperbola.Commander.run('filepath', path, Logger(request.sid, socketio), user_problems)
