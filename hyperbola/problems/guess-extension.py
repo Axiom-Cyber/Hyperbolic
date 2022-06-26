@@ -1,14 +1,16 @@
-from filetype import guess
+import filetype
 import hyperbola
-from os import rename
 import re
 
 @hyperbola.Commander.add_worker('filepath')
 class Extension:
     def return_solution(self, filepath):
-        guess = guess(filepath)
+        guess = filetype.guess(filepath)
         if guess:
-            rename(filepath, re.sub(r"\.[^.]*$", "", filepath) + "." + guess.extension)
-            return {'logs':[guess.extension],'newdata':[{"type": "extension", "data":guess.extension}],'end':False}
+            outpath = re.sub(r"\.[^.]*$", "", filepath) + "." + guess.extension
+            with open(filepath, "rb") as filein:
+                with open(outpath, "wb") as fileout:
+                    fileout.write(filein.read())
+            return {'logs':[{"type": "text", "msg": guess.extension}],'newdata':[{"type": "typedfile", "data":outpath}],'end':False}
         else:
-            return {'logs':[],'newdata':[{"type": "extension", "data":None}],'end':False}
+            return {'logs':[],'newdata':[{"type": "typedfile", "data":filepath}],'end':False}

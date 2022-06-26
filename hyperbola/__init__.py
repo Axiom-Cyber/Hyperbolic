@@ -40,8 +40,8 @@ class Commander:
                         continue
                     e = j()
                     ret = e.return_solution(i['data'])
-                    for i in ret['logs']:
-                        self.logger(i['type'], i['msg'])
+                    for log in ret['logs']:
+                        self.logger(log['type'], log['msg'])
                     if ret['end']:
                         _ = False 
                         break
@@ -51,12 +51,12 @@ class Commander:
                         try:
                             print('def return_solution(data): \n  '+j.replace('\n', '\n  '))
                             ret = None
-                            l = {i:j for i,j in self.safe_functions.items()}
+                            l = {m:n for m,n in self.safe_functions.items()}
                             exec('def return_solution(data): \n  '+j.replace('\n', '\n  '), {'__builtins__':None}, l)
                             print(l['return_solution'])
                             ret = l['return_solution'](i['data'])
-                            for i in ret['logs']:
-                                self.logger(i['type'], i['msg'])
+                            for log in ret['logs']:
+                                self.logger(log['type'], log['msg'])
                             if ret['end']:
                                 _ = False 
                                 break

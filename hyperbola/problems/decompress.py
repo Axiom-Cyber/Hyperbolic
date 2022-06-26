@@ -21,7 +21,7 @@ class Decompress:
                 with zipfile.ZipFile(filepath, 'r') as zip_ref:
                     compressed = True
                     zip_ref.extractall(outpath)
-                    logs.append("zip")
+                    logs.append({"type": "text", "msg": "zip"})
             elif extension == "gz":
                 with gzip.open(filepath, 'rb') as f:
                     compressed = True
@@ -30,26 +30,26 @@ class Decompress:
                     out = open(outpath, "wb")
                     out.write(f.read())
                     out.close()
-                    logs.append("gzip")
+                    logs.append({"type": "text", "msg": "gzip"})
             elif extension == "7z":
                 with py7zr.SevenZipFile(filepath, 'r') as archive:
                     compressed = True
                     archive.extractall(path=outpath)
-                    logs.append("7zip")
+                    logs.append({"type": "text", "msg": "7zip"})
             elif extension == "tar":
                 with tarfile.open(filepath, "r") as tar:
                     compressed = True
                     tar.extractall(outpath)
-                    logs.append("tar")
+                    logs.append({"type": "text", "msg": "tar"})
             else:
                 return {"logs": [], "newdata": [{"type": "filepath", "data": filepath}], "end": False}
             if os.path.isdir(outpath):
                 for (dirpath, dirnames, filenames) in os.walk(outpath):
                     for file in filenames:
-                        logs.append(self.return_solution(outpath + "/" + file, False)["logs"])
+                        logs += self.return_solution(outpath + "/" + file, False)["logs"]
                     break
             else:
-                logs.append(self.return_solution(outpath, False)["logs"])
+                logs += self.return_solution(outpath, False)["logs"]
             if compressed and not first:
                 os.remove(filepath)
             return {"logs": logs, "newdata": [{"type": "filepath", "data": outpath}], "end": False}
