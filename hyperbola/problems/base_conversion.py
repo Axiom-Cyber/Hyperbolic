@@ -5,7 +5,7 @@ import re
 @hyperbola.Commander.add_worker("text")
 class BaseDecoder:
     async def return_solution(self, text: str):
-        b2 = [int(i,2) for i in re.findall(r'[01]+')]
+        b2 = [chr(int(i,2)) for i in re.findall(r'[01]+')]
         b16 = [base64.b16decode(i.encode()).decode() for i in re.findall(r'[0-9A-F]+')]
         b32 = [base64.b32decode(i.encode()).decode() for i in re.findall(r'[0-9A-V]+')]
         b64 = [base64.b64decode(i.encode()).decode() for i in re.findall(r'[0-9A-Za-z]+')]
