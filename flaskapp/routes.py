@@ -152,15 +152,17 @@ def demos_cookies_delete():
 def demos_directories():
     return render_template('demos/directories.html', title='Webpage Directory Traversal Demo')
 
+@app.route('/docs')
+def docs():
+    return render_template('docs.html', title='Documentation')
+
 @app.errorhandler(404)
 def not_found(error):
     return make_response(render_template('404.html', title='404'), 404)
 
-
 @app.errorhandler(400)
 def bad_request():
     return make_response(render_template('400.html', title='400'), 400)
-
 
 @app.errorhandler(500)
 def server_error():
@@ -186,6 +188,9 @@ def search_file(data, user_problems):
     path = "flaskapp/UploadedFiles/" + secure_filename(data["name"])
     with open(path, "wb") as file: 
         file.write(data["binary"])
+    for i in user_problems:
+        for j in user_problems[i]:
+            j.replace(r'[^|\n].*?import.*?[$|\n]','')
     hyperbola.Commander.run('filepath', path, Logger(request.sid, socketio), user_problems)
 
 @socketio.event
