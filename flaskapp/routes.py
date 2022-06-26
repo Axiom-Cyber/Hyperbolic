@@ -9,6 +9,8 @@ from werkzeug.utils import secure_filename
 from itsdangerous.exc import SignatureExpired
 from flask_mail import Message
 import hyperbola
+import os
+import shutil
 from datetime import datetime
 from filetype import guess
 
@@ -202,6 +204,11 @@ class Logger:
     def __call__(self, type, msg=''):
         self.socket.emit('send_output', (type, msg), to=self.id)
 
+@socketio.on('disconnect')
+def delete():
+    if os.path.isdir('flaskapp/static/UploadedFiles/'+request.sid):
+        shutil.rmtree('flaskapp/static/UploadedFiles/'+request.sid)
+
 @socketio.event
 def search_text(data, user_problems, disabled):
     disabled = disabled if isinstance(disabled, list) else []
@@ -213,7 +220,10 @@ def search_text(data, user_problems, disabled):
 @socketio.event
 def search_file(data, user_problems, disabled):
     disabled = disabled if isinstance(disabled, list) else []
-    path = "flaskapp/static/UploadedFiles/" + secure_filename(data["name"])
+    path = "flaskapp/static/UploadedFiles/"+request.sid+"/"
+    if not os.path.isdir(path):
+        os.mkdir(path)
+    path += secure_filename(data["name"])
     with open(path, "wb") as file: 
         file.write(data["binary"])
     if (guess(path) and guess(path).extension in ['jpeg', 'gif', 'png', 'apng', 'svg', 'bmp']):
