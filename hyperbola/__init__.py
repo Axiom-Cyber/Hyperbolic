@@ -11,6 +11,7 @@ class Commander:
     safe_functions['open'] = lambda a,b='rt',encoding=ascii: open(a,b,encoding=encoding) if re.search(r'^(\.\/)?flaskapp/UploadedFiles', os.path.normpath(a)) else None
     safe_functions['join'] = os.path.join
     del safe_functions['quit']
+    del safe_functions['print']
 
     detectors = {}
     @classmethod
@@ -28,13 +29,15 @@ class Commander:
         self.max_depth = max_depth
 
     @classmethod
-    def run(cls, type, data, logger, user_data={}, max_depth=5):
+    def run(cls, type, data, logger, user_data={}, disabled_solvers=[], max_depth=5):
         self = cls(logger, max_depth)
         children = [{'type':type, 'data':data}]
         for _ in range(max_depth):
             nchildren = []
             for i in children:
                 for j in self.detectors[i['type']]:
+                    if j.__name__ in disabled_solvers:
+                        continue
                     e = j()
                     ret = e.return_solution(i['data'])
                     for i in ret['logs']:
@@ -46,8 +49,12 @@ class Commander:
                 if i['type'] in user_data:
                     for j in user_data[i['type']]:
                         try:
-                            exec('def return_solution(data): \n  '+j.replace('\n', '\n  '), self.safe_functions, None)
-                            ret = return_solution(i['data'])
+                            print('def return_solution(data): \n  '+j.replace('\n', '\n  '))
+                            ret = None
+                            l = {i:j for i,j in self.safe_functions.items()}
+                            exec('def return_solution(data): \n  '+j.replace('\n', '\n  '), {'__builtins__':None}, l)
+                            print(l['return_solution'])
+                            ret = l['return_solution'](i['data'])
                             for i in ret['logs']:
                                 self.logger(i['type'], i['msg'])
                             if ret['end']:

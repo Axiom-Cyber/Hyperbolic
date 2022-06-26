@@ -1,4 +1,5 @@
 import re
+from typing import List
 from flask import url_for, render_template, request, jsonify, make_response, redirect, abort, flash
 from flaskapp import app, socketio, csrf, bcrypt, db, login_manager, s, mail
 from flaskapp.forms import LoginForm, RegistrationForm, ForgotPassword, ChangePassword, FileUploadForm, AdminUploadForm
@@ -41,7 +42,7 @@ def login():
 @app.route('/register/', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('dashboard'))
     form = RegistrationForm()
 
     # Generate hash and save user info
@@ -103,7 +104,7 @@ def reset_password(token):
             hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
             user.password = hashed_password
             db.session.commit()
-            return redirect(url_for('login'))
+            return redirect(url_for('dashboard'))
     except SignatureExpired:
         msg = 'Password reset link is expired. Try again.'
     except Exception:
@@ -133,8 +134,11 @@ def dashboard():
             login_user(user, remember=True)
             user.last_login = datetime.utcnow()
             db.session.commit()
-
-    return render_template('dashboard.html', title='Dashboard', upload=upload, admin=admin, form=form, logged=current_user.is_authenticated)
+    names = []
+    for i in hyperbola.Commander.detectors.values():
+        for j in i:
+            names.append(j.__name__)
+    return render_template('dashboard.html', title='Dashboard', upload=upload, admin=admin, form=form, names=names, logged=current_user.is_authenticated)
 
 @app.route('/demos/')
 def demos():
@@ -198,14 +202,16 @@ class Logger:
         self.socket.emit('send_output', (type, msg), to=self.id)
 
 @socketio.event
-def search_text(data, user_problems):
+def search_text(data, user_problems, disabled):
+    disabled = disabled if isinstance(disabled, list) else []
     for i in user_problems:
         for j in user_problems[i]:
             j.replace(r'[^|\n].*?import.*?[$|\n]','')
-    hyperbola.Commander.run('text', data, Logger(request.sid, socketio), user_problems)
+    hyperbola.Commander.run('text', data, Logger(request.sid, socketio), user_problems, disabled)
 
 @socketio.event
-def search_file(data, user_problems):
+def search_file(data, user_problems, disabled):
+    disabled = disabled if isinstance(disabled, list) else []
     path = "flaskapp/static/UploadedFiles/" + secure_filename(data["name"])
     with open(path, "wb") as file: 
         file.write(data["binary"])
@@ -213,11 +219,11 @@ def search_file(data, user_problems):
     for i in user_problems:
         for j in user_problems[i]:
             j.replace(r'[^|\n].*?import.*?[$|\n]','')
-    hyperbola.Commander.run('filepath', path, Logger(request.sid, socketio), user_problems)
+    hyperbola.Commander.run('filepath', path, Logger(request.sid, socketio), user_problems, disabled)
 
 @socketio.event
 def upload_file(data, desc):
     if current_user.is_authenticated:
         ret = hyperbola.add_solver(data["binary"], secure_filename(data["name"]), desc)
-        if not ret:
-            socketio.emit('upload_failed')
+        if ret:
+            socketio.emit('uploaded')

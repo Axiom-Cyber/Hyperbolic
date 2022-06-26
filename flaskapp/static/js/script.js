@@ -15,7 +15,7 @@ $(document).on('submit','#upload',function(e)
             type: file.type, 
             size: file.size, 
             binary: arrayBuffer 
-        }, getText());
+        }, getText(), getOff());
     }
 });
 
@@ -39,26 +39,43 @@ $(document).on('submit','#adminupload',function(e) {
 function getText(){
     var text = {}
     for(let i of document.querySelectorAll('#python>div')){
-        if(i.children[0].value in text){
-            text[i.children[0].value].push(i.children[1].value)
-        } else {
-            text[i.children[0].value] = [i.children[1].value]
+        if(i.children[2].value in text && !i.children[0].checked){
+            text[i.children[2].value].push(i.children[3].value)
+        } else if (!i.children[0].checked) {
+            text[i.children[2].value] = [i.children[3].value]
         }
     }
     return text
 }
 
+function getOff(){
+    var off = []
+    for(let i of document.querySelectorAll('#disabled>input')){
+        if(i.checked){off.push(i.name)}
+    }
+    return off
+}
+
 $(document).on('submit','#command',function(e) {
     if (open){
         $('#output').html($('#output').html() + 'text: ' + this.command.value + '<br>')
-        socket.emit('search_text', this.command.value, getText())
+        socket.emit('search_text', this.command.value, getText(), getOff())
         open=false
     }
     return false
 })
 
 function addExecutor(){
-    document.getElementById('python').innerHTML += '<div><input type="text" placeholder="type"><textarea></textarea></div>'
+    document.getElementById('python').innerHTML += `
+<div id='solverbox'>
+    <input type='checkbox'><button onclick='remove(this)'>Remove</button>
+    <input type="text" placeholder="type">
+    <textarea></textarea>
+</div>`
+}
+function remove(t){
+    while (t.id!='solverbox' && t.parentElement){t=t.parentElement}
+    t.remove()
 }
 
 socket.on('send_output', (type, msg)=>{
@@ -74,4 +91,6 @@ socket.on('send_output', (type, msg)=>{
 
 socket.on("send_image", (path)=>{
     $("#output").html($("#output").html()+'<img class="uploadedImage" src="' + path + '"><br>')
-})
+  
+socket.on('uploaded', ()=>{
+    alert('file successfully added')
