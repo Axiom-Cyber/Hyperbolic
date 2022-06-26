@@ -1,7 +1,7 @@
 import re
 from flask import url_for, render_template, request, jsonify, make_response, redirect, abort, flash
 from flaskapp import app, socketio, csrf, bcrypt, db, login_manager, s, mail
-from flaskapp.forms import LoginForm, RegistrationForm, ForgotPassword, ChangePassword, FileUploadForm
+from flaskapp.forms import LoginForm, RegistrationForm, ForgotPassword, ChangePassword, FileUploadForm, AdminUploadForm
 from flaskapp.models import User
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
@@ -12,7 +12,7 @@ from datetime import datetime
 
 @login_manager.unauthorized_handler
 def unauthorized():
-    return redirect(url_for('login'))
+    return redirect(url_for('dashboard'))
 
 @app.route('/')
 def about():
@@ -111,15 +111,30 @@ def reset_password(token):
     return render_template('reset-password.html', form=form, title='Reset Password', msg=msg)
 
 @app.route('/logout/')
-@login_required
 def logout():
     logout_user()
-    return redirect(url_for('login'))
+    return redirect(url_for('dashboard'))
 
 @app.route('/dashboard/')
+@app.route('/dashboard/', methods=['GET', 'POST'])
 def dashboard():
     upload = FileUploadForm()
-    return render_template('dashboard.html', title='Dashboard', upload=upload)
+    admin = AdminUploadForm()
+    form = LoginForm()
+    if form.validate_on_submit():
+
+        # Determine if username or email from database
+        user = User.query.filter_by(username=form.user.data).first()
+        if not user:
+            user = User.query.filter_by(email=form.user.data).first()
+        
+        # Authenticate and execute login
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user, remember=True)
+            user.last_login = datetime.utcnow()
+            db.session.commit()
+
+    return render_template('dashboard.html', title='Dashboard', upload=upload, admin=admin, form=form, logged=current_user.is_authenticated)
 
 @app.route('/demos/')
 def demos():
@@ -157,15 +172,17 @@ def demos_cookies_delete():
 def demos_directories():
     return render_template('demos/directories.html', title='Webpage Directory Traversal Demo')
 
+@app.route('/docs')
+def docs():
+    return render_template('docs.html', title='Documentation')
+
 @app.errorhandler(404)
 def not_found(error):
     return make_response(render_template('404.html', title='404'), 404)
 
-
 @app.errorhandler(400)
 def bad_request():
     return make_response(render_template('400.html', title='400'), 400)
-
 
 @app.errorhandler(500)
 def server_error():
@@ -196,3 +213,10 @@ def search_file(data, user_problems):
         for j in user_problems[i]:
             j.replace(r'[^|\n].*?import.*?[$|\n]','')
     hyperbola.Commander.run('filepath', path, Logger(request.sid, socketio), user_problems)
+
+@socketio.event
+def upload_file(data, desc):
+    if current_user.is_authenticated:
+        ret = hyperbola.add_solver(data["binary"], secure_filename(data["name"]), desc)
+        if not ret:
+            socketio.emit('upload_failed')

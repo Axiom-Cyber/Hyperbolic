@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/docs.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Hyperbolic Documentation</h1>
+    <h2>Table of Contents</h2>
+    <ul>
+        <li><a href="">What is Hyperbolic?</a></li>
+        <li><a href="">Basic Usage</a></li>
+        <li><a href="">Creating Custom Scripts</a></li>
+        <ul>
+            <li><a href="">How it Works</a></li>
+            <li><a href="">Writing a Custom Script</a></li>
+            <li><a href="">Example</a></li>
+        </ul>
+    </ul>
+    <h2>What is Hyperbolic?</h2>
+    <p>Hyperbolic is an application to make automating text, file, or webpage processing more streamlined. Users can select prebuilt modules to automate tasks. Developers can create their own modules to be shared with other users.</p>
+    <h2>Basic Usage</h2>
+    <p></p>
+    <h2>Creating Custom Scripts</h2>
+    <h3>How it Works</h3>
+    <p></p>
+    <h3>Writing a Custom Script</h3>
+    <p></p>
+    <h3>Example</h3>
+    <p></p>
+</div>
+{% endblock %}
