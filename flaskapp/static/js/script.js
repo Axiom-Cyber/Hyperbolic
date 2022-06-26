@@ -91,6 +91,8 @@ socket.on('send_output', (type, msg)=>{
 
 socket.on("send_image", (path)=>{
     $("#output").html($("#output").html()+'<img class="uploadedImage" src="' + path + '"><br>')
+})
   
 socket.on('uploaded', ()=>{
     alert('file successfully added')
+})
