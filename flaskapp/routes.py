@@ -21,7 +21,7 @@ def about():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('dashboard'))
     form = RegistrationForm()
 
     # Generate hash and save user info
@@ -83,7 +83,7 @@ def reset_password(token):
             hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
             user.password = hashed_password
             db.session.commit()
-            return redirect(url_for('login'))
+            return redirect(url_for('dashboard'))
     except SignatureExpired:
         msg = 'Password reset link is expired. Try again.'
     except Exception:
