@@ -23,6 +23,7 @@ $(document).on('submit','#upload',function(e)
         }, getText());
     }
 });
+
 function getText(){
     var text = {}
     for(let i of document.querySelectorAll('#python>div')){

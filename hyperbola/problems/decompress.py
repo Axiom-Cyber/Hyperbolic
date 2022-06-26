@@ -36,13 +36,17 @@ class Decompress:
                 with tarfile.open(filepath, "r") as tar:
                     compressed = True
                     tar.extractall(outpath)
+            else:
+                return {"logs": [], "newdata": [{"type": "filepath", "data": filepath}], "end": False}
             if os.path.isdir(outpath):
                 for (dirpath, dirnames, filenames) in os.walk(outpath):
                     for file in filenames:
-                        self.decompress(outpath + "/" + file, False)
+                        self.return_solution(outpath + "/" + file, False)
                     break
             else:
-                self.decompress(outpath, False)
+                self.return_solution(outpath, False)
             if compressed and not first:
                 os.remove(filepath)
-        return {"logs": [], "newdata": [{"type": "filepath", "data": outpath}], "end": False}
+            return {"logs": [], "newdata": [{"type": "filepath", "data": outpath}], "end": False}
+        else:
+            return {"logs": [], "newdata": [{"type": "filepath", "data": filepath}], "end": False}
