@@ -5,7 +5,6 @@ import re
 @hyperbola.Commander.add_worker("text")
 class BaseDecoder:
     def return_solution(self, text: str):
-    def return_solution(self, text: str):
         #try to decode in each base, but if it fails, return an empty list
         try: b2 = [chr(int(i,2)) for i in re.findall(r'[01]+')]
         except: b2 = []
