@@ -39,10 +39,10 @@ $(document).on('submit','#adminupload',function(e) {
 function getText(){
     var text = {}
     for(let i of document.querySelectorAll('#python>div')){
-        if(i.children[0].value in text){
-            text[i.children[0].value].push(i.children[1].value)
-        } else {
-            text[i.children[0].value] = [i.children[1].value]
+        if(i.children[2].value in text && !i.children[0].checked){
+            text[i.children[2].value].push(i.children[3].value)
+        } else if (!i.children[0].checked) {
+            text[i.children[2].value] = [i.children[3].value]
         }
     }
     return text
@@ -66,7 +66,16 @@ $(document).on('submit','#command',function(e) {
 })
 
 function addExecutor(){
-    document.getElementById('python').innerHTML += '<div><input type="text" placeholder="type"><textarea></textarea></div>'
+    document.getElementById('python').innerHTML += `
+<div id='solverbox'>
+    <input type='checkbox'><button onclick='remove(this)'>Remove</button>
+    <input type="text" placeholder="type">
+    <textarea></textarea>
+</div>`
+}
+function remove(t){
+    while (t.id!='solverbox' && t.parentElement){t=t.parentElement}
+    t.remove()
 }
 
 socket.on('send_output', (type, msg)=>{
@@ -75,4 +84,7 @@ socket.on('send_output', (type, msg)=>{
         open=true
         $('#output').html($('#output').html()+'- '+msg +'<br>')
     }
+})
+socket.on('uploaded', ()=>{
+    alert('file successfully added')
 })

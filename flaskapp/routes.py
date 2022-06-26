@@ -224,5 +224,5 @@ def search_file(data, user_problems, disabled):
 def upload_file(data, desc):
     if current_user.is_authenticated:
         ret = hyperbola.add_solver(data["binary"], secure_filename(data["name"]), desc)
-        if not ret:
-            socketio.emit('upload_failed')
+        if ret:
+            socketio.emit('uploaded')
