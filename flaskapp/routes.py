@@ -12,31 +12,11 @@ from datetime import datetime
 
 @login_manager.unauthorized_handler
 def unauthorized():
-    return redirect(url_for('login'))
+    return redirect(url_for('dashboard'))
 
 @app.route('/')
 def about():
     return render_template('about.html', title='About')
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('dashboard'))
-    form = LoginForm()
-    if form.validate_on_submit():
-
-        # Determine if username or email from database
-        user = User.query.filter_by(username=form.user.data).first()
-        if not user:
-            user = User.query.filter_by(email=form.user.data).first()
-        
-        # Authenticate and execute login
-        if user and bcrypt.check_password_hash(user.password, form.password.data):
-            login_user(user, remember=True)
-            user.last_login = datetime.utcnow()
-            db.session.commit()
-            return redirect(url_for('index'))
-    return render_template('login.html', form=form, title='Login')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -110,17 +90,31 @@ def reset_password(token):
         msg = 'There were some issues with resetting your password. Try again.'
     return render_template('reset-password.html', form=form, title='Reset Password', msg=msg)
 
-@app.route('/logout')
+@socketio.event
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('login'))
+    return redirect(url_for('dashboard'))
 
-@app.route('/dashboard')
+@app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     upload = FileUploadForm()
     admin = AdminUploadForm()
-    return render_template('dashboard.html', title='Dashboard', upload=upload, admin=admin)
+    form = LoginForm()
+    if form.validate_on_submit():
+
+        # Determine if username or email from database
+        user = User.query.filter_by(username=form.user.data).first()
+        if not user:
+            user = User.query.filter_by(email=form.user.data).first()
+        
+        # Authenticate and execute login
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user, remember=True)
+            user.last_login = datetime.utcnow()
+            db.session.commit()
+
+    return render_template('dashboard.html', title='Dashboard', upload=upload, admin=admin, form=form, logged=current_user.is_authenticated)
 
 @app.route('/demos')
 def demos():
@@ -196,6 +190,7 @@ def search_file(data, user_problems):
 
 @socketio.event
 def upload_file(data, desc):
-    ret = hyperbola.add_solver(data["binary"], secure_filename(data["name"]), desc)
-    if not ret:
-        socketio.emit('upload_failed')
+    if current_user.is_authenticated:
+        ret = hyperbola.add_solver(data["binary"], secure_filename(data["name"]), desc)
+        if not ret:
+            socketio.emit('upload_failed')
