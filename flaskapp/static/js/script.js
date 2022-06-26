@@ -15,7 +15,7 @@ $(document).on('submit','#upload',function(e)
             type: file.type, 
             size: file.size, 
             binary: arrayBuffer 
-        }, getText());
+        }, getText(), getOff());
     }
 });
 
@@ -48,10 +48,18 @@ function getText(){
     return text
 }
 
+function getOff(){
+    var off = []
+    for(let i of document.querySelectorAll('#disabled>input')){
+        if(i.checked){off.push(i.name)}
+    }
+    return off
+}
+
 $(document).on('submit','#command',function(e) {
     if (open){
         $('#output').html($('#output').html() + 'text: ' + this.command.value + '<br>')
-        socket.emit('search_text', this.command.value, getText())
+        socket.emit('search_text', this.command.value, getText(), getOff())
         open=false
     }
     return false

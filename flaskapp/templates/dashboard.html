@@ -70,6 +70,11 @@
         </div>
         <div id="tab-4">
             <p>Settings</p>
+            <form id="disabled">
+                {% for i in names %}
+                <input name="{{ i }}" type="checkbox"><label for="{{ i }}">{{ i }}</label><br>
+                {% endfor %}
+            </form>
         </div>
     </div>
     <div id="console">
