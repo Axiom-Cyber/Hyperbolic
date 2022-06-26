@@ -79,18 +79,16 @@ function remove(t){
 }
 
 socket.on('send_output', (type, msg)=>{
-    if(type=='text')
-    {
+    if(type=='text') {
         $('#output').html($('#output').html()+'- '+msg +'<br>')
     }
-    else if(type == 'end'){
+    else if(type == 'image') {
+        $("#output").html($("#output").html()+'<img class="uploadedImage" src="' + path + '"><br>')
+    }
+    else if(type == 'end') {
         open=true
         $('#output').html($('#output').html()+'- '+msg +'<br>')
     }
-})
-
-socket.on("send_image", (path)=>{
-    $("#output").html($("#output").html()+'<img class="uploadedImage" src="' + path + '"><br>')
 })
   
 socket.on('uploaded', ()=>{

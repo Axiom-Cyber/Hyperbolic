@@ -215,7 +215,7 @@ def search_file(data, user_problems, disabled):
     path = "flaskapp/static/UploadedFiles/" + secure_filename(data["name"])
     with open(path, "wb") as file: 
         file.write(data["binary"])
-    socketio.emit("send_image", "/static/UploadedFiles/" + secure_filename(data["name"]))
+    socketio.emit("send_output", 'image', "/static/UploadedFiles/" + secure_filename(data["name"]))
     for i in user_problems:
         for j in user_problems[i]:
             j.replace(r'[^|\n].*?import.*?[$|\n]','')
