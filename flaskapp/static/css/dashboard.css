@@ -89,3 +89,7 @@ label[for="file"] {
     display: block;
     color: #E3E3E3;
 }
+
+.uploadedImage{
+    width: 20%;
+}

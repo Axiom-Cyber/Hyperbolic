@@ -73,5 +73,5 @@ socket.on('send_output', (type, msg)=>{
 })
 
 socket.on("send_image", (path)=>{
-    $("#output").html($("#output").html()+'<img src="' + path + '"><br>')
+    $("#output").html($("#output").html()+'<img class="uploadedImage" src="' + path + '"><br>')
 })
