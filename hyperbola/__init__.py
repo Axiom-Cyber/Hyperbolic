@@ -40,6 +40,7 @@ class Commander:
                         continue
                     e = j()
                     ret = e.return_solution(i['data'])
+                    print(j)
                     for log in ret['logs']:
                         self.logger(log['type'], log['msg'])
                     if ret['end']:
