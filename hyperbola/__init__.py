@@ -28,13 +28,16 @@ class Commander:
         self.max_depth = max_depth
 
     @classmethod
-    def run(cls, type, data, logger, user_data={}, max_depth=5):
+    def run(cls, type, data, logger, user_data={}, disabled_solvers=[], max_depth=5):
         self = cls(logger, max_depth)
         children = [{'type':type, 'data':data}]
         for _ in range(max_depth):
             nchildren = []
             for i in children:
                 for j in self.detectors[i['type']]:
+                    print(j.__name__, disabled_solvers)
+                    if j.__name__ in disabled_solvers:
+                        continue
                     e = j()
                     ret = e.return_solution(i['data'])
                     for i in ret['logs']:

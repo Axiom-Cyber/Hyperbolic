@@ -1,4 +1,5 @@
 import re
+from typing import List
 from flask import url_for, render_template, request, jsonify, make_response, redirect, abort, flash
 from flaskapp import app, socketio, csrf, bcrypt, db, login_manager, s, mail
 from flaskapp.forms import LoginForm, RegistrationForm, ForgotPassword, ChangePassword, FileUploadForm, AdminUploadForm
@@ -133,8 +134,11 @@ def dashboard():
             login_user(user, remember=True)
             user.last_login = datetime.utcnow()
             db.session.commit()
-
-    return render_template('dashboard.html', title='Dashboard', upload=upload, admin=admin, form=form, logged=current_user.is_authenticated)
+    names = []
+    for i in hyperbola.Commander.detectors.values():
+        for j in i:
+            names.append(j.__name__)
+    return render_template('dashboard.html', title='Dashboard', upload=upload, admin=admin, form=form, names=names, logged=current_user.is_authenticated)
 
 @app.route('/demos/')
 def demos():
@@ -198,21 +202,23 @@ class Logger:
         self.socket.emit('send_output', (type, msg), to=self.id)
 
 @socketio.event
-def search_text(data, user_problems):
+def search_text(data, user_problems, disabled):
+    disabled = disabled if isinstance(disabled, list) else []
     for i in user_problems:
         for j in user_problems[i]:
             j.replace(r'[^|\n].*?import.*?[$|\n]','')
-    hyperbola.Commander.run('text', data, Logger(request.sid, socketio), user_problems)
+    hyperbola.Commander.run('text', data, Logger(request.sid, socketio), user_problems, disabled)
 
 @socketio.event
-def search_file(data, user_problems):
+def search_file(data, user_problems, disabled):
+    disabled = disabled if isinstance(disabled, list) else []
     path = "flaskapp/UploadedFiles/" + secure_filename(data["name"])
     with open(path, "wb") as file: 
         file.write(data["binary"])
     for i in user_problems:
         for j in user_problems[i]:
             j.replace(r'[^|\n].*?import.*?[$|\n]','')
-    hyperbola.Commander.run('filepath', path, Logger(request.sid, socketio), user_problems)
+    hyperbola.Commander.run('filepath', path, Logger(request.sid, socketio), user_problems, disabled)
 
 @socketio.event
 def upload_file(data, desc):
