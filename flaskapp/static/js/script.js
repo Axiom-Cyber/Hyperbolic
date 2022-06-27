@@ -89,6 +89,9 @@ socket.on('send_output', (type, msg)=>{
         open=true
         $('#output').html($('#output').html()+'- '+msg +'<br>')
     }
+    else if (type == 'file') {
+        console.log("file logged");
+    }
 })
   
 socket.on('uploaded', ()=>{

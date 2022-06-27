@@ -1,6 +1,6 @@
 import re
 from typing import List
-from flask import url_for, render_template, request, jsonify, make_response, redirect, abort, flash
+from flask import send_file, url_for, render_template, request, jsonify, make_response, redirect, abort, flash
 from flaskapp import app, socketio, csrf, bcrypt, db, login_manager, s, mail
 from flaskapp.forms import LoginForm, RegistrationForm, ForgotPassword, ChangePassword, FileUploadForm, AdminUploadForm
 from flaskapp.models import User
@@ -178,6 +178,10 @@ def demos_cookies_delete():
 @app.route('/demos/directories/')
 def demos_directories():
     return render_template('demos/directories.html', title='Webpage Directory Traversal Demo')
+
+@app.route("/download/<path>")
+def download(path):
+    return send_file(path, as_attachment=True)
 
 @app.route('/docs')
 def docs():
