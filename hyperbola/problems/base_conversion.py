@@ -4,7 +4,7 @@ import re
 
 @hyperbola.Commander.add_worker("text")
 class BaseDecoder:
-    async def return_solution(self, text: str):
+    def return_solution(self, text: str):
         b2 = []
         for result in re.findall(r'[01]+', text):
             try: b2.append(chr(int(result,2)))

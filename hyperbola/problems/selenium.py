@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 import hyperbola
 
 @hyperbola.Commander.add_worker('url')
-class Selenium:
+class Forms:
     def return_solution(self, data):
         driver = webdriver.Firefox()
         driver.get(data)
