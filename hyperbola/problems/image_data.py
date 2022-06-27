@@ -24,12 +24,10 @@ class ImageMetadata:
             
             return {
                 'logs':[{'type':'text', 'msg':f"{key}: {info_dict[key]}"} for key in info_dict],
-                'newdata': [{'type':'text', 'data':f"{key}: {info_dict[key]}"} for key in info_dict],
-                'end':False
+                'newdata': [{'type':'text', 'data':f"{key}: {info_dict[key]}"} for key in info_dict]
             }
         except:
             return {
                 'logs':[{"type": "text", "msg": "Not an image"}],
-                'newdata': [],
-                'end':False
+                'newdata': []
             }

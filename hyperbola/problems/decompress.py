@@ -42,7 +42,7 @@ class Decompress:
                     tar.extractall(outpath)
                     logs.append({"type": "text", "msg": "Untarred"})
             else:
-                return {"logs": [], "newdata": [{"type": "filepath", "data": filepath}], "end": False}
+                return {"logs": [], "newdata": [{"type": "filepath", "data": filepath}]}
             if os.path.isdir(outpath):
                 for (dirpath, dirnames, filenames) in os.walk(outpath):
                     for file in filenames:
@@ -52,6 +52,6 @@ class Decompress:
                 logs += self.return_solution(outpath, False)["logs"]
             if compressed and not first:
                 os.remove(filepath)
-            return {"logs": logs, "newdata": [{"type": "filepath", "data": outpath}], "end": False}
+            return {"logs": logs, "newdata": [{"type": "filepath", "data": outpath}]}
         else:
-            return {"logs": logs, "newdata": [{"type": "filepath", "data": filepath}], "end": False}
+            return {"logs": logs, "newdata": [{"type": "filepath", "data": filepath}]}

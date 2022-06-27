@@ -15,7 +15,7 @@ $(document).on('submit','#upload',function(e)
             type: file.type, 
             size: file.size, 
             binary: arrayBuffer 
-        }, getText(), getOff());
+        }, getText(), getOff(), $('#flagRe').val());
     }
 });
 
@@ -59,7 +59,7 @@ function getOff(){
 $(document).on('submit','#command',function(e) {
     if (open){
         $('#output').html($('#output').html() + 'text: ' + this.command.value + '<br>')
-        socket.emit('search_text', this.command.value, getText(), getOff())
+        socket.emit('search_text', this.command.value, getText(), getOff(), $('#flagRe').val())
         open=false
     }
     return false

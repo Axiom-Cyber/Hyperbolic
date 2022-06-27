@@ -19,7 +19,7 @@ class Extension:
                                 except:
                                     pass
                     break
-            return {'logs':[],'newdata':[{"type": "text", "data":output}],'end':False}
+            return {'logs':[],'newdata':[{"type": "text", "data":output}]}
         else:
             with open(path, "rb") as file:
                 output = ""
@@ -32,4 +32,4 @@ class Extension:
                                 pass
                     except:
                         pass
-            return {'logs':[],'newdata':[{"type": "text", "data":output}],'end':False}
+            return {'logs':[],'newdata':[{"type": "text", "data":output}]}
