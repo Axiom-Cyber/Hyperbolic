@@ -4,6 +4,7 @@ var open = true
 $(document).on('submit','#upload',function(e)
 {
     e.preventDefault();
+
     var file = document.getElementById("file").files[0];
     var fileReader = new FileReader();
     fileReader.readAsArrayBuffer(file)
@@ -16,6 +17,7 @@ $(document).on('submit','#upload',function(e)
             size: file.size, 
             binary: arrayBuffer 
         }, getText(), getOff(), $('#flagRe').val());
+        $('#output').html($('#output').html() + '<p class="working">Working...</p><br>');
     }
 });
 
@@ -88,6 +90,9 @@ socket.on('send_output', (type, msg)=>{
     else if(type == 'end') {
         open=true
         $('#output').html($('#output').html()+'- '+msg +'<br>')
+        for (var elem of document.getElementsByClassName("working")){
+            elem.remove();
+        }
     }
     
     else if (type == 'folder') {

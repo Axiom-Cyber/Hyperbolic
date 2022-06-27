@@ -18,7 +18,7 @@ class RenderBinary:
             if (size/width) % 1 == 0 and size/(width**2) > 0.25 and size/(width**2) < 4:
                 widths.append(width)
         
-        if len(widths) > 0: 
+        if len(widths) > 0 and not os.path.isdir(outName): 
             os.makedirs(outName)
         for width in widths:
             file.seek(0)
@@ -40,4 +40,4 @@ class RenderBinary:
                     if filetype.guess(outName + "/" + file) and filetype.guess(outName + "/" + file).extension == "png":
                         logs.append({"type": "image", "msg": outName.replace("flaskapp", "") + "/" + file})
                 break
-        return {'logs': logs,'newdata':[{"type":"filepath", "data":outName}]}
+        return {'logs': logs,'newdata':[]}

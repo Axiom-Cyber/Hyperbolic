@@ -13,7 +13,7 @@ import tarfile
 class Decompress:
     def return_solution(self, filepath, first=True):
         logs = []
-        if guess(filepath) != None:
+        if not os.path.isdir(filepath) and guess(filepath) != None:
             compressed = False
             extension = guess(filepath).extension
             outpath = re.sub(r"\.[^.]*$", "", filepath)
