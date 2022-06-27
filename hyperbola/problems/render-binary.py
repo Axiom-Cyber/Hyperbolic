@@ -33,5 +33,11 @@ class RenderBinary:
             outArray = np.array(pixels, dtype=np.uint8)
             Image.fromarray(outArray).save(outName + "/" + str(width) + ".png")
 
+        logs = []
         file.close()
-        return {'logs': [],'newdata':[{"type":"filepath", "data":outName}],'end':False}
+        for (dirpath, dirnames, filenames) in os.walk(outName):
+                for file in filenames:
+                    if filetype.guess(outName + "/" + file) and filetype.guess(outName + "/" + file).extension == "png":
+                        logs.append({"type": "image", "msg": outName.replace("flaskapp", "") + "/" + file})
+                break
+        return {'logs': logs,'newdata':[{"type":"filepath", "data":outName}],'end':False}
