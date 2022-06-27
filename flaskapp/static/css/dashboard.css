@@ -17,6 +17,14 @@
     position: fixed;
     left: 80px;
     padding: 10px;
+    overflow-y: auto;
+    /* display: none; */
+}
+
+#tabs::-webkit-scrollbar {
+
+    display: none;
+
 }
 
 #tabs ul {
