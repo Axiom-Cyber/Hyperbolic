@@ -11,24 +11,25 @@
 {% endblock %}
 
 {% block content %}
+    <div id="auth-btns">
+        {% if logged %}
+            <a href="{{ url_for('logout') }}"><i class="bi bi-box-arrow-in-right"></i></a>
+        {% else %}
+            <a href="{{ url_for('login') }}"><i class="bi bi-box-arrow-in-left"></i></a>
+        {% endif %}
+    </div>
     <div id="tabs">
         <ul id="tab-select">
             <li><a href="#tab-1"><i class="bi bi-bag"></i></a></li>
-            <li><a href="#tab-2"><i class="bi bi-upload"></i></a></li>
-            <li><a href="#tab-3"><i class="bi bi-{% if logged %}un{% endif %}lock"></i></a></li>
-            <li><a href="#tab-4"><i class="bi bi-sliders"></i></a></li>
-            <li><a href="#tab-5"><i class="bi bi-book"></i></a></li>
+            <li><a href="#tab-2"><i class="bi bi-code-slash"></i></a></li>
+            <li><a href="#tab-3"><i class="bi bi-sliders"></i></a></li>
+            <li><a href="#tab-4"><i class="bi bi-book"></i></a></li>
         </ul>
         <div id="tab-1">
-            <p>Store</p>
+            <h1>Store</h1>
         </div>
         <div id="tab-2">
-            <p>Custom script</p>
-            <div id="python">
-                <button onclick="addExecutor()">Add Your Own Executor</button>
-            </div>
-        </div>
-        <div id="tab-3">
+            <h1>Custom script</h1>
             {% if logged %}
             <form id="adminupload" id="upload" action="http://localhost:5000/uploader" method="POST" enctype="multipart/form-data">
                 {{ admin.csrf_token }}
@@ -38,38 +39,15 @@
                 {{ admin.desc }}
                 {{ admin.submit }}
             </form>
-            <a href="{{ url_for('logout') }}">Logout</a>
-            {% else %}
-            <h1 class="my-3">Login</h1>
-            <form action="" method="post">
-                {{ form.csrf_token }}
-
-                <div class="form-group mb-1">
-                    {{ form.user(placeholder=form.user.label.text) }}
-                    {% if form.user.errors %}
-                        {% for error in form.user.errors %}
-                            <small>{{ error }}</small>
-                        {% endfor %}
-                    {% endif %}
-                </div>
-
-                <div class="form-group mb-3">
-                    {{ form.password(placeholder=form.password.label.text) }}
-                    {% if form.password.errors %}
-                        {% for error in form.password.errors %}
-                            <small>{{ error }}</small>
-                        {% endfor %}
-                    {% endif %}
-                </div>
-
-                {{ form.submit }}
-            </form>
-
-            <a href="{{ url_for('register') }}">Register</a>
-            <a href="{{ url_for('forgot_password') }}">Forgot password</a>
             {% endif %}
+            <br>
+            <br>
+            <br>
+            <div id="python">
+                <button onclick="addExecutor()" class="btn custom-btn-1">Add Your Own Executor</button>
+            </div>
         </div>
-        <div id="tab-4">
+        <div id="tab-3">
             <p>Settings</p>
             <p>Regex For The Flag</p>
             <input type="text" placeholder="Flag Regex" id="flagRe" value="flag\{\S*?\}">
@@ -80,7 +58,7 @@
                 {% endfor %}
             </div>
         </div>
-        <div id="tab-5">
+        <div id="tab-4">
             <p>
                 Documentation
                 <br><br>

@@ -39,7 +39,7 @@ def login():
             login_user(user, remember=True)
             user.last_login = datetime.utcnow()
             db.session.commit()
-            return redirect(url_for('index'))
+            return redirect(url_for('dashboard'))
     return render_template('login.html', form=form, title='Login')
 
 @app.route('/register/', methods=['GET', 'POST'])
