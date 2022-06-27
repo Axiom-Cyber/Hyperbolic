@@ -13,6 +13,9 @@ class Commander:
     del safe_functions['quit']
     del safe_functions['print']
 
+    final_name='Flag'
+    final_type='text'
+
     detectors = {}
     @classmethod
     def add_worker(self, *categories):
@@ -24,13 +27,14 @@ class Commander:
             return clss
         return decorate
 
-    def __init__(self, logger, max_depth):
+    def __init__(self, final_re, logger, max_depth):
+        self.final_re = final_re
         self.logger = logger
         self.max_depth = max_depth
 
     @classmethod
-    def run(cls, type, data, logger, user_data={}, disabled_solvers=[], max_depth=5):
-        self = cls(logger, max_depth)
+    def run(cls, type, data, logger, user_data={}, disabled_solvers=[], flag=r'flag\{\S*?\}', max_depth=5):
+        self = cls(flag, logger, max_depth)
         children = [{'type':type, 'data':data}]
         for _ in range(max_depth):
             nchildren = []
@@ -42,45 +46,45 @@ class Commander:
                     ret = e.return_solution(i['data'])
                     for log in ret['logs']:
                         self.logger(log['type'], log['msg'])
-                    if ret['end']:
-                        _ = False 
-                        break
                     nchildren += ret['newdata']
                 if i['type'] in user_data:
                     for j in user_data[i['type']]:
                         try:
-                            print('def return_solution(data): \n  '+j.replace('\n', '\n  '))
                             ret = None
                             l = {m:n for m,n in self.safe_functions.items()}
                             exec('def return_solution(data): \n  '+j.replace('\n', '\n  '), {'__builtins__':None}, l)
-                            print(l['return_solution'])
                             ret = l['return_solution'](i['data'])
                             for log in ret['logs']:
                                 self.logger(log['type'], log['msg'])
-                            if ret['end']:
-                                _ = False 
-                                break
                             nchildren += ret['newdata']
                         except: pass
-            if _ == False: break
+                if i['type'] == self.final_type and self.final_name not in disabled_solvers:
+                    print(self.final_name)
+                    flag = self.check_flag(i['data'])
+                    if flag != False:
+                        self.logger('text', self.final_name + ' found: ' + flag)
+                        self.logger('end', 'task exited')
+                        return
             children = nchildren
         self.logger('end', 'task exited')
+    @classmethod
+    def compile_names(self):
+        names = [self.final_name]
+        for i in self.detectors:
+            for j in self.detectors[i]:
+                if j.__name__ not in names:
+                    names.append(j.__name__)
+        return names
+
+    def check_flag(self, str):
+        flag = re.search(self.final_re, str)
+        if flag!=None:
+            return flag.group()
+        return False
 
 class Problem:
     def return_solution(self, data):
         return {'logs':[], 'newdata':[{'type':None,'data':None}]}
-
-@Commander.add_worker('text')
-class Flag(Problem):
-    flag = r'flag\{\S*?\}'
-    @classmethod
-    def set_flag(self, flag):
-        self.flag = flag
-    def return_solution(self, data):
-        flag = re.search(self.flag, data)
-        if flag!=None:
-            return {'logs' : [{'type':'text', 'msg':'flag found: ' + flag.group()}], 'newdata':[], 'end':True}
-        return {'logs' : [], 'newdata' : [], 'end':False}
 
 prefix = 'problems.'
 if __name__ != '__main__':

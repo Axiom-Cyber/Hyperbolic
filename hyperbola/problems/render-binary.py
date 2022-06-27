@@ -40,4 +40,4 @@ class RenderBinary:
                     if filetype.guess(outName + "/" + file) and filetype.guess(outName + "/" + file).extension == "png":
                         logs.append({"type": "image", "msg": outName.replace("flaskapp", "") + "/" + file})
                 break
-        return {'logs': logs,'newdata':[{"type":"filepath", "data":outName}],'end':False}
+        return {'logs': logs,'newdata':[{"type":"filepath", "data":outName}]}

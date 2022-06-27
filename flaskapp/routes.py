@@ -1,6 +1,6 @@
 import re
 from typing import List
-from flask import url_for, render_template, request, jsonify, make_response, redirect, abort, flash
+from flask import send_file, url_for, render_template, request, jsonify, make_response, redirect, abort, flash
 from flaskapp import app, socketio, csrf, bcrypt, db, login_manager, s, mail
 from flaskapp.forms import LoginForm, RegistrationForm, ForgotPassword, ChangePassword, FileUploadForm, AdminUploadForm
 from flaskapp.models import User
@@ -137,10 +137,7 @@ def dashboard():
             login_user(user, remember=True)
             user.last_login = datetime.utcnow()
             db.session.commit()
-    names = []
-    for i in hyperbola.Commander.detectors.values():
-        for j in i:
-            names.append(j.__name__)
+    names = hyperbola.Commander.compile_names()
     return render_template('dashboard.html', title='Dashboard', upload=upload, admin=admin, form=form, names=names, logged=current_user.is_authenticated)
 
 @app.route('/demos/')
@@ -179,6 +176,14 @@ def demos_cookies_delete():
 def demos_directories():
     return render_template('demos/directories.html', title='Webpage Directory Traversal Demo')
 
+@app.route("/download/folder/<path:path>")
+def download_folder(path):
+    shutil.make_archive(path, 'zip', path)
+    return send_file("../" + path+".zip", as_attachment=True)
+@app.route("/download/file/<path:path>")
+def download_file(path):
+    return send_file("../" + path, as_attachment=True)
+
 @app.route('/docs')
 def docs():
     return render_template('docs.html', title='Documentation')
@@ -210,15 +215,15 @@ def delete():
         shutil.rmtree('flaskapp/static/UploadedFiles/'+request.sid)
 
 @socketio.event
-def search_text(data, user_problems, disabled):
+def search_text(data, user_problems, disabled, flag):
     disabled = disabled if isinstance(disabled, list) else []
     for i in user_problems:
         for j in user_problems[i]:
             j.replace(r'[^|\n].*?import.*?[$|\n]','')
-    hyperbola.Commander.run('text', data, Logger(request.sid, socketio), user_problems, disabled)
+    hyperbola.Commander.run('text', data, Logger(request.sid, socketio), user_problems, disabled, flag)
 
 @socketio.event
-def search_file(data, user_problems, disabled):
+def search_file(data, user_problems, disabled, flag):
     disabled = disabled if isinstance(disabled, list) else []
     path = "flaskapp/static/UploadedFiles/"+request.sid+"/"
     if not os.path.isdir(path):
@@ -231,7 +236,7 @@ def search_file(data, user_problems, disabled):
     for i in user_problems:
         for j in user_problems[i]:
             j.replace(r'[^|\n].*?import.*?[$|\n]','')
-    hyperbola.Commander.run('filepath', path, Logger(request.sid, socketio), user_problems, disabled)
+    hyperbola.Commander.run('filepath', path, Logger(request.sid, socketio), user_problems, disabled, flag)
 
 @socketio.event
 def upload_file(data, desc):

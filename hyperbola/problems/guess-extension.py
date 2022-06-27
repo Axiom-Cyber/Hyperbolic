@@ -11,6 +11,6 @@ class Extension:
             with open(filepath, "rb") as filein:
                 with open(outpath, "wb") as fileout:
                     fileout.write(filein.read())
-            return {'logs':[{"type": "text", "msg": "This file is a " + guess.extension}],'newdata':[{"type": "typedfile", "data":outpath}],'end':False}
+            return {'logs':[{"type": "text", "msg": "This file is a " + guess.extension}],'newdata':[{"type": "typedfile", "data":outpath}]}
         else:
-            return {'logs':[{"type": "text", "msg": "Couldn't guess extension"}],'newdata':[{"type": "typedfile", "data":filepath}],'end':False}
+            return {'logs':[{"type": "text", "msg": "Couldn't guess extension"}],'newdata':[{"type": "typedfile", "data":filepath}]}

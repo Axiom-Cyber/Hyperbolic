@@ -15,7 +15,7 @@ $(document).on('submit','#upload',function(e)
             type: file.type, 
             size: file.size, 
             binary: arrayBuffer 
-        }, getText(), getOff());
+        }, getText(), getOff(), $('#flagRe').val());
     }
 });
 
@@ -59,7 +59,7 @@ function getOff(){
 $(document).on('submit','#command',function(e) {
     if (open){
         $('#output').html($('#output').html() + 'text: ' + this.command.value + '<br>')
-        socket.emit('search_text', this.command.value, getText(), getOff())
+        socket.emit('search_text', this.command.value, getText(), getOff(), $('#flagRe').val())
         open=false
     }
     return false
@@ -77,7 +77,7 @@ function remove(t){
     while (t.id!='solverbox' && t.parentElement){t=t.parentElement}
     t.remove()
 }
-
+const display_regex = /(?:\/([^\/]+))+/gm;
 socket.on('send_output', (type, msg)=>{
     if(type=='text') {
         $('#output').html($('#output').html()+'- '+msg +'<br>')
@@ -88,6 +88,15 @@ socket.on('send_output', (type, msg)=>{
     else if(type == 'end') {
         open=true
         $('#output').html($('#output').html()+'- '+msg +'<br>')
+    }
+    
+    else if (type == 'folder') {
+        var data = "<a href='/download/folder/" + msg + "' download>" + display_regex.exec(msg)[1] + "</a>"
+        $('#output').html($('#output').html()+'- '+ data +'<br>')
+    }
+    else if (type=='file') {
+        var data = "<a href='/download/file/" + msg + "' download>" + display_regex.exec(msg)[1] + "</a>"
+        $('#output').html($('#output').html()+'- '+ data +'<br>')
     }
 })
   

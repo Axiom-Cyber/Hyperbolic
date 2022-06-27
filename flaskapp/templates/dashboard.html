@@ -71,11 +71,14 @@
         </div>
         <div id="tab-4">
             <p>Settings</p>
-            <form id="disabled">
+            <p>Regex For The Flag</p>
+            <input type="text" placeholder="Flag Regex" id="flagRe" value="flag\{\S*?\}">
+            <p>Disable Detectors</p>
+            <div id="disabled">
                 {% for i in names %}
                 <input name="{{ i }}" type="checkbox"><label for="{{ i }}">{{ i }}</label><br>
                 {% endfor %}
-            </form>
+            </div>
         </div>
         <div id="tab-5">
             <p>
