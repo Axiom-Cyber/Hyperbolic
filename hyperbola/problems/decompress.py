@@ -21,7 +21,7 @@ class Decompress:
                 with zipfile.ZipFile(filepath, 'r') as zip_ref:
                     compressed = True
                     zip_ref.extractall(outpath)
-                    logs.append({"type": "text", "msg": "zip"})
+                    logs.append({"type": "text", "msg": "Decompressed zip"})
             elif extension == "gz":
                 with gzip.open(filepath, 'rb') as f:
                     compressed = True
@@ -30,17 +30,17 @@ class Decompress:
                     out = open(outpath, "wb")
                     out.write(f.read())
                     out.close()
-                    logs.append({"type": "text", "msg": "gzip"})
+                    logs.append({"type": "text", "msg": "Decompressed gzip"})
             elif extension == "7z":
                 with py7zr.SevenZipFile(filepath, 'r') as archive:
                     compressed = True
                     archive.extractall(path=outpath)
-                    logs.append({"type": "text", "msg": "7zip"})
+                    logs.append({"type": "text", "msg": "Decompressed 7zip"})
             elif extension == "tar":
                 with tarfile.open(filepath, "r") as tar:
                     compressed = True
                     tar.extractall(outpath)
-                    logs.append({"type": "text", "msg": "tar"})
+                    logs.append({"type": "text", "msg": "Untarred"})
             else:
                 return {"logs": [], "newdata": [{"type": "filepath", "data": filepath}], "end": False}
             if os.path.isdir(outpath):

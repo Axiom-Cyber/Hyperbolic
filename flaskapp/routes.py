@@ -227,7 +227,7 @@ def search_file(data, user_problems, disabled):
     with open(path, "wb") as file: 
         file.write(data["binary"])
     if (guess(path) and guess(path).extension in ['jpeg', 'gif', 'png', 'apng', 'svg', 'bmp']):
-        socketio.emit("send_output", ('image', "/static/UploadedFiles/" + secure_filename(data["name"])))
+        socketio.emit("send_output", ('image', "/static/UploadedFiles/" + request.sid + "/" + secure_filename(data["name"])))
     for i in user_problems:
         for j in user_problems[i]:
             j.replace(r'[^|\n].*?import.*?[$|\n]','')

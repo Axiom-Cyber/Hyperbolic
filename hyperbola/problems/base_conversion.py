@@ -29,4 +29,4 @@ class BaseEncoder:
         b32 = [base64.b32encode(i.encode()).decode() for i in re.findall(r'[0-9A-V]+')]
         b64 = [base64.b64encode(i.encode()).decode() for i in re.findall(r'[0-9A-Za-z]+')]
 
-        return {"logs": [], "newdata": [{"type": "text", "data": i} for i in b16+b32+b64], "end": False}
+        return {"logs": [{"type": "text", "msg": i} for i in b16+b32+b64], "newdata": [{"type": "text", "data": i} for i in b16+b32+b64], "end": False}

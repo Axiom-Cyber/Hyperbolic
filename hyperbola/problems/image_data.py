@@ -8,11 +8,8 @@ class ImageMetadata:
         try:
             image = Image.open(filepath)
             exifdata = image.getexif()
-            info_dict = { #
-                "Filename": image.filename,
+            info_dict = {
                 "Image Size": image.size,
-                "Image Height": image.height,
-                "Image Width": image.width,
                 "Image Format": image.format,
                 "Image Mode": image.mode,
                 "Image is Animated": getattr(image, "is_animated", False),
@@ -24,14 +21,15 @@ class ImageMetadata:
                 data = exifdata.get(tag_id)
                 info_dict[tag] = data
             
+            
             return {
-                'logs':[],
+                'logs':[{'type':'text', 'msg':f"{key}: {info_dict[key]}"} for key in info_dict],
                 'newdata': [{'type':'text', 'data':f"{key}: {info_dict[key]}"} for key in info_dict],
                 'end':False
             }
         except:
             return {
-                'logs':[],
+                'logs':[{"type": "text", "msg": "Not an image"}],
                 'newdata': [],
                 'end':False
             }

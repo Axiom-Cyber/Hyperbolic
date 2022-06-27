@@ -18,4 +18,4 @@ class Selenium:
 
         driver.close()
 
-        return {'logs':[], 'newdata':[{'type':'text', 'newdata':i} for i in newdata]}
+        return {'logs':[{'type':'text', 'msg':i} for i in newdata], 'newdata':[{'type':'text', 'newdata':i} for i in newdata]}
