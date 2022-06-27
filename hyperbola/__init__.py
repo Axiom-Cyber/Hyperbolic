@@ -5,14 +5,6 @@ import math
 import os
 
 class Commander:
-    safe_functions = {i:__builtins__[i] for i in __builtins__}
-    safe_functions['re'] = re
-    safe_functions['math'] = math
-    safe_functions['open'] = lambda a,b='rt',encoding=ascii: open(a,b,encoding=encoding) if re.search(r'^(\.\/)?flaskapp/UploadedFiles', os.path.normpath(a)) else None
-    safe_functions['join'] = os.path.join
-    del safe_functions['quit']
-    del safe_functions['print']
-
     final_name='Flag'
     final_type='text'
 
@@ -27,15 +19,22 @@ class Commander:
             return clss
         return decorate
 
-    def __init__(self, final_re, logger, max_depth):
+    def __init__(self, final_re, logger, saf_dir, max_depth):
         self.final_re = final_re
         self.logger = logger
         self.max_depth = max_depth
+        self.safe_functions = {i:__builtins__[i] for i in __builtins__}
+        self.safe_functions['re'] = re
+        self.safe_functions['math'] = math
+        self.safe_functions['join'] = os.path.join
+        del self.safe_functions['quit']
+        del self.safe_functions['print']
+        self.safe_functions['open'] = lambda a,b='rt',encoding='ascii': open(a,b,encoding=encoding) if re.search(r'^(\.\/)?'+self.safe_dir, os.path.normpath(a)) else None
 
     @classmethod
-    def run(cls, type, data, logger, user_data={}, disabled_solvers=[], flag=r'flag\{\S*?\}', max_depth=5):
-        self = cls(flag, logger, max_depth)
-        children = [{'type':type, 'data':data}]
+    def run(cls, section, data, logger, safe_dir='', user_data={}, disabled_solvers=[], flag=r'flag\{\S*?\}', max_depth=5):
+        self = cls(flag, logger, safe_dir, max_depth)
+        children = [{'type':section, 'data':data}]
         for _ in range(max_depth):
             nchildren = []
             for i in children:
@@ -48,18 +47,20 @@ class Commander:
                         self.logger(log['type'], log['msg'])
                     nchildren += ret['newdata']
                 if i['type'] in user_data:
-                    for j in user_data[i['type']]:
+                    for j in range(len(user_data[i['type']])):
+                        print(j)
                         try:
                             ret = None
                             l = {m:n for m,n in self.safe_functions.items()}
-                            exec('def return_solution(data): \n  '+j.replace('\n', '\n  '), {'__builtins__':None}, l)
+                            exec('def return_solution(data): \n  '+user_data[i['type']][j].replace('\n', '\n  '), {'__builtins__':None}, l)
                             ret = l['return_solution'](i['data'])
                             for log in ret['logs']:
                                 self.logger(log['type'], log['msg'])
                             nchildren += ret['newdata']
-                        except: pass
+                        except Exception as ex:
+                            msg = "An exception in activated user code #{0} of type {1} occurred. Arguments:\n{2!r}".format(j+1, type(ex).__name__, ex.args)
+                            self.logger('text', msg)
                 if i['type'] == self.final_type and self.final_name not in disabled_solvers:
-                    print(self.final_name)
                     flag = self.check_flag(i['data'])
                     if flag != False:
                         self.logger('text', self.final_name + ' found: ' + flag)

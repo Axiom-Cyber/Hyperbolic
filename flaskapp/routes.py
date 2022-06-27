@@ -178,11 +178,13 @@ def demos_directories():
 
 @app.route("/download/folder/<path:path>")
 def download_folder(path):
-    shutil.make_archive(path, 'zip', path)
-    return send_file("../" + path+".zip", as_attachment=True)
+    if re.search(r'^(\.\/)?flaskapp/UploadedFiles', os.path.normpath(path)):
+        shutil.make_archive(path, 'zip', path)
+        return send_file("../" + path+".zip", as_attachment=True)
 @app.route("/download/file/<path:path>")
 def download_file(path):
-    return send_file("../" + path, as_attachment=True)
+    if re.search(r'^(\.\/)?flaskapp/UploadedFiles', os.path.normpath(path)):
+        return send_file("../" + path, as_attachment=True)
 
 @app.route('/docs')
 def docs():
@@ -220,7 +222,7 @@ def search_text(data, user_problems, disabled, flag):
     for i in user_problems:
         for j in user_problems[i]:
             j.replace(r'[^|\n].*?import.*?[$|\n]','')
-    hyperbola.Commander.run('text', data, Logger(request.sid, socketio), user_problems, disabled, flag)
+    hyperbola.Commander.run('text', data, Logger(request.sid, socketio), 'flaskapp/UploadedFiles', user_problems, disabled, flag)
 
 @socketio.event
 def search_file(data, user_problems, disabled, flag):
