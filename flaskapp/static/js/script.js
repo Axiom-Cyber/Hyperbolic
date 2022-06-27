@@ -77,7 +77,7 @@ function remove(t){
     while (t.id!='solverbox' && t.parentElement){t=t.parentElement}
     t.remove()
 }
-
+const display_regex = /(?:\/([^\/]+))+/gm;
 socket.on('send_output', (type, msg)=>{
     if(type=='text') {
         $('#output').html($('#output').html()+'- '+msg +'<br>')
@@ -89,8 +89,14 @@ socket.on('send_output', (type, msg)=>{
         open=true
         $('#output').html($('#output').html()+'- '+msg +'<br>')
     }
-    else if (type == 'file') {
-        console.log("file logged");
+    
+    else if (type == 'folder') {
+        var data = "<a href='/download/folder/" + msg + "' download>" + display_regex.exec(msg)[1] + "</a>"
+        $('#output').html($('#output').html()+'- '+ data +'<br>')
+    }
+    else if (type=='file') {
+        var data = "<a href='/download/file/" + msg + "' download>" + display_regex.exec(msg)[1] + "</a>"
+        $('#output').html($('#output').html()+'- '+ data +'<br>')
     }
 })
   

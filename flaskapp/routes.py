@@ -179,9 +179,13 @@ def demos_cookies_delete():
 def demos_directories():
     return render_template('demos/directories.html', title='Webpage Directory Traversal Demo')
 
-@app.route("/download/<path>")
-def download(path):
-    return send_file(path, as_attachment=True)
+@app.route("/download/folder/<path:path>")
+def download_folder(path):
+    shutil.make_archive(path, 'zip', path)
+    return send_file("../" + path+".zip", as_attachment=True)
+@app.route("/download/file/<path:path>")
+def download_file(path):
+    return send_file("../" + path, as_attachment=True)
 
 @app.route('/docs')
 def docs():

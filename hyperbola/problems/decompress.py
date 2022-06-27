@@ -17,6 +17,7 @@ class Decompress:
             compressed = False
             extension = guess(filepath).extension
             outpath = re.sub(r"\.[^.]*$", "", filepath)
+            
             if extension == "zip":
                 with zipfile.ZipFile(filepath, 'r') as zip_ref:
                     compressed = True
@@ -42,7 +43,7 @@ class Decompress:
                     tar.extractall(outpath)
                     logs.append({"type": "text", "msg": "Untarred"})
             else:
-                return {"logs": [], "newdata": [{"type": "filepath", "data": filepath}], "end": False}
+                return {"logs": [{"type": "download", "msg": filepath}], "newdata": [{"type": "filepath", "data": filepath}], "end": False}
             if os.path.isdir(outpath):
                 for (dirpath, dirnames, filenames) in os.walk(outpath):
                     for file in filenames:
@@ -52,6 +53,9 @@ class Decompress:
                 logs += self.return_solution(outpath, False)["logs"]
             if compressed and not first:
                 os.remove(filepath)
+            
+            if first:
+                logs.append({"type": "folder", "msg": outpath})
             return {"logs": logs, "newdata": [{"type": "filepath", "data": outpath}], "end": False}
         else:
             return {"logs": logs, "newdata": [{"type": "filepath", "data": filepath}], "end": False}
