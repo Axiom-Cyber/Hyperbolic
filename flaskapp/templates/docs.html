@@ -19,15 +19,21 @@
         </ul>
     </ul>
     <h2>What is Hyperbolic?</h2>
-    <p>Hyperbolic is an application to make automating text, file, or webpage processing more streamlined. Users can select prebuilt modules to automate tasks. Developers can create their own modules to be shared with other users.</p>
+    <p>
+    <p>Hyperbola is a framework for automating digital problem solving that comes with a variety of built in tools, from decompression to extracting image data.</p>
     <h2>Basic Usage</h2>
-    <p></p>
+    <p>Just type text or attach a file, click upload, and wait for the results. We will automatically search for a flag and return it to you, or if we can't find one, return processed files.
+        If you want, you can selectively enable or disable tools, as well as configure custom flag regex.
+    </p>
     <h2>Creating Custom Scripts</h2>
-    <h3>How it Works</h3>
-    <p></p>
-    <h3>Writing a Custom Script</h3>
-    <p></p>
-    <h3>Example</h3>
-    <p></p>
+    <p>If you want more tools that aren't available, you can also make your own scripts; just head over to the Custom Script tab.
+        First, add the type, which is what kind of data is passed in, like "text" or "filepath". Then, add the Python code inside. 
+        The data passed in is called "data", and you can manipulate it however you want. 
+        <br><br>
+        When you're done, add return {"logs": [{"type": type, "msg": msg}], "newdata": [{"type": type, "data": data}]}.
+        Logs are information that is displayed to the user through the console, with type being either "text" or "image" and msg being the content. 
+        You can put as many objects as you want in the list. Additionally, Newdata is information to be passed to other solvers to use, again wih type and data. 
+        It can also have as many objects as you want.
+    </p>
 </div>
 {% endblock %}

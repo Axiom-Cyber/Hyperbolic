@@ -20,15 +20,10 @@
     </div>
     <div id="tabs">
         <ul id="tab-select">
-            <li><a href="#tab-1"><i class="bi bi-bag"></i></a></li>
-            <li><a href="#tab-2"><i class="bi bi-code-slash"></i></a></li>
-            <li><a href="#tab-3"><i class="bi bi-sliders"></i></a></li>
-            <li><a href="#tab-4"><i class="bi bi-book"></i></a></li>
+            <li><a href="#tab-1"><i class="bi bi-code-slash"></i></a></li>
+            <li><a href="#tab-2"><i class="bi bi-sliders"></i></a></li>
         </ul>
         <div id="tab-1">
-            <h1>Store</h1>
-        </div>
-        <div id="tab-2">
             <h1>Custom script</h1>
             {% if logged %}
             <form id="adminupload" id="upload" action="http://localhost:5000/uploader" method="POST" enctype="multipart/form-data">
@@ -47,7 +42,7 @@
                 <button onclick="addExecutor()" class="btn custom-btn-1">Add Your Own Executor</button>
             </div>
         </div>
-        <div id="tab-3">
+        <div id="tab-2">
             <p>Settings</p>
             <p>Regex For The Flag</p>
             <input type="text" placeholder="Flag Regex" id="flagRe" value="flag\{\S*?\}">
@@ -57,23 +52,6 @@
                 <input name="{{ i }}" type="checkbox"><label for="{{ i }}">{{ i }}</label><br>
                 {% endfor %}
             </div>
-        </div>
-        <div id="tab-4">
-            <p>
-                Documentation
-                <br><br>
-                Hyperbola is a framework for automating digital problem solving that comes with a variety of built in tools, from decompression to extracting image data. 
-                Just type text or attach a file, click upload, and wait for the results. 
-                <br><br>
-                However, if you want more tools that aren't available, you can also make your own scripts; just head over to the Custom Script tab.
-                First, add the type, which is what kind of data is passed in, like "text" or "filepath". Then, add the Python code inside. 
-                The data passed in is called "data", and you can manipulate it however you want. 
-                <br><br>
-                When you're done, add return {"logs": [{"type": type, "msg": msg}], "newdata": [{"type": type, "data": data}]}.
-                Logs are information that is displayed to the user through the console, with type being either "text" or "image" and msg being the content. 
-                You can put as many objects as you want in the list. Additionally, Newdata is information to be passed to other solvers to use, again wih type and data. 
-                It can also have as many objects as you want.
-            </p>
         </div>
     </div>
     <div id="console">
