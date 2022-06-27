@@ -17,6 +17,7 @@
             <li><a href="#tab-2"><i class="bi bi-upload"></i></a></li>
             <li><a href="#tab-3"><i class="bi bi-{% if logged %}un{% endif %}lock"></i></a></li>
             <li><a href="#tab-4"><i class="bi bi-sliders"></i></a></li>
+            <li><a href="#tab-5"><i class="bi bi-book"></i></a></li>
         </ul>
         <div id="tab-1">
             <p>Store</p>
@@ -75,6 +76,23 @@
                 <input name="{{ i }}" type="checkbox"><label for="{{ i }}">{{ i }}</label><br>
                 {% endfor %}
             </form>
+        </div>
+        <div id="tab-5">
+            <p>
+                Documentation
+                <br><br>
+                Hyperbola is a framework for automating digital problem solving that comes with a variety of built in tools, from decompression to extracting image data. 
+                Just type text or attach a file, click upload, and wait for the results. 
+                <br><br>
+                However, if you want more tools that aren't available, you can also make your own scripts; just head over to the Custom Script tab.
+                First, add the type, which is what kind of data is passed in, like "text" or "filepath". Then, add the Python code inside. 
+                The data passed in is called "data", and you can manipulate it however you want. 
+                <br><br>
+                When you're done, add return {"logs": [{"type": type, "msg": msg}], "newdata": [{"type": type, "data": data}], "end" = (True/False)}.
+                Logs are information that is displayed to the user through the console, with type being either "text" or "image" and msg being the content. 
+                You can put as many objects as you want in the list. Newdata is information to be passed to other solvers to use, again wih type and data. 
+                It can also have as many objects as you want. Finally, end indicates whether or not you have found the flag so it can stop execution.
+            </p>
         </div>
     </div>
     <div id="console">
