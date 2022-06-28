@@ -13,6 +13,7 @@ import os
 import shutil
 from datetime import datetime
 from filetype import guess
+import flask
 
 @login_manager.unauthorized_handler
 def unauthorized():
@@ -178,13 +179,12 @@ def demos_directories():
 
 @app.route("/download/folder/<path:path>")
 def download_folder(path):
-    if re.search(r'^(\.\/)?flaskapp/UploadedFiles', os.path.normpath(path)):
-        shutil.make_archive(path, 'zip', path)
-        return send_file("../" + path+".zip", as_attachment=True)
+    shutil.make_archive(path, 'zip', path)
+    return flask.send_file("../" + path+".zip", as_attachment=True)
+
 @app.route("/download/file/<path:path>")
 def download_file(path):
-    if re.search(r'^(\.\/)?flaskapp/UploadedFiles', os.path.normpath(path)):
-        return send_file("../" + path, as_attachment=True)
+    return send_file("../" + path, as_attachment=True)
 
 @app.route('/docs')
 def docs():

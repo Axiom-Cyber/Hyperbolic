@@ -20,7 +20,7 @@ class BaseDecoder:
             except: pass
 
         b64 = []
-        for result in re.findall(r"[0-9A-Za-z]+", text):
+        for result in re.findall(r"[0-9A-Za-z=]+", text):
             try: b64.append(base64.b64decode(result.encode()).decode())
             except: pass
         
