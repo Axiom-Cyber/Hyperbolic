@@ -119,6 +119,10 @@ label[for="file"] {
    width:100%; 
 }
 
+#python>button {
+    width: 100%;
+}
+
 #adminupload label{
     display: block;
     color: #E3E3E3;
@@ -131,6 +135,8 @@ label[for="file"] {
 #solverbox textarea {
     background-color: var(--gunmetal-dark);
     color: var(--white);
+    padding: 3px 12px;
+    outline: none;
 }
 
 #solverbox {
@@ -149,4 +155,21 @@ label[for="file"] {
 label[for="enable"] {
     color: var(--white);
     font-size: 20px;
+}
+
+#solverbox input[type="text"] {
+    margin-top: 5px;
+}
+
+input#submit {
+    margin-top: 5px;
+}
+
+label[for="desc"] {
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+label[for="file"] {
+    text-align: center;
 }
