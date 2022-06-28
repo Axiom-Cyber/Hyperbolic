@@ -5,7 +5,7 @@ import requests
 @hyperbola.Commander.add_worker('text')
 class Url:
     def return_solution(self, data):
-        urls = re.findall(r'(?:[^\s\/\.]+\.[^\s\/\.]+)(?:\/\S*)*', data)
+        urls = re.findall(r'((?:(?:https?):\/\/)\S+)', data)
         return {'logs':[{'type':'text', 'msg':'url: ' + i} for i in urls],'newdata':[{'type':'url','data':i.strip('/')} for i in urls]}
 
 @hyperbola.Commander.add_worker('url')
@@ -15,18 +15,18 @@ class Webpage:
         logs = []
         for i in [requests.get, requests.post, requests.delete, requests.head, requests.patch, requests.put]:
             try:
-                req = i('http://' + data)
+                req = i(data)
                 logs.append({'type':'text','msg':'responce found for ' + data})
                 rets.append(req)
             except: pass
         return {'logs':logs,'newdata':[{'type':'request', 'data':i} for i in rets]}
 
-@hyperbola.Commander.add_worker('request')
+#@hyperbola.Commander.add_worker('request')
 class Cookies:
     def return_solution(self, data):
         return {'logs':[], 'newdata':[{'type':'text', 'data':i} for i in data]}
 
-@hyperbola.Commander.add_worker('url')
+#@hyperbola.Commander.add_worker('url')
 class Robots:
     def return_solution(self, data):
         base = re.search(r'(https?:\/\/)?(.+?)(?=\/|\s|$)', data).groups(2)
@@ -41,6 +41,7 @@ class Relatives:
 @hyperbola.Commander.add_worker('request')
 class Page:
     def return_solution(self, data):
+        print(data.text)
         return {'logs':[], 'newdata':[{'type': 'text', 'data': data.text}]+
           [{'type':'text', 'data':data.text.replace(r'<.*?>', '')}]}
 

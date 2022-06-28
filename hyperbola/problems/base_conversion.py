@@ -2,7 +2,7 @@ import base64
 import hyperbola
 import re
 
-@hyperbola.Commander.add_worker("text")
+#@hyperbola.Commander.add_worker("text")
 class BaseDecoder:
     def return_solution(self, text: str):
         b2 = []
@@ -26,7 +26,7 @@ class BaseDecoder:
         
         return {"logs": [], "newdata": [{"type": "text", "data": i} for i in b2+b16+b32+b64]}
 
-@hyperbola.Commander.add_worker("text")
+#@hyperbola.Commander.add_worker("text")
 class BaseEncoder:
     def return_solution(self, text):
         b16 = [base64.b16encode(i.encode()).decode() for i in re.findall(r'[0-9A-F]+', text)]
