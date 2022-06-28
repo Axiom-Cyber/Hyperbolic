@@ -41,9 +41,9 @@ $(document).on('submit','#adminupload',function(e) {
 function getText(){
     var text = {}
     for(let i of document.querySelectorAll('#python>div')){
-        if(i.children[2].value in text && !i.children[0].checked){
+        if(i.children[2].value in text && i.children[0].checked){
             text[i.children[2].value].push(i.children[3].value)
-        } else if (!i.children[0].checked) {
+        } else if (i.children[0].checked) {
             text[i.children[2].value] = [i.children[3].value]
         }
     }
@@ -53,7 +53,7 @@ function getText(){
 function getOff(){
     var off = []
     for(let i of document.querySelectorAll('#disabled>input')){
-        if(i.checked){off.push(i.name)}
+        if(!i.checked){off.push(i.name)}
     }
     return off
 }
