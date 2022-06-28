@@ -34,21 +34,23 @@ class Commander:
     @classmethod
     def run(cls, section, data, logger, safe_dir='', user_data={}, disabled_solvers=[], flag=r'flag\{\S*?\}', max_depth=5):
         self = cls(flag, logger, safe_dir, max_depth)
-        children = [{'type':section, 'data':data}]
+        children = [{'type':section, 'data':data, 'source':''}]
         for _ in range(max_depth):
             nchildren = []
             for i in children:
                 for j in self.detectors[i['type']]:
+                    if i['source'] == j: continue
                     if j.__name__ in disabled_solvers:
                         continue
                     e = j()
                     ret = e.return_solution(i['data'])
                     for log in ret['logs']:
                         self.logger(log['type'], log['msg'])
+                    for k in ret['newdata']: k['source'] = j
                     nchildren += ret['newdata']
                 if i['type'] in user_data:
                     for j in range(len(user_data[i['type']])):
-                        print(j)
+                        if i['source'] == j: continue
                         try:
                             ret = None
                             l = {m:n for m,n in self.safe_functions.items()}
@@ -56,6 +58,7 @@ class Commander:
                             ret = l['return_solution'](i['data'])
                             for log in ret['logs']:
                                 self.logger(log['type'], log['msg'])
+                            for k in ret['newdata']: k['source'] = j
                             nchildren += ret['newdata']
                         except Exception as ex:
                             msg = "An exception in activated user code #{0} of type {1} occurred. Arguments:\n{2!r}".format(j+1, type(ex).__name__, ex.args)

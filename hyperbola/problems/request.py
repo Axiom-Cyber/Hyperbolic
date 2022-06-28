@@ -36,7 +36,7 @@ class Robots:
 class Relatives:
     def return_solution(self, data):
         base = re.search(r'(https?:\/\/)?(.+?)(?=\/|\s|$)', data.url).groups(2)
-        return {'logs':[], 'newdata':[{'type':'url', 'data':base+i} for i in re.findall(r'/\S+', data.text)]}
+        return {'logs':[], 'newdata':[{'type':'url', 'data':base+i} for i in re.findall(r'[\s^]\/\S+', data.text)]}
 
 @hyperbola.Commander.add_worker('request')
 class Page:
