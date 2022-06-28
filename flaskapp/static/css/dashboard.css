@@ -115,10 +115,6 @@ label[for="file"] {
     background-color: var(--pink);
 }
 
-#python div{
-   margin: 10px; 
-}
-
 #python textarea{
    width:100%; 
 }
@@ -130,4 +126,27 @@ label[for="file"] {
 
 .uploadedImage{
     width: 20%;
+}
+
+#solverbox textarea {
+    background-color: var(--gunmetal-dark);
+    color: var(--white);
+}
+
+#solverbox {
+    margin: 10px 0;
+}
+
+#solverbox input[type="checkbox"] {
+    height: 22px;
+    width: 22px;
+}
+
+#solverbox button {
+    float: right;
+}
+
+label[for="enable"] {
+    color: var(--white);
+    font-size: 20px;
 }
