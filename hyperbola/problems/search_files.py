@@ -1,7 +1,7 @@
 import hyperbola
 import os
 
-@hyperbola.Commander.add_worker('typedfile', "filepath")
+@hyperbola.Commander.add_worker("filepath", 'typedfile')
 class Extension:
     def return_solution(self, path):
         if os.path.isdir(path):
