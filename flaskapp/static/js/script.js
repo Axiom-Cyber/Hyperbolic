@@ -70,9 +70,11 @@ $(document).on('submit','#command',function(e) {
 function addExecutor(){
     document.getElementById('python').innerHTML += `
 <div id='solverbox'>
-    <input type='checkbox'><button onclick='remove(this)'>Remove</button>
-    <input type="text" placeholder="type">
-    <textarea></textarea>
+    <input name="enable" type="checkbox">
+    <label for="enable">Disable</label>
+    <button class="custom-btn-1" onclick='remove(this)'>Remove</button>
+    <input type="text" placeholder="Executor type">
+    <textarea placeholder="Script"></textarea>
 </div>`
 }
 function remove(t){

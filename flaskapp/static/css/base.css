@@ -49,9 +49,20 @@ input[type="text"]:focus, input[type="password"]:focus {
     outline: 2px solid var(--pink);
 }
 
-.custom-btn-1 {
+.custom-btn-1, .custom-btn-1:hover {
     color: var(--white);
     padding: 3px 12px;
     background-color: var(--pink);
     border-radius: 0;
+    border: none;
+}
+
+textarea {
+    margin-top: 5px;
+    border: none;
+}
+
+textarea:focus {
+    border: solid 2px;
+    border-color: var(--pink);
 }
