@@ -20,10 +20,21 @@
     </div>
     <div id="tabs">
         <ul id="tab-select">
-            <li><a href="#tab-1"><i class="bi bi-code-slash"></i></a></li>
-            <li><a href="#tab-2"><i class="bi bi-sliders"></i></a></li>
+            <li><a href="#tab-1"><i class="bi bi-boxes"></i></a></li>
+            <li><a href="#tab-2"><i class="bi bi-code-slash"></i></a></li>
+            <li><a href="#tab-3"><i class="bi bi-sliders"></i></a></li>
+            <li><a href="{{ url_for('demos') }}" target="_blank"><i class="bi bi-box2"></i></a></li>
+            <li><a href="{{ url_for('docs') }}" target="_blank"><i class="bi bi-book"></i></a></li>
         </ul>
         <div id="tab-1">
+            <h1>Enabled Units</h1>
+            <div id="disabled">
+                {% for i in names %}
+                <input name="{{ i }}" type="checkbox" checked><label for="{{ i }}">{{ i }}</label><br>
+                {% endfor %}
+            </div>
+        </div>
+        <div id="tab-2">
             <h1>Custom script</h1>
             {% if logged %}
             <form id="adminupload" id="upload" action="http://localhost:5000/uploader" method="POST" enctype="multipart/form-data">
@@ -42,16 +53,10 @@
                 <button onclick="addExecutor()" class="btn custom-btn-1">Add Your Own Executor</button>
             </div>
         </div>
-        <div id="tab-2">
-            <p>Settings</p>
-            <p>Regex For The Flag</p>
+        <div id="tab-3">
+            <h1>Settings</h1>
+            <p>Flag regular expression</p>
             <input type="text" placeholder="Flag Regex" id="flagRe" value="flag\{\S*?\}">
-            <p>Disable Detectors</p>
-            <div id="disabled">
-                {% for i in names %}
-                <input name="{{ i }}" type="checkbox" checked><label for="{{ i }}">{{ i }}</label><br>
-                {% endfor %}
-            </div>
         </div>
     </div>
     <div id="console">
