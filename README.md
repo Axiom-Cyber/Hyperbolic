@@ -1,6 +1,8 @@
 # Hyperbolic
 Beginner CTF automation with a pretty interface.
 
+*Note: this project crashed and burned*
+
 ## How it Works
 
 Hyperbola contains the code that actually does the "hacking". It contains all the code to analyze files, connect to platforms like CTFD.io, and run Linux commands on files. Flask is the web interface to run Hyperbola functions.
